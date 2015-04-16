@@ -1,0 +1,15 @@
+{
+  "name": "es6turorial",
+  "version": "0.0.0",
+  "authors": [
+    "wendy <wendycaner@gmail.com>"
+  ],
+  "description": "es6turorial",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "foundation": "~5.4.7",
+    "jquery": "~2.1.3",
+    "underscore": "~1.8.3"
+  }
+}
