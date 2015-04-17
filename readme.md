@@ -4,9 +4,17 @@ ECMAScript6 Tutorial
 # Required
 
 * babel
+* harp
 
 ```sh
 $ npm install --global babel
+$ npm install --global harp
+```
+
+# Run
+
+```sh
+$ harp server
 ```
 
 # Compile
@@ -22,3 +30,4 @@ $ babel src --watch --out-dir build
 ```sh
 $ babel script.js --watch --out-file script-compiled.js
 ```
+

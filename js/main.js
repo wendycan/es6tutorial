@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  $.get('/data.json').done(function (data) {
+  $.get('/public/data.json').done(function (data) {
     data.forEach(function(t, index){
       var html = _.template($('#t-table').html())({category: t.category.replace(' ', '-'),table_index: index});
       $('#container').append(html);

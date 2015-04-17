@@ -15,3 +15,4 @@ trs.each(function(index, tr){
 });
 window.data = data;
 console.log(data);
+copy(data);
