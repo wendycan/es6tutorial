@@ -8,7 +8,7 @@ trs.each(function(index, tr){
     data.push({category: tr.text(), data: []})
   } else {
     window.lasttr = tr;
-    if(tr.find('td span')[0].childNodes){
+    if(tr.find('td span')[0].childNodes && !tr.hasClass('subtest')){
       data[data.length-1].data.push($(Array.from(tr.find('td span')[0].childNodes)[1]).text());
     }
   }

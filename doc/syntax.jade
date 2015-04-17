@@ -1,5 +1,24 @@
 .row
   .large-12.columns
-    h4 Syntax
+    .feature
+      != partial("syntax/_01_default_para")
+    .feature
+      != partial("syntax/_02_rest_para")
+    .feature
+      != partial("syntax/_03_spread_opera")
+    .feature
+      != partial("syntax/_04_literal_ext")
+    .feature
+      != partial("syntax/_05_for_of")
+    .feature
+      != partial("syntax/_06_octal_binary")
+    .feature
+      != partial("syntax/_07_template_string")
+    .feature
+      != partial("syntax/_08_regExp_y_u")
+    .feature
+      != partial("syntax/_09_destructuring")
+    .feature
+      != partial("syntax/_10_unicode_point")
 script
   $("#syntax").addClass('active');

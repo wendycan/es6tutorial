@@ -1,0 +1,18 @@
+h4 二、函数的剩余参数
+h5.subheader rest parameters
+.feature-content
+  h5 1.基本特性
+  h5.subheader basic functionality
+  pre
+    code
+      |let r = (function (foo, ...args) {
+      |  return args instanceof Array && args + "" === "bar,baz";
+      |}("foo", "bar", "baz"));
+  h5 2.函数的 length 属性
+  h5.subheader function 'length' property
+  h5 3.参数对象
+  h5.subheader arguments object interaction
+  h5 4.不能在 setters 里使用
+  h5.subheader can't be used in setters
+  h5 4.新的 Function() 支持
+  h5.subheader new Function() support

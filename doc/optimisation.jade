@@ -1,10 +1,7 @@
-.row
+.row.feature
   .large-12.columns
-    h3 优化
-.row
-  .large-12.columns
-    h4 1.适当的尾部调用
-    p proper tail calls (tail call optimisation)
+    h4 适当的尾部调用
+    h5.subheader Proper tail calls (Tail call optimisation)
     p 函数的调用会在内存形成一个‘调用记录’，又称“调用帧”（call frame），保存调用位置和内部变量等信息。
       |如果在函数A的内部调用函数B，那么在A的调用记录上方，还会形成一个B的调用记录。等到B运行结束，将结果返回到A，
       |B的调用记录才会消失。如果函数B内部还调用函数C，那就还有一个C的调用记录栈，以此类推。所有的调用记录，
@@ -24,11 +21,36 @@
         |}
         |f();
         |g(3);
-    .large-12.columns
-    h4 2.直接递归
-    p direct recursion
   .large-12.columns
-    h4 3.互递归
-    p mutual recursion
+    h5 1.直接递归
+    h5.subheader Direct recursion
+    pre
+      code.javascript
+        |function f(n){
+        |  if (n &lt;= 0) {
+        |  return "foo";
+        |  }
+        |return f(n - 1);
+        |}
+        |console.log(f(1e6) === "foo");
+  .large-12.columns
+    h5 2.互递归
+    h5.subheader Mutual recursion
+    pre
+      code
+
+        |function f(n){
+        |  if (n &lt;= 0) {
+        |    return  "foo";
+        |  }
+        |  return g(n - 1);
+        |}
+        |function g(n){
+        |  if (n &lt;= 0) {
+        |    return  "bar";
+        |  }
+        |  return f(n - 1);
+        |}
+        |return f(1e6) === "foo" && f(1e6+1) === "bar";
 script
   $("#optimisation").addClass('active');
