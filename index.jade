@@ -1,0 +1,44 @@
+.row
+  .large-12.columns
+    div(data-magellan-expedition='fixed')
+      dl.sub-nav
+        dd(data-magellan-arrival='c-Optimisation')
+          a(href='#c-Optimisation') &#x4F18;&#x5316;
+        dd(data-magellan-arrival='c-Syntax')
+          a(href='#c-Syntax') &#x8BED;&#x6CD5;
+        dd(data-magellan-arrival='c-Bindings')
+          a(href='#c-Bindings') &#x7ED1;&#x5B9A;
+        dd(data-magellan-arrival='c-Functions')
+          a(href='#c-Functions') &#x51FD;&#x6570;
+        dd(data-magellan-arrival='c-Built-ins')
+          a(href='#c-Built-ins') &#x5185;&#x5EFA;
+        dd(data-magellan-arrival='c-Built-in-extensions')
+          a(href='#c-Built-in-extensions') &#x5185;&#x5EFA;&#x6269;&#x5C55;
+        dd(data-magellan-arrival='c-Subclassing')
+          a(href='#c-Subclassing') &#x5B50;&#x7C7B;
+        dd(data-magellan-arrival='c-Misc')
+          a(href='#c-Misc') &#x6DF7;&#x6742;
+        dd(data-magellan-arrival='c-Annex-b')
+          a(href='#c-Annex-b') &#x9644;&#x5F55;
+.row
+  .large-12.columns
+    #container.container
+      
+script(src="/js/main.js")
+script#t-table(type='text/template').
+  <h4 id="c-<%= category %>" data-magellan-destination="c-<%= category %>"><%= category %></h4>
+  <table id="table-<%= table_index %>">
+  <thead>
+  <tr>
+  <th>序号</th>
+  <th>特性</th>
+  </tr>
+  </thead>
+  <tbody>
+  </tbody>
+  </table>
+script#t-tr(type='text/template').
+  <tr>
+  <td><%= index %></td>
+  <td><%= text %></td>
+  </tr>

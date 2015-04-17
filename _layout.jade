@@ -1,0 +1,46 @@
+doctype
+html
+  head
+    meta(charset='utf-8')
+    title ECMAScript6 特性
+    link(rel="stylesheet" href="/bower_components/foundation/css/foundation.css")
+    link(rel="stylesheet" href="/bower_components/foundation/css/normalize.css")
+    link(rel="stylesheet" href="/css/app.css")
+    script(src="/bower_components/jquery/dist/jquery.js")
+    script(src="/bower_components/foundation/js/foundation.js")
+    script(src="/bower_components/underscore/underscore.js")
+    
+  body
+    nav.top-bar(data-topbar='', role='navigation')
+      ul.title-area
+        li.name
+          h1
+            a(href='/') ECMAScript6 Tutorial
+        li.toggle-topbar.menu-icon
+          a(href='#')
+            span Menu
+      section.top-bar-section
+        ul.right
+          li#optimisation
+            a(href='/doc/optimisation.html') &#x4F18;&#x5316;
+          li#syntax
+            a(href='/doc/syntax.html') &#x8BED;&#x6CD5;
+          li#bindings
+            a(href='/doc/bindings.html') &#x7ED1;&#x5B9A;
+          li#functions
+            a(href='/doc/functions.html') &#x51FD;&#x6570;
+          li#built-ins
+            a(href='/doc/built-ins.html') &#x5185;&#x5EFA;
+          li#built-in-extensions
+            a(href='/doc/built-in-extensions.html') &#x5185;&#x5EFA;&#x6269;&#x5C55;
+          li#subclassing
+            a(href='/doc/subclassing.html') &#x5B50;&#x7C7B;
+          li#misc
+            a(href='/doc/misc.html') &#x6DF7;&#x6742;
+          li#annex-b
+            a(href='/doc/annex-b.html') &#x9644;&#x5F55;
+          li
+            a(href='http://kangax.github.io/compat-table/es6/#ie11tp', target='_blank') &#x517C;&#x5BB9;&#x6027;
+    != yield
+    script
+      $(document).foundation();
