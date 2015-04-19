@@ -1,2 +1,66 @@
 h4 三、... 操作符
 h5.subheader spread (...) operator
+.feature-content
+  h5 1.函数调用传入数组
+  h5.subheader with arrays, in function calls
+  pre
+    code.javascript
+      |let r = Math.max(...[1, 2, 3]) === 3
+      
+  h5 2.数组字面量中使用数组
+  h5.subheader with arrays, in array literals
+  pre
+    code.javascript
+      |let r = [...[1, 2, 3]][2] === 3;
+      
+  h5 3.函数调用传入字符串
+  h5.subheader with strings, in function calls
+  pre
+    code.javascript
+      |let r = Math.max(..."1234") === 4;
+      
+  h5 4.数组字面量中使用字符串
+  h5.subheader with strings, in array literals
+  pre
+    code.javascript
+      |let r = ["a", ..."bcd", "e"][3] === "d";
+      
+  h5 
+  h5.subheader with astral plane strings, in function calls
+  pre
+    code.javascript
+      |let r = Array(..."𠮷𠮶")[0] === "𠮷";
+      
+  h5
+  h5.subheader with astral plane strings, in array literals
+  pre
+    code.javascript
+      |let r = [..."𠮷𠮶"][0] === "𠮷";
+
+  h5
+  h5.subheader with generic iterables, in calls
+  pre
+    code.javascript
+      |var iterable = global.__createIterableObject(1, 2, 3);
+      |let r = Math.max(...iterable) === 3;
+  h5
+  h5.subheader with generic iterables, in arrays
+  pre
+    code.javascript
+      |var iterable = global.__createIterableObject("b", "c", "d");
+      |let r = ["a", ...iterable, "e"][3] === "d";
+      
+  h5
+  h5.subheader with instances of iterables, in calls
+  pre
+    code.javascript
+      |var iterable = global.__createIterableObject(1, 2, 3);
+      |let r = Math.max(...Object.create(iterable)) === 3;
+      
+  h5
+  h5.subheader with instances of iterables, in arrays
+  pre
+    code.javascript
+      |var iterable = global.__createIterableObject("b", "c", "d");
+      |let r = ["a", ...Object.create(iterable), "e"][3] === "d";
+      
