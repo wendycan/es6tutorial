@@ -1,2 +1,49 @@
 h4 四、对象字面量扩展
 h5.subheader object literal extensions
+.feature-content
+  h5 1.属性计算
+  h5.subheader computed properties
+  pre
+    code.javascript
+      |var x = 'y';
+      |console.log(({ [x]: 1 }).y === 1);
+  p 结果为 true。
+  h5 2.属性简写
+  h5.subheader shorthand properties
+  pre
+    code.javascript
+      |var a = 7, b = 8, c = {a,b};
+      |console.log(c.a === 7 && c.b === 8);
+  p 结果为 true。
+  h5 3.方法简写
+  h5.subheader shorthand methods
+  pre
+    code.javascript
+      |console.log({ y() { return 2; } }.y() === 2);
+  p 结果为 true。
+  h5 4.特殊字符的方法简写
+  h5.subheader string-keyed shorthand methods
+  pre
+    code.javascript
+      |console.log(({ "foo bar"() { return 4; } })["foo bar"]() === 4);
+  p 结果为 true。    
+  h5 5.简写的计算方法
+  h5.subheader computed shorthand methods
+  pre
+    code.javascript
+      |var x = 'y';
+      |console.log(({ [x](){ return 1 } }).y() === 1);
+  p 结果为 true。    
+  h5 6.访问
+  h5.subheader computed accessors
+  pre
+    code.javascript
+      |var x = 'y',
+      |    valueSet,
+      |    obj = {
+      |      get [x] () { return 1 },
+      |      set [x] (value) { valueSet = value }
+      |    };
+      |obj.y = 'foo';
+      |console.log(obj.y === 1 && valueSet === 'foo');
+  p 结果为 true。
