@@ -1,0 +1,71 @@
+h4 一、常量
+h5.subheader const
+.feature-content
+  h5 1.基本支持
+  h5.subheader basic support
+  pre
+    code.javascript
+      |const foo = 123;
+      |console.log((foo === 123));
+  p 结果为 true。
+  h5 2.块级作用域
+  h5.subheader is block-scoped
+  pre
+    code.javascript
+      |const bar = 123;
+      |{ const bar = 456; }
+      |console.log(bar === 123);
+  p 结果为 true。
+  h5 3.重复定义一个 const 会报错
+  h5.subheader redefining a const is an error
+  pre
+    code.javascript
+      |const baz = 1;
+      |baz = 2;
+  h5 4.暂时性死区
+  h5.subheader temporal dead zone
+  pre
+    code.javascript
+      |var passed = (function(){
+      | qux = 2;
+      |}())
+      |const qux = 3;
+      |console.log(qux);
+  p 会报错，因为 qux 处于暂时性死区。
+  h5 5.严格模式的基本支持
+  h5.subheader basic support (strict mode)
+  pre
+    code.javascript
+      |"use strict";
+      |const foo = 123;
+      |console.log((foo === 123));
+  p 结果为 true。
+  h5 6.严格模式的块级作用域
+  h5.subheader is block-scoped (strict mode)
+  pre
+    code.javascript
+      |'use strict';
+      |const bar = 123;
+      |{ const bar = 456; }
+      |console.log(bar === 123);
+  p 结果为 true。
+  h5 7.严格模式重复定义一个 const。
+  h5.subheader redefining a const (strict mode)
+  pre
+    code.javascript
+      |'use strict';
+      |const baz = 1;
+      |try {
+      |  Function("'use strict'; const foo = 1; foo = 2;")();
+      |} catch(e) {
+      |  console.log(true);
+      |}
+  p 结果为 true。
+  h5 8.严格模式的暂时性死区。
+  h5.subheader temporal dead zone (strict mode)
+  pre
+    code.javascript
+      |'use strict';
+      |var passed = (function(){ try { qux; } catch(e) { return true; }}());
+      |const qux = 456;
+      |console.log(passed);
