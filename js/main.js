@@ -9,4 +9,14 @@ $(document).ready(function() {
       });
     })
   })
+
+  $('.scroll-nav td').on('click', function(e){
+    e.preventDefault();
+    var target = $( $(this).find('a').attr('href') );
+    $('.scroll-nav td').removeClass('active');
+    $(this).addClass('active');
+    $('html, body').animate({
+      scrollTop: target.offset().top - 50
+    }, 1000);
+  });
 });
