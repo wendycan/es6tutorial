@@ -1,32 +1,37 @@
 .row
-  .large-12.columns
-    div(data-magellan-expedition='fixed')
-      dl.sub-nav
-        dd(data-magellan-arrival='c-Optimisation')
-          a(href='#c-Optimisation') 优化
-        dd(data-magellan-arrival='c-Syntax')
-          a(href='#c-Syntax') 语法
-        dd(data-magellan-arrival='c-Bindings')
-          a(href='#c-Bindings') 绑定
-        dd(data-magellan-arrival='c-Functions')
-          a(href='#c-Functions') 函数
-        dd(data-magellan-arrival='c-Built-ins')
-          a(href='#c-Built-ins') 内建
-        dd(data-magellan-arrival='c-Built-in-extensions')
-          a(href='#c-Built-in-extensions') 内建扩展
-        dd(data-magellan-arrival='c-Subclassing')
-          a(href='#c-Subclassing') 子类
-        dd(data-magellan-arrival='c-Misc')
-          a(href='#c-Misc') 混杂
-        dd(data-magellan-arrival='c-Annex-b')
-          a(href='#c-Annex-b') 附录
+  .large-12.columns.text-center
+    h4 ECMAScript6 新特性
+    br
 .row
-  .large-12.columns
+  .large-3.columns
+    table
+      tr
+        td
+          a(href='#c-Optimisation') 优化
+        td
+          a(href='#c-Syntax') 语法
+        td
+          a(href='#c-Bindings') 绑定
+      tr
+        td
+          a(href='#c-Functions') 函数
+        td
+          a(href='#c-Built-ins') 内建
+        td
+          a(href='#c-Built-in-extensions') 内建扩展
+      tr
+        td
+          a(href='#c-Subclassing') 子类
+        td
+          a(href='#c-Misc') 混杂
+        td
+          a(href='#c-Annex-b') 附录
+  .large-9.columns
     #container.container
       
 script(src="/js/main.js")
 script#t-table(type='text/template').
-  <h4 id="c-<%= category %>" data-magellan-destination="c-<%= category %>"><%= category %></h4>
+  <h4 id="c-<%= category %>"><%= category %></h4>
   <table id="table-<%= table_index %>">
   <thead>
   <tr>
