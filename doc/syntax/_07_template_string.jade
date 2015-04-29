@@ -1,2 +1,30 @@
 h4 七、模板字符串
 h5.subheader template strings
+.feature-content
+  h5 1.基本功能
+  h5.subheader basic functionality
+  pre
+    code.javascript
+      |var a = "ba", b = "QUX";
+      |console.log(`foo bar
+      |${a + "z"} ${b.toLowerCase()}` === "foo bar\nbaz qux");
+      
+  p 结果为 true。
+  h5 2.标签模板字符串
+  h5.subheader tagged template strings
+  pre
+    code.javascript
+      |var called = false;
+      |function fn(parts, a, b) {
+      |  called = true;
+      |  return parts instanceof Array &&
+      |    parts[0]     === "foo"      &&
+      |    parts[1]     === "bar\n"    &&
+      |    parts.raw[0] === "foo"      &&
+      |    parts.raw[1] === "bar\\n"   &&
+      |    a === 123                   &&
+      |    b === 456;
+      |}
+      |console.log(fn `foo${123}bar\n${456}` && called);
+      
+  p 结果为 true。

@@ -1,2 +1,19 @@
 h4 八、正则表达式'y' 和 'u'标志
 h5.subheader RegExp "y" and "u" flags
+.feature-content
+  h5 1.y 标志
+  h5.subheader "y" flag
+  pre
+    code.javascript
+      |var re = new RegExp('\\w');
+      |var re2 = new RegExp('\\w', 'y');
+      |re.exec('xy');
+      |re2.exec('xy');
+      |console.log((re.exec('xy')[0] === 'x' && re2.exec('xy')[0] === 'y'));
+  
+  h5 2.u 标志
+  h5.subheader "u" flag
+  pre
+    code.javascript
+      |console.log("𠮷".match(/^.$/u)[0].length === 2);
+  p 结果为 true。

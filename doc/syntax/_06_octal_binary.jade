@@ -1,2 +1,27 @@
 h4 六、八进制和二进制
 h5.subheader octal and binary literals
+.feature-content
+  h5 1.八进制
+  h5.subheader octal literals
+  pre
+    code.javascript
+      |console.log(0o10 === 8 && 0O10 === 8);
+  p 结果为 true。
+  h5 2.二进制
+  h5.subheader binary literals
+  pre
+    code.javascript
+      |console.log(0b10 === 2 && 0B10 === 2);
+  p 结果为 true。
+  h5 3.Number() 支持八进制 
+  h5.subheader octal supported by Number()
+  pre
+    code.javascript
+      |console.log(Number('0o1') === 1);
+  p 结果为 true。
+  h5 4.Number() 支持二进制 
+  h5.subheader binary supported by Number()
+  pre
+    code.javascript
+      |console.log(Number('0b1') === 1);
+  p 结果为 true。
