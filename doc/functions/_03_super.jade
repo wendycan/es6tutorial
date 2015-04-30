@@ -1,0 +1,98 @@
+h4 一、super
+h5.subheader super
+.feature-content
+  h5 1.构造函数中的 super 声明
+  h5.subheader statement in constructors
+  pre
+    code.javascript
+      |var passed = false;
+      |class B {
+      |  constructor(a) { passed = (a === "barbaz"); }
+      |}
+      |class C extends B {
+      |  constructor(a) { super("bar" + a); }
+      |}
+      |new C("baz");
+      |console.log(passed);
+  p 结果为 true。
+  h5 2.构造函数中的 super 表达式
+  h5.subheader expression in constructors
+  pre
+    code.javascript
+      |class B {
+      |  constructor(a) { return ["foo" + a]; }
+      |}
+      |class C extends B {
+      |  constructor(a) { return super("bar" + a); }
+      |}
+      |console.log(new C("baz")[0] === "foobarbaz");
+  p 结果为 true。
+  h5 3.方法中，属性访问
+  h5.subheader in methods, property access
+  pre
+    code.javascript
+      |class B {}
+      |B.prototype.qux = "foo";
+      |B.prototype.corge = "baz";
+      |class C extends B {
+      |  quux(a) { return super.qux + a + super["corge"]; }
+      |}
+      |C.prototype.qux = "garply";
+      |console.log(new C().quux("bar") === "foobarbaz");
+  p 结果为 true。
+  h5 4.方法中，方法调用
+  h5.subheader in methods, method calls
+  pre
+    code.javascript
+      |class B {
+      |  qux(a) { return "foo" + a; }
+      |}
+      |class C extends B {
+      |  qux(a) { return super.qux("bar" + a); }
+      |}
+      |console.log(new C().qux("baz") === "foobarbaz");
+  p 结果为 true。
+  h5 5.方法调用使用正确的 this 绑定
+  h5.subheader method calls use correct "this" binding
+  pre
+    code.javascript
+      |class B {
+      |  qux(a) { return this.foo + a; }
+      |}
+      |class C extends B {
+      |  qux(a) { return super.qux("bar" + a); }
+      |}
+      |var obj = new C();
+      |obj.foo = "foo";
+      |console.log(obj.qux("baz") === "foobarbaz");
+  p 结果为 true。
+  h5 6.构造函数调用使用正确的 new.target 绑定
+  h5.subheader constructor calls use correct "new.target" binding
+  pre
+    code.javascript
+      |var passed;
+      |class B {
+      |  constructor() { passed = (new.target === C); }
+      |}
+      |class C extends B {
+      |  constructor() { super(); }
+      |}
+      |new C();
+      |console.log(passed);
+  //- p 结果为 true。
+  h5 7.静态绑定
+  h5.subheader is statically bound
+  pre
+    code.javascript
+      |class B {
+      |  qux() { return "bar"; }
+      |}
+      |class C extends B {
+      |  qux() { return super.qux() + this.corge; }
+      |}
+      |var obj = {
+      |  qux: C.prototype.qux,
+      |  corge: "ley"
+      |};
+      |console.log(obj.qux() === "barley");
+  p 结果为 true。

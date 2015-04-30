@@ -1,0 +1,361 @@
+h4 一、
+h5.subheader generators
+.feature-content
+  h5 1.
+  h5.subheader basic functionality
+  pre
+    code.javascript
+      |function * generator(){
+      |  yield 5; yield 6;
+      |};
+      |var iterator = generator();
+      |var item = iterator.next();
+      |var passed = item.value === 5 && item.done === false;
+      |item = iterator.next();
+      |passed &= item.value === 6 && item.done === false;
+      |item = iterator.next();
+      |passed &= item.value === undefined && item.done === true;
+      |return passed;
+      
+  p 结果为 true。
+  h5 2.
+  h5.subheader generator function expressions
+  pre
+    code.javascript
+var generator = function * (){
+  yield 5; yield 6;
+};
+var iterator = generator();
+var item = iterator.next();
+var passed = item.value === 5 && item.done === false;
+item = iterator.next();
+passed    &= item.value === 6 && item.done === false;
+item = iterator.next();
+passed    &= item.value === undefined && item.done === true;
+return passed;
+      
+  p 结果为 true。
+  h5 3.
+  h5.subheader correct "this" binding
+  pre
+    code.javascript
+function * generator(){
+  yield this.x; yield this.y;
+};
+var iterator = { g: generator, x: 5, y: 6 }.g();
+var item = iterator.next();
+var passed = item.value === 5 && item.done === false;
+item = iterator.next();
+passed    &= item.value === 6 && item.done === false;
+item = iterator.next();
+passed    &= item.value === undefined && item.done === true;
+return passed;
+      
+  p 结果为 true。
+  h5 4.
+  h5.subheader can't use "this" with new
+  pre
+    code.javascript
+function * generator(){
+  yield this.x; yield this.y;
+};
+try {
+  (new generator()).next();
+}
+catch (e) {
+  return true;
+}
+      
+  p 结果为 true。
+  h5 5.
+  h5.subheader sending
+  pre
+    code.javascript
+var sent;
+function * generator(){
+  sent = [yield 5, yield 6];
+};
+var iterator = generator();
+iterator.next();
+iterator.next("foo");
+iterator.next("bar");
+return sent[0] === "foo" && sent[1] === "bar";
+      
+  p 结果为 true。
+  h5 6.
+  h5.subheader %GeneratorPrototype%
+  pre
+    code.javascript
+function * generatorFn(){}
+var ownProto = Object.getPrototypeOf(generatorFn());
+var passed = ownProto === generatorFn.prototype;
+
+var sharedProto = Object.getPrototypeOf(ownProto);
+passed &= sharedProto !== Object.prototype &&
+  sharedProto === Object.getPrototypeOf(function*(){}.prototype) &&
+  sharedProto.hasOwnProperty('next');
+
+return passed;
+      
+  p 结果为 true。
+  h5 7.
+  h5.subheader %GeneratorPrototype%.throw
+  pre
+    code.javascript
+var passed = false;
+function * generator(){
+  try {
+    yield 5; yield 6;
+  } catch(e) {
+    passed = (e === "foo");
+  }
+};
+var iterator = generator();
+iterator.next();
+iterator.throw("foo");
+return passed;
+      
+  p 结果为 true。
+  h5 8.
+  h5.subheader %GeneratorPrototype%.return
+  pre
+    code.javascript
+function * generator(){
+  yield 5; yield 6;
+};
+var iterator = generator();
+var item = iterator.next();
+var passed = item.value === 5 && item.done === false;
+item = iterator.return("quxquux");
+passed    &= item.value === "quxquux" && item.done === true;
+item = iterator.next();
+passed    &= item.value === undefined && item.done === true;
+return passed;
+      
+  p 结果为 true。
+  h5 9.
+  h5.subheader yield operator precedence
+  pre
+    code.javascript
+var passed;
+function * generator(){
+  passed = yield 0 ? true : false;
+};
+var iterator = generator();
+iterator.next();
+iterator.next(true);
+return passed;
+      
+  p 结果为 true。
+  h5 10.
+  h5.subheader yield *, arrays
+  pre
+    code.javascript
+var iterator = (function * generator() {
+  yield * [5, 6];
+}());
+var item = iterator.next();
+var passed = item.value === 5 && item.done === false;
+item = iterator.next();
+passed    &= item.value === 6 && item.done === false;
+item = iterator.next();
+passed    &= item.value === undefined && item.done === true;
+return passed;
+      
+  p 结果为 true。
+  h5 11.
+  h5.subheader yield *, astral plane strings
+  pre
+    code.javascript
+var iterator = (function * generator() {
+  yield * "𠮷𠮶";
+}());
+var item = iterator.next();
+var passed = item.value === "𠮷" && item.done === false;
+item = iterator.next();
+passed    &= item.value === "𠮶" && item.done === false;
+item = iterator.next();
+passed    &= item.value === undefined && item.done === true;
+return passed;
+      
+  p 结果为 true。
+  h5 12.
+  h5.subheader yield *, generic iterables
+  pre
+    code.javascript
+var iterator = (function * generator() {
+  yield * global.__createIterableObject(5, 6, 7);
+}());
+var item = iterator.next();
+var passed = item.value === 5 && item.done === false;
+item = iterator.next();
+passed    &= item.value === 6 && item.done === false;
+item = iterator.next();
+passed    &= item.value === 7 && item.done === false;
+item = iterator.next();
+passed    &= item.value === undefined && item.done === true;
+return passed;
+      
+  p 结果为 true。
+  h5 13.
+  h5.subheader yield *, instances of iterables
+  pre
+    code.javascript
+var iterator = (function * generator() {
+  yield * Object.create(__createIterableObject(5, 6, 7));
+}());
+var item = iterator.next();
+var passed = item.value === 5 && item.done === false;
+item = iterator.next();
+passed    &= item.value === 6 && item.done === false;
+item = iterator.next();
+passed    &= item.value === 7 && item.done === false;
+item = iterator.next();
+passed    &= item.value === undefined && item.done === true;
+return passed;
+      
+  p 结果为 true。
+  h5 14.
+  h5.subheader yield *, iterator closing
+  pre
+    code.javascript
+var closed = '';
+var iter = __createIterableObject(1, 2, 3);
+iter['return'] = function(){
+  closed += 'a';
+  return {done: true};
+}
+var gen = (function* generator(){
+  try {
+    yield *iter;
+  } finally {
+    closed += 'b';
+  }
+})();
+gen.next();
+gen['return']();
+return closed === 'ab';
+      
+  p 结果为 true。
+  h5 15.
+  h5.subheader yield *, iterator closing via throw()
+  pre
+    code.javascript
+var closed = false;
+var iter = __createIterableObject(1, 2, 3);
+iter['throw'] = undefined;
+iter['return'] = function(){
+  closed = true;
+  return {done: true};
+}
+var gen = (function*(){
+  try {
+    yield *iter;
+  } catch(e){}
+})();
+gen.next();
+gen['throw']();
+return closed;
+      
+  p 结果为 true。
+  h5 16.
+  h5.subheader 
+  pre
+    code.javascript
+  p 结果为 true。
+  h5 17.
+  h5.subheader shorthand generator methods
+  pre
+    code.javascript
+var o = {
+  * generator() {
+    yield 5; yield 6;
+  },
+};
+var iterator = o.generator();
+var item = iterator.next();
+var passed = item.value === 5 && item.done === false;
+item = iterator.next();
+passed    &= item.value === 6 && item.done === false;
+item = iterator.next();
+passed    &= item.value === undefined && item.done === true;
+return passed;
+      
+  p 结果为 true。
+  h5 18.
+  h5.subheader string-keyed shorthand generator methods
+  pre
+    code.javascript
+var o = {
+  * "foo bar"() {
+    yield 5; yield 6;
+  },
+};
+var iterator = o["foo bar"]();
+var item = iterator.next();
+var passed = item.value === 5 && item.done === false;
+item = iterator.next();
+passed    &= item.value === 6 && item.done === false;
+item = iterator.next();
+passed    &= item.value === undefined && item.done === true;
+return passed;
+      
+  p 结果为 true。
+  h5 19.
+  h5.subheader computed shorthand generators
+  pre
+    code.javascript
+var garply = "generator";
+var o = {
+  * [garply] () {
+    yield 5; yield 6;
+  },
+};
+var iterator = o.generator();
+var item = iterator.next();
+var passed = item.value === 5 && item.done === false;
+item = iterator.next();
+passed    &= item.value === 6 && item.done === false;
+item = iterator.next();
+passed    &= item.value === undefined && item.done === true;
+return passed;
+      
+  p 结果为 true。
+  h5 20.
+  h5.subheader shorthand generator methods, classes
+  pre
+    code.javascript
+class C {
+  * generator() {
+    yield 5; yield 6;
+  }
+};
+var iterator = new C().generator();
+var item = iterator.next();
+var passed = item.value === 5 && item.done === false;
+item = iterator.next();
+passed    &= item.value === 6 && item.done === false;
+item = iterator.next();
+passed    &= item.value === undefined && item.done === true;
+return passed;
+      
+  p 结果为 true。
+  h5 21.
+  h5.subheader computed shorthand generators, classes
+  pre
+    code.javascript
+var garply = "generator";
+class C {
+  * [garply] () {
+    yield 5; yield 6;
+  }
+}
+var iterator = new C().generator();
+var item = iterator.next();
+var passed = item.value === 5 && item.done === false;
+item = iterator.next();
+passed    &= item.value === 6 && item.done === false;
+item = iterator.next();
+passed    &= item.value === undefined && item.done === true;
+return passed;
+      

@@ -1,0 +1,109 @@
+h4 一、箭头函数
+h5.subheader arrow functions
+.feature-content
+  h5 1.不带参数
+  h5.subheader 0 parameters
+  pre
+    code.javascript
+      |console.log((() =&gt; 5)() === 5);
+  p 结果为 true。
+  h5 2.一个参数可以不带括号
+  h5.subheader 1 parameter, no brackets
+  pre
+    code.javascript
+      |var b = x =&gt; x + "foo";
+      |console.log((b("fee fie foe ") === "fee fie foe foo"));
+  p 结果为 true。
+  h5 3.多个参数
+  h5.subheader multiple parameters
+  pre
+    code.javascript
+      |var c = (v, w, x, y, z) =&gt; "" + v + w + x + y + z;
+      |console.log((c(6, 5, 4, 3, 2) === "65432"));
+  p 结果为 true。
+  h5 4.this 绑定
+  h5.subheader lexical "this" binding
+  pre
+    code.javascript
+      |var d = { x : "bar", y : function() { return z =&gt; this.x + z; }}.y();
+      |var e = { x : "baz", y : d };
+      |console.log(d("ley") === "barley" && e.y("ley") === "barley");
+  p 结果为 true。
+  h5 5.call 和 apply 都不改变 this
+  h5.subheader "this" unchanged by call or apply
+  pre
+    code.javascript
+      |var d = { x : "foo", y : function() { return () =&gt; this.x; }};
+      |var e = { x : "bar" };
+      |console.log(d.y().call(e) === "foo" && d.y().apply(e) === "foo");
+  p 结果为 true。
+  pre
+    code.javascript
+      |console.log('arrow')
+      |var d = { x : "foo", y : function() { return ()=> {return this.x;} }};
+      |var e = { x : "bar" };
+      |console.log(d.y().call(e));
+      |console.log(d.y().apply(e));
+      | 
+      |console.log('function')
+      |var d = { x : "foo", y : function() { return function(){return this.x;} }};
+      |var e = { x : "bar" };
+      |console.log(d.y().call(e));
+      |console.log(d.y().apply(e));
+  p 结果为 arrow,foo,foo,function,bar,bar。
+  h5 6.
+  h5.subheader can't be bound, can be curried
+  pre
+    code.javascript
+      |var d = { x : "bar", y : function() { return z =&gt; this.x + z; }};
+      |var e = { x : "baz" };
+      |console.log(d.y().bind(e, "ley")() === "barley");
+  p 结果为 true。
+  h5 7.arguments 绑定
+  h5.subheader lexical "arguments" binding
+  pre
+    code.javascript
+      |var f = (function() { return z =&gt; arguments[0]; }(5));
+      |console.log(f(6) === 5);
+  p 结果为 true。
+  h5 8.参数和 =&lt; 之间不能换行
+  h5.subheader no line break between params and =&gt;
+  pre
+    code.javascript
+      |console.log((() =&gt; {
+      | try { Function("x\n =&gt; 2")(); } catch(e) { return true; }
+      |})());
+  p 结果为 true。
+  h5 9.没有 prototype 属性
+  h5.subheader no "prototype" property
+  pre
+    code.javascript
+      |var a = () =&gt; 5;
+      |console.log(!a.hasOwnProperty("prototype"));
+  //- p 结果为 true/false。
+  h5 10.super 绑定
+  h5.subheader lexical "super" binding
+  pre
+    code.javascript
+      |class B {
+      | qux() {
+      |   return "quux";
+      | }
+      |}
+      |class C extends B {
+      | baz() {
+      | return x =&gt; super.qux();
+      | }
+      |}
+      |var arrow = new C().baz();
+      |console.log(arrow() === "quux");
+  p 结果为 true。
+  h5 11.new.target 绑定
+  h5.subheader lexical "new.target" binding
+  pre
+    code.javascript
+      |function C() {
+      |   return x =&gt; new.target;
+      |}
+      |console.log(new C()() === C && C()() === undefined);
+  //- p 结果为 true。

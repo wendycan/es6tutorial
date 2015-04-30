@@ -1,0 +1,247 @@
+h4 二、类
+h5.subheader class
+.feature-content
+  h5 1.class 声明
+  h5.subheader class statement
+  pre
+    code.javascript
+      |class C {}
+      |console.log(typeof C === "function");
+  p 结果为 true。
+  h5 2.块级作用域
+  h5.subheader is block-scoped
+  pre
+    code.javascript
+      |class C {}
+      | var c1 = C;
+      |{
+      |class C {}
+      |  var c2 = C;
+      |}
+      |console.log(C === c1);
+  p 结果为 true。
+  h5 3.class 表达式
+  h5.subheader class expression
+  pre
+    code.javascript
+      |console.log(typeof class C {} === "function");
+  p 结果为 true。
+  h5 4.匿名 class
+  h5.subheader anonymous class
+  pre
+    code.javascript
+      |console.log(typeof class {} === "function");
+  p 结果为 true。
+  h5 5.构造函数
+  h5.subheader constructor
+  pre
+    code.javascript
+      |class C {
+      | constructor() { this.x = 1; }
+      |}
+      |console.log(C.prototype.constructor === C
+      |  && new C().x === 1);
+  p 结果为 true。
+  h5 6.原型方法
+  h5.subheader prototype methods
+  pre
+    code.javascript
+      |class C {
+      | method() { return 2; }
+      |}
+      |console.log(typeof C.prototype.method === "function"
+      | && new C().method() === 2);
+  p 结果为 true。
+  h5 7.带空格的字符方法
+  h5.subheader string-keyed methods
+  pre
+    code.javascript
+      |class C {
+      | "foo bar"() { return 2; }
+      |}
+      |console.log(typeof C.prototype["foo bar"] === "function"
+      | && new C()["foo bar"]() === 2);
+  p 结果为 true。
+  h5 8.计算原型方法
+  h5.subheader computed prototype methods
+  pre
+    code.javascript
+      |var foo = "method";
+      |class C {
+      | [foo]() { return 2; }
+      |}
+      |console.log(typeof C.prototype.method === "function"
+      | && new C().method() === 2);
+  p 结果为 true。
+  h5 9.静态方法
+  h5.subheader static methods
+  pre
+    code.javascript
+      |class C {
+      | static method() { return 3; }
+      |}
+      |console.log(typeof C.method === "function"
+      | && C.method() === 3);
+  p 结果为 true。
+  h5 10.计算静态方法
+  h5.subheader computed static methods
+  pre
+    code.javascript
+      |var foo = "method";
+      |class C {
+      | static [foo]() { return 3; }
+      |}
+      |console.log(typeof C.method === "function"
+      | && C.method() === 3);
+  p 结果为 true。
+  h5 11.存取器属性
+  h5.subheader accessor properties
+  pre
+    code.javascript
+      |var baz = false;
+      |class C {
+      | get foo() { return "foo"; }
+      | set bar(x) { baz = x; }
+      |}
+      |new C().bar = true;
+      |console.log(new C().foo === "foo" && baz);
+  p 结果为 true。
+  h5 12.计算存取器属性
+  h5.subheader computed accessor properties
+  pre
+    code.javascript
+      |var baz = false;
+      |class C {
+      | get foo() { return "foo"; }
+      | set bar(x) { baz = x; }
+      |}
+      |new C().bar = true;
+      |console.log(new C().foo === "foo" && baz);
+  p 结果为 true。
+  h5 13.静态的存取器属性
+  h5.subheader static accessor properties
+  pre
+    code.javascript
+      |var baz = false;
+      |class C {
+      | static get foo() { return "foo"; }
+      | static set bar(x) { baz = x; }
+      |}
+      |C.bar = true;
+      |console.log(C.foo === "foo" && baz);
+  p 结果为 true。
+  h5 14.计算的静态的存取器属性
+  h5.subheader computed static accessor properties
+  pre
+    code.javascript
+      |var garply = "foo", grault = "bar", baz = false;
+      |class C {
+      | static get [garply]() { return "foo"; }
+      | static set [grault](x) { baz = x; }
+      |}
+      |C.bar = true;
+      |console.log(C.foo === "foo" && baz);
+  p 结果为 true。
+  h5 15.类名有词法范围
+  h5.subheader class name is lexically scoped
+  pre
+    code.javascript
+      |class C {
+      | method() { return typeof C === "function"; }
+      |}
+      |var M = C.prototype.method;
+      |C = undefined;
+      |console.log(C === undefined && M());
+  p 结果为 true。
+  h5 16.计算类名，暂时性死区
+  h5.subheader computed names, temporal dead zone
+  pre
+    code.javascript
+      |try {
+      | var B = class C {
+      | [C](){}
+      | }
+      |} catch(e) {
+      | console.log(true);
+      |}
+  h5 17.方法不能枚举
+  h5.subheader methods aren't enumerable
+  pre
+    code.javascript
+      |class C {
+      |foo() {}
+      | static bar() {}
+      |}
+      |console.log(!C.prototype.propertyIsEnumerable("foo") && !C.propertyIsEnumerable("bar"));
+  p 结果为 true。
+  h5 18.使用严格模式
+  h5.subheader implicit strict mode
+  pre
+    code.javascript
+      |class C {
+      | static method() { return this === undefined; }
+      |}
+      |console.log((0,C.method)());
+  p 结果为 0,false
+  h5 19.构造函数需要 new
+  h5.subheader constructor requires new
+  pre
+    code.javascript
+      |class C {}
+      |try {
+      | C();
+      |}
+      |catch(e) {
+      | console.log(true);
+      |}
+  p 结果为 true。
+  h5 20.继承
+  h5.subheader extends
+  pre
+    code.javascript
+      |class B {}
+      |class C extends B {}
+      |console.log(new C() instanceof B
+      | && B.isPrototypeOf(C)
+      | && B.prototype.isPrototypeOf(C.prototype));
+  p 结果为 true。
+  h5 21.继承表达式
+  h5.subheader extends expressions
+  pre
+    code.javascript
+      |var B;
+      |class C extends (B = class {}) {}
+      |console.log(new C() instanceof B
+      | && B.isPrototypeOf(C)
+      | && B.prototype.isPrototypeOf(C.prototype));
+  p 结果为 true。
+  h5 22.继承 null
+  h5.subheader extends null
+  pre
+    code.javascript
+      |class C extends null {
+      | constructor() { return Object.create(null); }
+      |}
+      |var c = new C();
+      |console.log(!(c instanceof Object)
+      | && Function.prototype.isPrototypeOf(C)
+      | && Object.getPrototypeOf(C.prototype) === null);
+  p 结果为 true。
+  h5 23.new.target
+  h5.subheader new.target
+  pre
+    code.javascript
+      |var passed = false;
+      |new function f() {
+      | passed = new.target === f;
+      |}();
+      | 
+      |class A {
+      | constructor() {
+      |   passed &= new.target === B;
+      | }
+      |}
+      |class B extends A {}
+      |new B();
+      |console.log(passed);
+  //- p 结果为 true。

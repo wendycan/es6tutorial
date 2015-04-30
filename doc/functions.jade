@@ -1,5 +1,12 @@
 .row
   .large-12.columns
-    h4 Functions
+    .feature
+      != partial("functions/_01_arrow_functions")
+    .feature
+      != partial("functions/_02_class")
+    .feature
+      != partial("functions/_03_super")
+    .feature
+      != partial("functions/_04_generators")
 script
   $("#functions").addClass('active');
