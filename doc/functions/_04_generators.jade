@@ -1,7 +1,7 @@
 h4 一、Generators
 h5.subheader generators
 .feature-content
-  h5 1.
+  h5 1.基本功能
   h5.subheader basic functionality
   pre
     code.javascript
@@ -77,7 +77,7 @@ h5.subheader generators
       |iterator.next("bar");
       |console.log(sent[0] === "foo" && sent[1] === "bar");      
   p 结果为 true。
-  h5 6.
+  h5 6.generator 原型
   h5.subheader %GeneratorPrototype%
   pre
     code.javascript
@@ -91,7 +91,7 @@ h5.subheader generators
       |console.log(passed);
       
   p 结果为 true。
-  h5 7.
+  h5 7.generator 抛出异常
   h5.subheader %GeneratorPrototype%.throw
   pre
     code.javascript
@@ -107,9 +107,8 @@ h5.subheader generators
       |iterator.next();
       |iterator.throw("foo");
       |console.log(passed);
-      
   p 结果为 true。
-  h5 8.
+  h5 8.generator return
   h5.subheader %GeneratorPrototype%.return
   pre
     code.javascript
@@ -120,13 +119,12 @@ h5.subheader generators
       |var item = iterator.next();
       |var passed = item.value === 5 && item.done === false;
       |item = iterator.return("quxquux");
-      |passed &= item.value === "quxquux" && item.done === true;
+      |passed = passed && item.value === "quxquux" && item.done === true;
       |item = iterator.next();
-      |passed &= item.value === undefined && item.done === true;
+      |passed = passed && item.value === undefined && item.done === true;
       |console.log(passed);
-      
   p 结果为 true。
-  h5 9.
+  h5 9.yield 操作符优先
   h5.subheader yield operator precedence
   pre
     code.javascript
@@ -140,7 +138,7 @@ h5.subheader generators
       |console.log(passed);
       
   p 结果为 true。
-  h5 10.
+  h5 10.yield *, 数组
   h5.subheader yield *, arrays
   pre
     code.javascript
@@ -150,13 +148,27 @@ h5.subheader generators
       |var item = iterator.next();
       |var passed = item.value === 5 && item.done === false;
       |item = iterator.next();
-      |passed &= item.value === 6 && item.done === false;
+      |passed = passed && item.value === 6 && item.done === false;
       |item = iterator.next();
-      |passed &= item.value === undefined && item.done === true;
+      |passed = passed && item.value === undefined && item.done === true;
       |console.log(passed);
-      
   p 结果为 true。
-  h5 11.
+  h5 11.yield *,字符串
+  h5.subheader yield *, strings
+  pre
+    code.javascript
+      |var iterator = (function * generator() {
+      |  yield * "56";
+      |}());
+      |var item = iterator.next();
+      |var passed = item.value === "5" && item.done === false;
+      |item = iterator.next();
+      |passed = passed && item.value === "6" && item.done === false;
+      |item = iterator.next();
+      |passed = passed && item.value === undefined && item.done === true;
+      |console.log(passed);
+  p 结果为 true。
+  h5 12.yield *，特殊字符
   h5.subheader yield *, astral plane strings
   pre
     code.javascript
@@ -166,13 +178,12 @@ h5.subheader generators
       |var item = iterator.next();
       |var passed = item.value === "𠮷" && item.done === false;
       |item = iterator.next();
-      |passed &= item.value === "𠮶" && item.done === false;
+      |passed = passed && item.value === "𠮶" && item.done === false;
       |item = iterator.next();
-      |passed &= item.value === undefined && item.done === true;
+      |passed = passed && item.value === undefined && item.done === true;
       |console.log(passed);
-      
   p 结果为 true。
-  h5 12.
+  h5 13.yield *，通用迭代器
   h5.subheader yield *, generic iterables
   pre
     code.javascript
@@ -182,15 +193,14 @@ h5.subheader generators
       |var item = iterator.next();
       |var passed = item.value === 5 && item.done === false;
       |item = iterator.next();
-      |passed &= item.value === 6 && item.done === false;
+      |passed = passed && item.value === 6 && item.done === false;
       |item = iterator.next();
-      |passed &= item.value === 7 && item.done === false;
+      |passed = passed && item.value === 7 && item.done === false;
       |item = iterator.next();
-      |passed &= item.value === undefined && item.done === true;
+      |passed = passed && item.value === undefined && item.done === true;
       |console.log(passed);
-      
-  p 结果为 true。
-  h5 13.
+  //- p 结果为 true。
+  h5 14.yield *，迭代器实例
   h5.subheader yield *, instances of iterables
   pre
     code.javascript
@@ -200,15 +210,14 @@ h5.subheader generators
       |var item = iterator.next();
       |var passed = item.value === 5 && item.done === false;
       |item = iterator.next();
-      |passed &= item.value === 6 && item.done === false;
+      |passed = passed && item.value === 6 && item.done === false;
       |item = iterator.next();
-      |passed &= item.value === 7 && item.done === false;
+      |passed = passed && item.value === 7 && item.done === false;
       |item = iterator.next();
-      |passed &= item.value === undefined && item.done === true;
+      |passed = passed && item.value === undefined && item.done === true;
       |console.log(passed);
-      
-  p 结果为 true。
-  h5 14.
+  //- p 结果为 true。
+  h5 15.yield *，迭代器关闭
   h5.subheader yield *, iterator closing
   pre
     code.javascript
@@ -228,9 +237,8 @@ h5.subheader generators
       |gen.next();
       |gen['return']();
       |console.log(closed === 'ab');
-      
-  p 结果为 true。
-  h5 15.
+  //- p 结果为 true。
+  h5 16.yield *，迭代器通过 throw 关闭
   h5.subheader yield *, iterator closing via throw()
   pre
     code.javascript
@@ -249,14 +257,8 @@ h5.subheader generators
       |gen.next();
       |gen['throw']();
       |return closed;
-      
-  p 结果为 true。
-  h5 16.
-  h5.subheader 
-  pre
-    code.javascript
-  p 结果为 true。
-  h5 17.
+  //- p 结果为 true。
+  h5 17.简写 generator 方法
   h5.subheader shorthand generator methods
   pre
     code.javascript
@@ -269,13 +271,12 @@ h5.subheader generators
       |var item = iterator.next();
       |var passed = item.value === 5 && item.done === false;
       |item = iterator.next();
-      |passed &= item.value === 6 && item.done === false;
+      |passed = passed && item.value === 6 && item.done === false;
       |item = iterator.next();
-      |passed &= item.value === undefined && item.done === true;
+      |passed = passed && item.value === undefined && item.done === true;
       |console.log(passed);
-      
   p 结果为 true。
-  h5 18.
+  h5 18.带空格字符串的简写 generator 方法
   h5.subheader string-keyed shorthand generator methods
   pre
     code.javascript
@@ -288,13 +289,12 @@ h5.subheader generators
       |var item = iterator.next();
       |var passed = item.value === 5 && item.done === false;
       |item = iterator.next();
-      |passed &= item.value === 6 && item.done === false;
+      |passed = passed && item.value === 6 && item.done === false;
       |item = iterator.next();
-      |passed &= item.value === undefined && item.done === true;
+      |passed = passed && item.value === undefined && item.done === true;
       |console.log(passed);
-      
   p 结果为 true。
-  h5 19.
+  h5 19.计算简写 generator
   h5.subheader computed shorthand generators
   pre
     code.javascript
@@ -308,13 +308,12 @@ h5.subheader generators
       |var item = iterator.next();
       |var passed = item.value === 5 && item.done === false;
       |item = iterator.next();
-      |passed &= item.value === 6 && item.done === false;
+      |passed = passed && item.value === 6 && item.done === false;
       |item = iterator.next();
-      |passed &= item.value === undefined && item.done === true;
+      |passed = passed && item.value === undefined && item.done === true;
       |console.log(passed);
-      
   p 结果为 true。
-  h5 20.
+  h5 20.简写 generator 方法，类
   h5.subheader shorthand generator methods, classes
   pre
     code.javascript
@@ -327,13 +326,12 @@ h5.subheader generators
       |var item = iterator.next();
       |var passed = item.value === 5 && item.done === false;
       |item = iterator.next();
-      |passed &= item.value === 6 && item.done === false;
+      |passed = passed && item.value === 6 && item.done === false;
       |item = iterator.next();
-      |passed &= item.value === undefined && item.done === true;
+      |passed = passed && item.value === undefined && item.done === true;
       |console.log(passed);
-      
   p 结果为 true。
-  h5 21.
+  h5 21.计算简写 generator 方法，类
   h5.subheader computed shorthand generators, classes
   pre
     code.javascript
@@ -347,8 +345,8 @@ h5.subheader generators
       |var item = iterator.next();
       |var passed = item.value === 5 && item.done === false;
       |item = iterator.next();
-      |passed &= item.value === 6 && item.done === false;
+      |passed = passed && item.value === 6 && item.done === false;
       |item = iterator.next();
-      |passed &= item.value === undefined && item.done === true;
+      |passed = passed && item.value === undefined && item.done === true;
       |console.log(passed);
   p 结果为 true。
