@@ -8,8 +8,8 @@
       |如果在函数A的内部调用函数B，那么在A的调用记录上方，还会形成一个B的调用记录。等到B运行结束，将结果返回到A，
       |B的调用记录才会消失。如果函数B内部还调用函数C，那就还有一个C的调用记录栈，以此类推。所有的调用记录，
       |就形成一个“调用栈”（call stack）。
-    img(src='/img/function_call.png')
-    img(src='/img/function_call_stack.png')
+    img(src='/images/function_call.png')
+    img(src='/images/function_call_stack.png')
     p 尾调用由于是函数的最后一步操作，所以不需要保留外层函数的调用记录，因为调用位置、内部变量等信息都不会再用到了，
       |只要直接用内层函数的调用记录，取代外层函数的调用记录就可以了。
     pre
@@ -42,12 +42,12 @@
         |}
         |factorial(5, 1) // 120
     p 尾调用优化和非尾调用优化的栈区别，如下图所示：
-    img(src='/img/tail_stack.png')
+    == image_tag 'tail_stack.png'
     p 函数调用自身，称为递归。如果尾调用自身，就称为尾递归。德罗斯特效应（Droste effect），
       |是一种递归的模式，指一张图片部分与整张图片相同，一张有德罗斯特效应的图片，在其中会有一小部分是和整张图片类似。
       |而这小部分的图片中，又会有一小部分是和整张图片类似，以此类推，……。德罗斯特效应的名称是由于荷兰著名厂牌德罗斯特（Droste）
       |可可粉的包装盒，包装盒上的图案是一位护士拿着一个有杯子及纸盒的托盘，而杯子及纸盒上的图案和整张图片相同[1]。
-    img(src="/img/droste_effect.jpg")
+    img(src="/images/droste_effect.jpg")
   .large-12.columns
     h5 1.直接递归
     h5.subheader Direct recursion
@@ -107,5 +107,6 @@
       ul 
         li
           a(href='http://zh.wikipedia.org/wiki/%E5%BE%B7%E7%BD%97%E6%96%AF%E7%89%B9%E6%95%88%E5%BA%94' target='black') 德罗斯特效应
-script
+
+javascript:
   $("#optimisation").addClass('active');

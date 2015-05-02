@@ -1,0 +1,101 @@
+h4 二、let
+h5.subheader let
+.feature-content
+  h5 1.基本支持
+  h5.subheader basic support
+  pre
+    code.javascript
+      | let foo = 123;
+        console.log((foo === 123));
+  p 结果为 true。
+  h5 2.块级作用域
+  h5.subheader is block-scoped
+  pre
+    code.javascript
+      | let bar = 123;
+        { let bar = 456; }
+        console.log(bar === 123);
+  p 结果为 true。
+  h5 3.for-loop 声明作用域
+  h5.subheader for-loop statement scope
+  pre
+    code.javascript
+      | let baz = 1;
+        for(let baz = 0; false; false) {}
+        console.log(baz === 1);
+  p 结果为 true。
+  h5 4.暂时性死区
+  h5.subheader temporal dead zone
+  pre
+    code.javascript
+      | var passed = (function(){ try {  qux; } catch(e) { return true; }}());
+        let qux = 456;
+        console.log(passed);
+  h5 5.for-loop 迭代器作用域
+  h5.subheader for-loop iteration scope
+  pre
+    code.javascript
+      | let scopes = [];
+        for(let i = 0; i &lt; 2; i++) {
+         scopes.push(function(){ return i; });
+        }
+        let passed = (scopes[0]() === 0 && scopes[1]() === 1);
+        scopes = [];
+        for(let i in { a:1, b:1 }) {
+         scopes.push(function(){ return i; });
+        }
+        passed = passed && (scopes[0]() === "a" && scopes[1]() === "b");
+        console.log(passed);
+  p 结果为 true。
+  h5 6.基本支持（严格模式）
+  h5.subheader basic support (strict mode)
+  pre
+    code.javascript
+      | 'use strict';
+        let foo = 123;
+        console.log((foo === 123));
+  p 结果为 true。
+  h5 7.块级作用域（严格模式）
+  h5.subheader is block-scoped (strict mode)
+  pre
+    code.javascript
+      | 'use strict';
+        let bar = 123;
+        { let bar = 456; }
+        console.log(bar === 123);
+  p 结果为 true。
+  h5 8.for-loop 声明作用域（严格模式）
+  h5.subheader for-loop statement scope (strict mode)
+  pre
+    code.javascript
+      | 'use strict';
+        let baz = 1;
+        for(let baz = 0; false; false) {}
+        console.log(baz === 1);
+  p 结果为 true。
+  h5 9.暂时性死区（严格模式）
+  h5.subheader temporal dead zone (strict mode)
+  pre
+    code.javascript
+      | 'use strict';
+        var passed = (function(){ try {  qux; } catch(e) { return true; }}());
+        let qux = 456;
+        console.log(passed);
+  //- p 结果为 true。
+  h5 10.for-loop 迭代器作用域（严格模式）
+  h5.subheader for-loop iteration scope (strict mode)
+  pre
+    code.javascript
+      | 'use strict';
+        let scopes = [];
+        for(let i = 0; i &lt; 2; i++) {
+         scopes.push(function(){ return i; });
+        }
+        let passed = (scopes[0]() === 0 && scopes[1]() === 1);
+        scopes = [];
+        for(let i in { a:1, b:1 }) {
+         scopes.push(function(){ return i; });
+        }
+        passed = passed && p (scopes[0]() === "a" && scopes[1]() === "b");
+        console.log(passed);
+  p 结果为 true。

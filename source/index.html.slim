@@ -34,20 +34,18 @@ title: ECMAScript6 新特性
     #container.container
 
 == javascript_include_tag "main"
+
 script#t-table type="text/template" 
-  | <h4 id="c-<%= category %>"><%= category %></h4
-  | <table id="table-<%= table_index %>"
-  | <thead
-  | <tr
-  | <th>序号</th
-  | <th>特性</th
-  | </tr
-  | </thead
-  | <tbody
-  | </tbody
-  | </table
+  h4 id="c-<%= category %>" 
+    <%= category %>
+  table id="table-<%= table_index %>"
+    thead
+      tr
+        th 序号
+        th 特性
+    tbody
+
 script#t-tr type="text/template" 
-  | <tr
-  | <td><%= index %></td
-  | <td><%= text %></td
-  | </tr
+  tr
+    td <%= index %>
+    td <%= text %>
