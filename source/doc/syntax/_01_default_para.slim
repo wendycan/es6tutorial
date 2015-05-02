@@ -20,40 +20,40 @@ h5.subheader Default function parameters
   h5.subheader Temporal dead zone
   pre
     code.javascript
-      |let x;
-      |let y;
-      |try {
-      |  (function(a=a){}());
-      |  x = false
-      |} catch(e) {
-      |  console.log(e);
-      |  x = true
-      |}
-      |try {
-      |   (function(a=b,b){}());
-      |   y = false;
-      |} catch(e) {
-      |  console.log(e);
-      |  y = true;
-      |}
-      |console.log('x', x);
-      |console.log('y', y);
+      | let x;
+        let y;
+        try {
+          (function(a=a){}());
+          x = false
+        } catch(e) {
+          console.log(e);
+          x = true
+        }
+        try {
+           (function(a=b,b){}());
+           y = false;
+        } catch(e) {
+          console.log(e);
+          y = true;
+        }
+        console.log('x', x);
+        console.log('y', y);
   h5 5.块级作用域
   h5.subheader Separate scope
   pre
     code.javascript
-      |let r = (function(a=function(){
-      |  return typeof b === 'undefined';
-      |}){
-      |  var b = 1;
-      |  return a();
-      |}());
-      |console.log(r);
+      | let r = (function(a=function(){
+          return typeof b === 'undefined';
+        }){
+          var b = 1;
+          return a();
+        }());
+        console.log(r);
 
   h5 6.新的 Function() 支持
   h5.subheader New Function() support
   pre
     code.javascript
-      |let r = new Function("a = 1", "b = 2",
-      |  "return a === 3 && b === 2;"
-      |)(3);
+      | let r = new Function("a = 1", "b = 2",
+          "return a === 3 && b === 2;"
+        )(3);

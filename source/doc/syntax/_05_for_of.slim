@@ -1,0 +1,69 @@
+h4 五、for...of 循环
+h5.subheader for..of loops
+.feature-content
+  h5 1.数组
+  h5.subheader with arrays
+  pre
+    code.javascript
+      | var arr = [5];
+        for (var item of arr)
+        console.log(item === 5);
+  p 结果为 true。
+  h5 2.字符串
+  h5.subheader with strings
+  pre
+    code.javascript
+      | var str = "";
+        for (var item of "foo")
+         str += item;
+        console.log(str === "foo");
+  p 结果为 true。
+  h5 3.特殊字符串
+  h5.subheader with astral plane strings
+  pre
+    code.javascript
+      | var str = "";
+        for (var item of "𠮷𠮶")
+         str += item + " ";
+        console.log(str === "𠮷 𠮶 ");
+  p 结果为 true。
+  h5 4.通用迭代器
+  h5.subheader with generic iterables
+  pre
+    code.javascript
+      | var result = "";
+        var iterable = global.__createIterableObject(1, 2, 3);
+        for (var item of iterable) {
+        result += item;
+        }
+        console.log(return result === "123");
+  h5 5.通用迭代的实例
+  h5.subheader with instances of generic iterables
+  pre
+    code.javascript
+      | var result = "";
+        var iterable = global.__createIterableObject(1, 2, 3);
+        for (var item of Object.create(iterable)) {
+         result += item;
+        }
+        console.log(result === "123");
+  h5 6.迭代关闭，break
+  h5.subheader iterator closing, break
+  pre
+    code.javascript
+      | var closed = false;
+        var iter = __createIterableObject(1, 2, 3);
+        iter['return'] = function(){ closed = true; return {}; }
+        for (var it of iter) break;
+        console.log(closed);
+  h5 7.迭代关闭，throw
+  h5.subheader iterator closing, throw
+  pre
+    code.javascript
+      | var closed = false;
+        var iter = __createIterableObject(1, 2, 3);
+        iter['return'] = function(){ closed = true; return {}; }
+        try {
+        for (var it of iter) throw 0;
+        } catch(e){}
+        console.log(closed);

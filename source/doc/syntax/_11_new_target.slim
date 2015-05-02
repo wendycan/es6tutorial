@@ -1,0 +1,32 @@
+h4 十一、new.target
+h5.subheader new.target
+.feature-content
+  h5 1.字符串
+  h5.subheader in constructors
+  pre
+    code.javascript
+      | var passed = false;
+        new (function f() {
+          passed = (new.target === f);
+        }());
+        (function() {
+          passed &= (new.target === undefined);
+        }());
+        console.log(passed);
+  //- p 结果为 true。
+  h5 2.不能被赋值
+  h5.subheader can't be assigned to
+  pre
+    code.javascript
+      | var passed = false;
+        new (function f() {
+          passed = (new.target === f);
+        }());     
+        try {
+          (function() {
+            new.target = function(){};
+          }());
+        } catch(e) {
+          console.log(passed);
+        }
+  

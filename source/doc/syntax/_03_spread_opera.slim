@@ -41,26 +41,26 @@ h5.subheader spread (...) operator
   h5.subheader with generic iterables, in calls
   pre
     code.javascript
-      |var iterable = global.__createIterableObject(1, 2, 3);
-      |let r = Math.max(...iterable) === 3;
+      | var iterable = global.__createIterableObject(1, 2, 3);
+        let r = Math.max(...iterable) === 3;
   h5
   h5.subheader with generic iterables, in arrays
   pre
     code.javascript
-      |var iterable = global.__createIterableObject("b", "c", "d");
-      |let r = ["a", ...iterable, "e"][3] === "d";
+      | var iterable = global.__createIterableObject("b", "c", "d");
+        let r = ["a", ...iterable, "e"][3] === "d";
       
   h5
   h5.subheader with instances of iterables, in calls
   pre
     code.javascript
-      |var iterable = global.__createIterableObject(1, 2, 3);
-      |let r = Math.max(...Object.create(iterable)) === 3;
+      | var iterable = global.__createIterableObject(1, 2, 3);
+        let r = Math.max(...Object.create(iterable)) === 3;
       
   h5
   h5.subheader with instances of iterables, in arrays
   pre
     code.javascript
-      |var iterable = global.__createIterableObject("b", "c", "d");
-      |let r = ["a", ...Object.create(iterable), "e"][3] === "d";
+      | var iterable = global.__createIterableObject("b", "c", "d");
+        let r = ["a", ...Object.create(iterable), "e"][3] === "d";
       

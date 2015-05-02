@@ -1,0 +1,50 @@
+h4 二、函数的剩余参数
+h5.subheader rest parameters
+.feature-content
+  h5 1.基本特性
+  h5.subheader basic functionality
+  pre
+    code.javascript
+      | let r = (function (foo, ...args) {
+          return args instanceof Array && args + "" === "bar,baz";
+        }("foo", "bar", "baz"));
+  h5 2.函数的 length 属性
+  h5.subheader function 'length' property
+  pre
+    code.javascript
+      |let r = function(a, ...b){}.length === 1 && function(...c){}.length === 0;
+  p 函数返回值为 true。
+  h5 3.参数对象
+  h5.subheader arguments object interaction
+  pre
+    code.javascript
+      | let r = (function (foo, ...args) {
+          foo = "qux";
+          // The arguments object is not mapped to the
+          // parameters, even outside of strict mode.
+          return arguments.length === 3
+            && arguments[0] === "foo"
+            && arguments[1] === "bar"
+            && arguments[2] === "baz";
+        }("foo", "bar", "baz"));
+  p 函数返回值为 false。arguments 为 ["qux", "bar", "baz"]。
+  h5 4.不能在 setters 里使用
+  h5.subheader can't be used in setters
+  pre
+    code.javascript
+      | let r = (function (...args) {
+          try {
+            eval("({set e(...args){}})");
+          } catch(e) {
+            return true;
+          }
+        }());
+  p 函数返回值为 true。
+  h5 4.新的 Function() 支持
+  h5.subheader new Function() support
+  pre
+    code.javascript
+      | let r = new Function("a", "...b",
+          "return b instanceof Array && a+b === 'foobar,baz';"
+        )('foo','bar','baz');
+      

@@ -1,13 +1,13 @@
 .row
   .large-12.columns
     .feature
-      != partial("functions/_01_arrow_functions")
+      == partial "functions/_01_arrow_functions"
     .feature
-      != partial("functions/_02_class")
+      == partial "functions/_02_class"
     .feature
-      != partial("functions/_03_super")
+      == partial "functions/_03_super"
     .feature
-      != partial("functions/_04_generators")
+      == partial "functions/_04_generators"
 
 javascript:
   $("#functions").addClass('active');

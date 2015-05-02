@@ -5,12 +5,11 @@ h5.subheader RegExp "y" and "u" flags
   h5.subheader "y" flag
   pre
     code.javascript
-      |var re = new RegExp('\\w');
-      |var re2 = new RegExp('\\w', 'y');
-      |re.exec('xy');
-      |re2.exec('xy');
-      |console.log((re.exec('xy')[0] === 'x' && re2.exec('xy')[0] === 'y'));
-  
+      | var re = new RegExp('\\w');
+        var re2 = new RegExp('\\w', 'y');
+        re.exec('xy');
+        re2.exec('xy');
+        console.log((re.exec('xy')[0] === 'x' && re2.exec('xy')[0] === 'y'));
   h5 2.u 标志
   h5.subheader "u" flag
   pre
