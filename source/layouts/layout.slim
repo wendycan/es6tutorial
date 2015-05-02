@@ -1,0 +1,46 @@
+doctype html
+html
+  head
+    meta charset="utf-8" /
+    title = data.page.title || "ECMAScript6 特性"
+    == stylesheet_link_tag "app"
+    == javascript_include_tag "app"
+  body
+    .sticky
+      nav.top-bar data-options=("sticky_on: large") data-topbar="" role="navigation" 
+        ul.title-area
+          li.name
+            h1
+              a href="/"  ECMAScript6 Tutorial
+          lwi.toggle-topbar.menu-icon
+            a href="#" 
+              span Menu
+        section.top-bar-section
+          ul.right
+            li#tool
+              a href="/doc/start.html"  前言
+            li#optimisation
+              a href="/doc/optimisation.html"  优化
+            li#syntax
+              a href="/doc/syntax.html"  语法
+            li#bindings
+              a href="/doc/bindings.html"  绑定
+            li#functions
+              a href="/doc/functions.html"  函数
+            li#built-ins
+              a href="/doc/built-ins.html"  内建
+            li#built-in-extensions
+              a href="/doc/built-in-extensions.html"  内建扩展
+            li#subclassing
+              a href="/doc/subclassing.html"  子类
+            li#misc
+              a href="/doc/misc.html"  混杂
+            li#annex-b
+              a href="/doc/annex-b.html"  附录
+            li
+              a href="http://kangax.github.io/compat-table/es6/#ie11tp" target="_blank"  兼容性
+    .wrap
+      == yield
+    javascript:
+      $(document).foundation();
+      hljs.initHighlightingOnLoad();
