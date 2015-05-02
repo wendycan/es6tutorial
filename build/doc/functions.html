@@ -1,0 +1,419 @@
+<!DOCTYPE html><html><head><meta charset="utf-8" /><title>ECMAScript6 特性</title><link href="/stylesheets/app.css" rel="stylesheet" type="text/css" /><script src="/javascripts/app.js" type="text/javascript"></script></head><body><div class="sticky"><nav class="top-bar" data-options="sticky_on: large" data-topbar="" role="navigation"><ul class="title-area"><li class="name"><h1><a href="/"> ECMAScript6 Tutorial</a></h1></li><lwi class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></lwi></ul><section class="top-bar-section"><ul class="right"><li id="tool"><a href="/doc/start.html"> 前言</a></li><li id="optimisation"><a href="/doc/optimisation.html"> 优化</a></li><li id="syntax"><a href="/doc/syntax.html"> 语法</a></li><li id="bindings"><a href="/doc/bindings.html"> 绑定</a></li><li id="functions"><a href="/doc/functions.html"> 函数</a></li><li id="built-ins"><a href="/doc/built-ins.html"> 内建</a></li><li id="built-in-extensions"><a href="/doc/built-in-extensions.html"> 内建扩展</a></li><li id="subclassing"><a href="/doc/subclassing.html"> 子类</a></li><li id="misc"><a href="/doc/misc.html"> 混杂</a></li><li id="annex-b"><a href="/doc/annex-b.html"> 附录</a></li><li><a href="http://kangax.github.io/compat-table/es6/#ie11tp" target="_blank"> 兼容性</a></li></ul></section></nav></div><div class="wrap"><div class="row"><div class="large-12 columns"><div class="feature"><h4>一、箭头函数</h4><h5 class="subheader">arrow functions</h5><div class="feature-content"><h5>1.不带参数</h5><h5 class="subheader">0 parameters</h5><pre><code class="javascript">console.log((() =&gt; 5)() === 5);</code></pre><p>结果为 true。</p><h5>2.一个参数可以不带括号</h5><h5 class="subheader">1 parameter, no brackets</h5><pre><code class="javascript">var b = x =&gt; x + "foo";
+console.log((b("fee fie foe ") === "fee fie foe foo"));</code></pre><p>结果为 true。</p><h5>3.多个参数</h5><h5 class="subheader">multiple parameters</h5><pre><code class="javascript">var c = (v, w, x, y, z) =&gt; "" + v + w + x + y + z;
+console.log((c(6, 5, 4, 3, 2) === "65432"));</code></pre><p>结果为 true。</p><h5>4.this 绑定</h5><h5 class="subheader">lexical "this" binding</h5><pre><code class="javascript">var d = { x : "bar", y : function() { return z =&gt; this.x + z; }}.y();
+var e = { x : "baz", y : d };
+console.log(d("ley") === "barley" && e.y("ley") === "barley");</code></pre><p>结果为 true。</p><h5>5.call 和 apply 都不改变 this</h5><h5 class="subheader">"this" unchanged by call or apply</h5><pre><code class="javascript">var d = { x : "foo", y : function() { return () =&gt; this.x; }};
+var e = { x : "bar" };
+console.log(d.y().call(e) === "foo" && d.y().apply(e) === "foo");</code></pre><p>结果为 true。</p><pre><code class="javascript">console.log('arrow')
+var d = { x : "foo", y : function() { return ()=> {return this.x;} }};
+var e = { x : "bar" };
+console.log(d.y().call(e));
+console.log(d.y().apply(e));
+
+console.log('function')
+var d = { x : "foo", y : function() { return function(){return this.x;} }};
+var e = { x : "bar" };
+console.log(d.y().call(e));
+console.log(d.y().apply(e));</code></pre><p>结果为 arrow,foo,foo,function,bar,bar。</p><h5>6.can't be bound, can be curried</h5><h5 class="subheader">can't be bound, can be curried</h5><pre><code class="javascript">var d = { x : "bar", y : function() { return z =&gt; this.x + z; }};
+var e = { x : "baz" };
+console.log(d.y().bind(e, "ley")() === "barley");</code></pre><p>结果为 true。</p><h5>7.arguments 绑定</h5><h5 class="subheader">lexical "arguments" binding</h5><pre><code class="javascript">var f = (function() { return z =&gt; arguments[0]; }(5));
+console.log(f(6) === 5);</code></pre><p>结果为 true。</p><h5>8.参数和<之间不能换行</h5><h5 class="subheader">no line break between params and =&gt;</h5><pre><code class="javascript">console.log((() =&gt; {
+ try { Function("x\n =&gt; 2")(); } catch(e) { return true; }
+})());</code></pre><p>结果为 true。</p><h5>9.没有 prototype 属性</h5><h5 class="subheader">no "prototype" property</h5><pre><code class="javascript">var a = () =&gt; 5;
+console.log(!a.hasOwnProperty("prototype"));</code></pre><h5>10.super 绑定</h5><h5 class="subheader">lexical "super" binding</h5><pre><code class="javascript">class B {
+ qux() {
+   return "quux";
+ }
+}
+class C extends B {
+ baz() {
+ return x =&gt; super.qux();
+ }
+}
+var arrow = new C().baz();
+console.log(arrow() === "quux");</code></pre><p>结果为 true。</p><h5>11.new.target 绑定</h5><h5 class="subheader">lexical "new.target" binding</h5><pre><code class="javascript">function C() {
+   return x =&gt; new.target;
+}
+console.log(new C()() === C && C()() === undefined);</code></pre></div></div><div class="feature"><h4>二、类</h4><h5 class="subheader">class</h5><div class="feature-content"><h5>1.class 声明</h5><h5 class="subheader">class statement</h5><pre><code class="javascript">class C {}
+console.log(typeof C === "function");</code></pre><p>结果为 true。</p><h5>2.块级作用域</h5><h5 class="subheader">is block-scoped</h5><pre><code class="javascript">class C {}
+ var c1 = C;
+{
+class C {}
+  var c2 = C;
+}
+console.log(C === c1);</code></pre><p>结果为 true。</p><h5>3.class 表达式</h5><h5 class="subheader">class expression</h5><pre><code class="javascript">console.log(typeof class C {} === "function");</code></pre><p>结果为 true。</p><h5>4.匿名 class</h5><h5 class="subheader">anonymous class</h5><pre><code class="javascript">console.log(typeof class {} === "function");</code></pre><p>结果为 true。</p><h5>5.构造函数</h5><h5 class="subheader">constructor</h5><pre><code class="javascript">class C {
+ constructor() { this.x = 1; }
+}
+console.log(C.prototype.constructor === C
+  && new C().x === 1);</code></pre><p>结果为 true。</p><h5>6.原型方法</h5><h5 class="subheader">prototype methods</h5><pre><code class="javascript">class C {
+ method() { return 2; }
+}
+console.log(typeof C.prototype.method === "function"
+ && new C().method() === 2);</code></pre><p>结果为 true。</p><h5>7.带空格的字符方法</h5><h5 class="subheader">string-keyed methods</h5><pre><code class="javascript">class C {
+ "foo bar"() { return 2; }
+}
+console.log(typeof C.prototype["foo bar"] === "function"
+ && new C()["foo bar"]() === 2);</code></pre><p>结果为 true。</p><h5>8.计算原型方法</h5><h5 class="subheader">computed prototype methods</h5><pre><code class="javascript">var foo = "method";
+class C {
+ [foo]() { return 2; }
+}
+console.log(typeof C.prototype.method === "function"
+ && new C().method() === 2);</code></pre><p>结果为 true。</p><h5>9.静态方法</h5><h5 class="subheader">static methods</h5><pre><code class="javascript">class C {
+ static method() { return 3; }
+}
+console.log(typeof C.method === "function"
+ && C.method() === 3);</code></pre><p>结果为 true。</p><h5>10.计算静态方法</h5><h5 class="subheader">computed static methods</h5><pre><code class="javascript">var foo = "method";
+class C {
+ static [foo]() { return 3; }
+}
+console.log(typeof C.method === "function"
+ && C.method() === 3);</code></pre><p>结果为 true。</p><h5>11.存取器属性</h5><h5 class="subheader">accessor properties</h5><pre><code class="javascript">var baz = false;
+class C {
+ get foo() { return "foo"; }
+ set bar(x) { baz = x; }
+}
+new C().bar = true;
+console.log(new C().foo === "foo" && baz);</code></pre><p>结果为 true。</p><h5>12.计算存取器属性</h5><h5 class="subheader">computed accessor properties</h5><pre><code class="javascript">var baz = false;
+class C {
+ get foo() { return "foo"; }
+ set bar(x) { baz = x; }
+}
+new C().bar = true;
+console.log(new C().foo === "foo" && baz);</code></pre><p>结果为 true。</p><h5>13.静态的存取器属性</h5><h5 class="subheader">static accessor properties</h5><pre><code class="javascript">var baz = false;
+class C {
+ static get foo() { return "foo"; }
+ static set bar(x) { baz = x; }
+}
+C.bar = true;
+console.log(C.foo === "foo" && baz);</code></pre><p>结果为 true。</p><h5>14.计算的静态的存取器属性</h5><h5 class="subheader">computed static accessor properties</h5><pre><code class="javascript">var garply = "foo", grault = "bar", baz = false;
+class C {
+ static get [garply]() { return "foo"; }
+ static set [grault](x) { baz = x; }
+}
+C.bar = true;
+console.log(C.foo === "foo" && baz);</code></pre><p>结果为 true。</p><h5>15.类名有词法范围</h5><h5 class="subheader">class name is lexically scoped</h5><pre><code class="javascript">class C {
+ method() { return typeof C === "function"; }
+}
+var M = C.prototype.method;
+C = undefined;
+console.log(C === undefined && M());</code></pre><p>结果为 true。</p><h5>16.计算类名，暂时性死区</h5><h5 class="subheader">computed names, temporal dead zone</h5><pre><code class="javascript">try {
+ var B = class C {
+ [C](){}
+ }
+} catch(e) {
+ console.log(true);
+}</code></pre><h5>17.方法不能枚举</h5><h5 class="subheader">methods aren't enumerable</h5><pre><code class="javascript">class C {
+foo() {}
+ static bar() {}
+}
+console.log(!C.prototype.propertyIsEnumerable("foo") && !C.propertyIsEnumerable("bar"));</code></pre><p>结果为 true。</p><h5>18.使用严格模式</h5><h5 class="subheader">implicit strict mode</h5><pre><code class="javascript">class C {
+ static method() { return this === undefined; }
+}
+console.log((0,C.method)());</code></pre><p>结果为 0,false</p><h5>19.构造函数需要 new</h5><h5 class="subheader">constructor requires new</h5><pre><code class="javascript">class C {}
+try {
+ C();
+}
+catch(e) {
+ console.log(true);
+}</code></pre><p>结果为 true。</p><h5>20.继承</h5><h5 class="subheader">extends</h5><pre><code class="javascript">class B {}
+class C extends B {}
+console.log(new C() instanceof B
+ && B.isPrototypeOf(C)
+ && B.prototype.isPrototypeOf(C.prototype));</code></pre><p>结果为 true。</p><h5>21.继承表达式</h5><h5 class="subheader">extends expressions</h5><pre><code class="javascript">var B;
+class C extends (B = class {}) {}
+console.log(new C() instanceof B
+ && B.isPrototypeOf(C)
+ && B.prototype.isPrototypeOf(C.prototype));</code></pre><p>结果为 true。</p><h5>22.继承 null</h5><h5 class="subheader">extends null</h5><pre><code class="javascript">class C extends null {
+ constructor() { return Object.create(null); }
+}
+var c = new C();
+console.log(!(c instanceof Object)
+ && Function.prototype.isPrototypeOf(C)
+ && Object.getPrototypeOf(C.prototype) === null);</code></pre><p>结果为 true。</p><h5>23.new.target</h5><h5 class="subheader">new.target</h5><pre><code class="javascript">var passed = false;
+new function f() {
+ passed = new.target === f;
+}();
+
+class A {
+ constructor() {
+   passed &= new.target === B;
+ }
+}
+class B extends A {}
+new B();
+console.log(passed);</code></pre></div></div><div class="feature"><h4>一、super</h4><h5 class="subheader">super</h5><div class="feature-content"><h5>1.构造函数中的 super 声明</h5><h5 class="subheader">statement in constructors</h5><pre><code class="javascript"> var passed = false;
+class B {
+  constructor(a) { passed = (a === "barbaz"); }
+}
+class C extends B {
+  constructor(a) { super("bar" + a); }
+}
+new C("baz");
+console.log(passed);</code></pre><p>结果为 true。</p><h5>2.构造函数中的 super 表达式</h5><h5 class="subheader">expression in constructors</h5><pre><code class="javascript">class B {
+  constructor(a) { return ["foo" + a]; }
+}
+class C extends B {
+  constructor(a) { return super("bar" + a); }
+}
+console.log(new C("baz")[0] === "foobarbaz");</code></pre><p>结果为 true。</p><h5>3.方法中，属性访问</h5><h5 class="subheader">in methods, property access</h5><pre><code class="javascript">class B {}
+B.prototype.qux = "foo";
+B.prototype.corge = "baz";
+class C extends B {
+  quux(a) { return super.qux + a + super["corge"]; }
+}
+C.prototype.qux = "garply";
+console.log(new C().quux("bar") === "foobarbaz");</code></pre><p>结果为 true。</p><h5>4.方法中，方法调用</h5><h5 class="subheader">in methods, method calls</h5><pre><code class="javascript">class B {
+  qux(a) { return "foo" + a; }
+}
+class C extends B {
+  qux(a) { return super.qux("bar" + a); }
+}
+console.log(new C().qux("baz") === "foobarbaz");</code></pre><p>结果为 true。</p><h5>5.方法调用使用正确的 this 绑定</h5><h5 class="subheader">method calls use correct "this" binding</h5><pre><code class="javascript">class B {
+  qux(a) { return this.foo + a; }
+}
+class C extends B {
+  qux(a) { return super.qux("bar" + a); }
+}
+var obj = new C();
+obj.foo = "foo";
+console.log(obj.qux("baz") === "foobarbaz");</code></pre><p>结果为 true。</p><h5>6.构造函数调用使用正确的 new.target 绑定</h5><h5 class="subheader">constructor calls use correct "new.target" binding</h5><pre><code class="javascript">var passed;
+class B {
+  constructor() { passed = (new.target === C); }
+}
+class C extends B {
+  constructor() { super(); }
+}
+new C();
+console.log(passed);</code></pre><h5>7.静态绑定</h5><h5 class="subheader">is statically bound</h5><pre><code class="javascript">class B {
+  qux() { return "bar"; }
+}
+class C extends B {
+  qux() { return super.qux() + this.corge; }
+}
+var obj = {
+  qux: C.prototype.qux,
+  corge: "ley"
+};
+console.log(obj.qux() === "barley");</code></pre><p>结果为 true。</p></div></div><div class="feature"><h4>一、Generators</h4><h5 class="subheader">generators</h5><div class="feature-content"><h5>1.基本功能</h5><h5 class="subheader">basic functionality</h5><pre><code class="javascript">function * generator(){
+  yield 5; yield 6;
+};
+var iterator = generator();
+var item = iterator.next();
+var passed = item.value === 5 && item.done === false;
+item = iterator.next();
+passed = passed && item.value === 6 && item.done === false;
+item = iterator.next();
+passed = passed && item.value === undefined && item.done === true;
+console.log(passed);</code></pre><p>结果为 true。</p><h5>2.generator 函数表达式</h5><h5 class="subheader">generator function expressions</h5><pre><code class="javascript">var generator = function * (){
+yield 5; yield 6;
+};
+var iterator = generator();
+var item = iterator.next();
+var passed = item.value === 5 && item.done === false;
+item = iterator.next();
+passed = passed && item.value === 6 && item.done === false;
+item = iterator.next();
+passed = passed && item.value === undefined && item.done === true;
+console.log(passed);</code></pre><p>结果为 true。</p><h5>3.正确的 this 绑定</h5><h5 class="subheader">correct "this" binding</h5><pre><code class="javascript">function * generator(){
+yield this.x; yield this.y;
+};
+var iterator = { g: generator, x: 5, y: 6 }.g();
+var item = iterator.next();
+var passed = item.value === 5 && item.done === false;
+item = iterator.next();
+passed = passed && item.value === 6 && item.done === false;
+item = iterator.next();
+passed = passed && item.value === undefined && item.done === true;
+console.log(passed);</code></pre><p>结果为 true。</p><h5>4.不能在 new 中使用 this</h5><h5 class="subheader">can't use "this" with new</h5><pre><code class="javascript">function * generator(){
+yield this.x; yield this.y;
+};
+try {
+(new generator()).next();
+}
+catch (e) {
+console.log(true);
+}</code></pre><p>结果为 true。</p><h5>5.发送</h5><h5 class="subheader">sending</h5><pre><code class="javascript">var sent;
+function * generator(){
+sent = [yield 5, yield 6];
+};
+var iterator = generator();
+iterator.next();
+iterator.next("foo");
+iterator.next("bar");
+console.log(sent[0] === "foo" && sent[1] === "bar");      </code></pre><p>结果为 true。</p><h5>6.generator 原型</h5><h5 class="subheader">%GeneratorPrototype%</h5><pre><code class="javascript">function * generatorFn(){}
+var ownProto = Object.getPrototypeOf(generatorFn());
+var passed = ownProto === generatorFn.prototype;
+var sharedProto = Object.getPrototypeOf(ownProto);
+passed = passed && sharedProto !== Object.prototype &&
+  sharedProto === Object.getPrototypeOf(function*(){}.prototype) &&
+  sharedProto.hasOwnProperty('next');
+console.log(passed);</code></pre><p>结果为 true。</p><h5>7.generator 抛出异常</h5><h5 class="subheader">%GeneratorPrototype%.throw</h5><pre><code class="javascript">var passed = false;
+function * generator(){
+  try {
+  yield 5; yield 6;
+} catch(e) {
+    passed = (e === "foo");
+  }
+};
+var iterator = generator();
+iterator.next();
+iterator.throw("foo");
+console.log(passed);</code></pre><p>结果为 true。</p><h5>8.generator return</h5><h5 class="subheader">%GeneratorPrototype%.return</h5><pre><code class="javascript">function * generator(){
+yield 5; yield 6;
+};
+var iterator = generator();
+var item = iterator.next();
+var passed = item.value === 5 && item.done === false;
+item = iterator.return("quxquux");
+passed = passed && item.value === "quxquux" && item.done === true;
+item = iterator.next();
+passed = passed && item.value === undefined && item.done === true;
+console.log(passed);</code></pre><p>结果为 true。</p><h5>9.yield 操作符优先</h5><h5 class="subheader">yield operator precedence</h5><pre><code class="javascript">var passed;
+function * generator(){
+passed = yield 0 ? true : false;
+};
+var iterator = generator();
+iterator.next();
+iterator.next(true);
+console.log(passed);</code></pre><p>结果为 true。</p><h5>10.yield *, 数组</h5><h5 class="subheader">yield *, arrays</h5><pre><code class="javascript">var iterator = (function * generator() {
+yield * [5, 6];
+}());
+var item = iterator.next();
+var passed = item.value === 5 && item.done === false;
+item = iterator.next();
+passed = passed && item.value === 6 && item.done === false;
+item = iterator.next();
+passed = passed && item.value === undefined && item.done === true;
+console.log(passed);</code></pre><p>结果为 true。</p><h5>11.yield *,字符串</h5><h5 class="subheader">yield *, strings</h5><pre><code class="javascript">var iterator = (function * generator() {
+  yield * "56";
+}());
+var item = iterator.next();
+var passed = item.value === "5" && item.done === false;
+item = iterator.next();
+passed = passed && item.value === "6" && item.done === false;
+item = iterator.next();
+passed = passed && item.value === undefined && item.done === true;
+console.log(passed);</code></pre><p>结果为 true。</p><h5>12.yield *，特殊字符</h5><h5 class="subheader">yield *, astral plane strings</h5><pre><code class="javascript">var iterator = (function * generator() {
+yield * "𠮷𠮶";
+}());
+var item = iterator.next();
+var passed = item.value === "𠮷" && item.done === false;
+item = iterator.next();
+passed = passed && item.value === "𠮶" && item.done === false;
+item = iterator.next();
+passed = passed && item.value === undefined && item.done === true;
+console.log(passed);</code></pre><p>结果为 true。</p><h5>13.yield *，通用迭代器</h5><h5 class="subheader">yield *, generic iterables</h5><pre><code class="javascript">var iterator = (function * generator() {
+  yield * global.__createIterableObject(5, 6, 7);
+}());
+var item = iterator.next();
+var passed = item.value === 5 && item.done === false;
+item = iterator.next();
+passed = passed && item.value === 6 && item.done === false;
+item = iterator.next();
+passed = passed && item.value === 7 && item.done === false;
+item = iterator.next();
+passed = passed && item.value === undefined && item.done === true;
+console.log(passed);</code></pre><h5>14.yield *，迭代器实例</h5><h5 class="subheader">yield *, instances of iterables</h5><pre><code class="javascript">var iterator = (function * generator() {
+  yield * Object.create(__createIterableObject(5, 6, 7));
+}());
+var item = iterator.next();
+var passed = item.value === 5 && item.done === false;
+item = iterator.next();
+passed = passed && item.value === 6 && item.done === false;
+item = iterator.next();
+passed = passed && item.value === 7 && item.done === false;
+item = iterator.next();
+passed = passed && item.value === undefined && item.done === true;
+console.log(passed);</code></pre><h5>15.yield *，迭代器关闭</h5><h5 class="subheader">yield *, iterator closing</h5><pre><code class="javascript">var closed = '';
+var iter = __createIterableObject(1, 2, 3);
+iter['return'] = function(){
+  closed += 'a';
+  return {done: true};
+}
+var gen = (function* generator(){
+  try {
+    yield *iter;
+  } finally {
+    closed += 'b';
+  }
+})();
+gen.next();
+gen['return']();
+console.log(closed === 'ab');</code></pre><h5>16.yield *，迭代器通过 throw 关闭</h5><h5 class="subheader">yield *, iterator closing via throw()</h5><pre><code class="javascript">var closed = false;
+var iter = __createIterableObject(1, 2, 3);
+iter['throw'] = undefined;
+iter['return'] = function(){
+  closed = true;
+  return {done: true};
+}
+var gen = (function*(){
+  try {
+    yield *iter;
+  } catch(e){}
+})();
+gen.next();
+gen['throw']();
+return closed;</code></pre><h5>17.简写 generator 方法</h5><h5 class="subheader">shorthand generator methods</h5><pre><code class="javascript">var o = {
+  * generator() {
+    yield 5; yield 6;
+  },
+};
+var iterator = o.generator();
+var item = iterator.next();
+var passed = item.value === 5 && item.done === false;
+item = iterator.next();
+passed = passed && item.value === 6 && item.done === false;
+item = iterator.next();
+passed = passed && item.value === undefined && item.done === true;
+console.log(passed);</code></pre><p>结果为 true。</p><h5>18.带空格字符串的简写 generator 方法</h5><h5 class="subheader">string-keyed shorthand generator methods</h5><pre><code class="javascript">var o = {
+  * "foo bar"() {
+    yield 5; yield 6;
+  },
+};
+var iterator = o["foo bar"]();
+var item = iterator.next();
+var passed = item.value === 5 && item.done === false;
+item = iterator.next();
+passed = passed && item.value === 6 && item.done === false;
+item = iterator.next();
+passed = passed && item.value === undefined && item.done === true;
+console.log(passed);</code></pre><p>结果为 true。</p><h5>19.计算简写 generator</h5><h5 class="subheader">computed shorthand generators</h5><pre><code class="javascript">var garply = "generator";
+var o = {
+  * [garply] () {
+    yield 5; yield 6;
+  },
+};
+var iterator = o.generator();
+var item = iterator.next();
+var passed = item.value === 5 && item.done === false;
+item = iterator.next();
+passed = passed && item.value === 6 && item.done === false;
+item = iterator.next();
+passed = passed && item.value === undefined && item.done === true;
+console.log(passed);</code></pre><p>结果为 true。</p><h5>20.简写 generator 方法，类</h5><h5 class="subheader">shorthand generator methods, classes</h5><pre><code class="javascript">class C {
+  * generator() {
+    yield 5; yield 6;
+  }
+};
+var iterator = new C().generator();
+var item = iterator.next();
+var passed = item.value === 5 && item.done === false;
+item = iterator.next();
+passed = passed && item.value === 6 && item.done === false;
+item = iterator.next();
+passed = passed && item.value === undefined && item.done === true;
+console.log(passed);</code></pre><p>结果为 true。</p><h5>21.计算简写 generator 方法，类</h5><h5 class="subheader">computed shorthand generators, classes</h5><pre><code class="javascript">var garply = "generator";
+class C {
+  * [garply] () {
+    yield 5; yield 6;
+  }
+}
+var iterator = new C().generator();
+var item = iterator.next();
+var passed = item.value === 5 && item.done === false;
+item = iterator.next();
+passed = passed && item.value === 6 && item.done === false;
+item = iterator.next();
+passed = passed && item.value === undefined && item.done === true;
+console.log(passed);</code></pre><p>结果为 true。</p></div></div></div></div><script type="text/javascript">$("#functions").addClass('active');</script></div><script type="text/javascript">$(document).foundation();
+hljs.initHighlightingOnLoad();</script></body></html>

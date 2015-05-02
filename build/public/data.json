@@ -1,0 +1,97 @@
+[
+  {
+    "category": "Optimisation\n",
+    "data": [
+      "proper tail calls (tail call optimisation)"
+    ]
+  },
+  {
+    "category": "Syntax\n",
+    "data": [
+      "default function parameters",
+      "rest parameters",
+      "spread (...) operator",
+      "object literal extensions",
+      "for..of loops",
+      "octal and binary literals",
+      "template strings",
+      "RegExp \"y\" and \"u\" flags",
+      "destructuring",
+      "Unicode code point escapes"
+    ]
+  },
+  {
+    "category": "Bindings\n",
+    "data": [
+      "const",
+      "let",
+      "block-level function declaration"
+    ]
+  },
+  {
+    "category": "Functions\n",
+    "data": [
+      "arrow functions",
+      "class",
+      "super",
+      "generators"
+    ]
+  },
+  {
+    "category": "Built-ins\n",
+    "data": [
+      "typed arrays",
+      "Map",
+      "Set",
+      "WeakMap",
+      "WeakSet",
+      "Proxy",
+      "Reflect",
+      "Promise",
+      "Symbol",
+      "well-known symbols"
+    ]
+  },
+  {
+    "category": "Built-in extensions\n",
+    "data": [
+      "Object static methods",
+      "function \"name\" property",
+      "String static methods",
+      "String.prototype methods",
+      "RegExp.prototype properties",
+      "Array static methods",
+      "Array.prototype methods",
+      "Number properties",
+      "Math methods"
+    ]
+  },
+  {
+    "category": "Subclassing\n",
+    "data": [
+      "Array is subclassable",
+      "RegExp is subclassable",
+      "Function is subclassable",
+      "Promise is subclassable",
+      "miscellaneous subclassables"
+    ]
+  },
+  {
+    "category": "Misc\n",
+    "data": [
+      "Object static methods accept primitives",
+      "own property order",
+      "miscellaneous"
+    ]
+  },
+  {
+    "category": "Annex b\n",
+    "data": [
+      "hoisted block-level function declaration",
+      "__proto__ in object literals",
+      "Object.prototype.__proto__",
+      "String.prototype HTML methods",
+      "RegExp.prototype.compile"
+    ]
+  }
+]

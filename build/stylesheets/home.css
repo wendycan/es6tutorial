@@ -1,0 +1,7 @@
+/* line 2, /Users/wendy/Workspace/Wendycan/es6tutorial/source/stylesheets/home.scss */
+.container table th:first-child {
+  width: 10%;
+  text-align: center; }
+/* line 6, /Users/wendy/Workspace/Wendycan/es6tutorial/source/stylesheets/home.scss */
+.container table td:first-child {
+  text-align: center; }
