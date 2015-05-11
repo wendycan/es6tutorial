@@ -16,6 +16,13 @@ h5.subheader Default function parameters
   pre
     code.javascript
       |let r = (function (a, b = a) { return b === 5; }(5));
+  p 结果为 true。
+  pre
+    code.javascript
+      |
+        let r = (function (a=b, b) { return a === 3; }(undefined,3));
+        console.log(r);
+  p 结果为 true。
   h5 4.暂时性死区
   h5.subheader Temporal dead zone
   pre

@@ -6,37 +6,37 @@ h5.subheader spread (...) operator
   pre
     code.javascript
       |let r = Math.max(...[1, 2, 3]) === 3
-      
+  p 函数返回值为 true。
   h5 2.数组字面量中使用数组
   h5.subheader with arrays, in array literals
   pre
     code.javascript
       |let r = [...[1, 2, 3]][2] === 3;
-      
+  p 函数返回值为 true。
   h5 3.函数调用传入字符串
   h5.subheader with strings, in function calls
   pre
     code.javascript
       |let r = Math.max(..."1234") === 4;
-      
+  p 函数返回值为 true。
   h5 4.数组字面量中使用字符串
   h5.subheader with strings, in array literals
   pre
     code.javascript
       |let r = ["a", ..."bcd", "e"][3] === "d";
-      
+  p 函数返回值为 true。
   h5 
   h5.subheader with astral plane strings, in function calls
   pre
     code.javascript
       |let r = Array(..."𠮷𠮶")[0] === "𠮷";
-      
+  p 函数返回值为 true。
   h5
   h5.subheader with astral plane strings, in array literals
   pre
     code.javascript
       |let r = [..."𠮷𠮶"][0] === "𠮷";
-
+  p 函数返回值为 true。
   h5
   h5.subheader with generic iterables, in calls
   pre
