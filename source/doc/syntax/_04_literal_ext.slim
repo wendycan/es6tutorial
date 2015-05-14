@@ -1,15 +1,38 @@
 h4 四、对象字面量扩展
 h5.subheader object literal extensions
 .feature-content
-  h5 1.属性计算
+  h5 1.计算属性
   h5.subheader computed properties
+  p javascipt 中定义对象的属性有两种方法：
+  pre
+    code.javascirpt
+      | obj.foo = 'hello';
+        obj['fo'+'o'] = 'hello';
+  p 但是在用大括号定义对象时，只能使用第一种方式,如下：
+  pre
+    code.javascript
+      | var obj = {
+          foo: 'hello'
+        }
+  p ES6 中两种方法都可以。
   pre
     code.javascript
       | var x = 'y';
-        console.log(({ [x]: 1 }).y === 1);
+        var obj = { 
+          x: 2,
+          [x]: 1
+        };
+        console.log(obj.x == 2 && obj.y == 1);
   p 结果为 true。
   h5 2.属性简写
   h5.subheader shorthand properties
+  pre
+    code.javascript
+      | var c = { 
+          a: 7,
+          b: 8
+        };
+  p ES6允许直接写入变量和函数，作为对象的属性和方法。对于如上的对象定义可以用下面的简写方式：
   pre
     code.javascript
       | var a = 7, b = 8, c = {a,b};
@@ -17,6 +40,14 @@ h5.subheader object literal extensions
   p 结果为 true。
   h5 3.方法简写
   h5.subheader shorthand methods
+  pre
+    code.javascript
+      | var obj = { 
+          y: function y() {
+             return 2;
+          }
+        };
+  p 对于如上的对象定义可以用下面的简写方式：
   pre
     code.javascript
       |console.log({ y() { return 2; } }.y() === 2);
@@ -36,6 +67,7 @@ h5.subheader object literal extensions
   p 结果为 true。    
   h5 6.访问
   h5.subheader computed accessors
+  p 简写的计算方法同样也可以用在 getter 和 setter 中。
   pre
     code.javascript
       | var x = 'y',

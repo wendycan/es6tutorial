@@ -3,6 +3,20 @@ h5.subheader template strings
 .feature-content
   h5 1.基本功能
   h5.subheader basic functionality
+  p 在 ES6 之前如果在字符串包含变量，你可能会这样写：
+  pre
+    code.javascript
+      | var a = "ba", b = "QUX";
+        var r = "foo bar\n" + a + 'z ' + b.toLowerCase();
+        console.log(r);
+  p 当然你可以使用第三方库，如 coffeescript：
+  pre
+    code.javascript
+      | a = "ba";b = "QUX";r = "foo bar\n\#{a}z \#{b.toLowerCase()}"
+  p 
+    | ES6 也增加了对模板字符串的支持。你需要把它们写到反引号里面，就像 coffeescript 的模板字符串需要写在双引号里面一样，表达式写到
+    kbd ${}
+    |中即可。
   pre
     code.javascript
       | var a = "ba", b = "QUX";
@@ -11,18 +25,22 @@ h5.subheader template strings
   p 结果为 true。
   h5 2.标签模板字符串
   h5.subheader tagged template strings
+  p 标签模板字符串, 可以通过函数的输出修改模板字符串。只需要将模板字符串紧跟在一个函数名后面，如下。函数 fn 依次接收三个参数。第一个参数是数组，该数组的成员是模板字符串中那些没有变量替换的部分。第一个参数之后的参数，都是模板字符串各个变量被替换后对应的值。
   pre
     code.javascript
-      | var called = false;
-        function fn(parts, a, b) {
-          called = true;
-          return parts instanceof Array &&
-            parts[0]     === "foo"      &&
-            parts[1]     === "bar\n"    &&
-            parts.raw[0] === "foo"      &&
-            parts.raw[1] === "bar\\n"   &&
-            a === 123                   &&
-            b === 456;
+      | function fn(parts, a, b) {
+          console.log(parts); //["foo", "bar\n", "", raw: ["foo", "bar\n", ""]]
+          console.log(a);     //123
+          console.log(b);     //456
         }
-        console.log(fn `foo${123}bar\n${456}` && called);
+        fn `foo${123}bar\n${456}`;
+  p 当输入的字符串只是一个变量替换时，结果如下;而且这种写法里， fn 后面紧跟的必须是反引号引起来的字符串;String.raw 方法，往往用来处理模板字符串，返回字符串被转义前的原始格式。
+  pre
+    code.javascript
+      | function fn() {
+          console.log(arguments); //[["",""], 123]
+        }
+        fn `${123}`;
+
+        String.raw({ raw: 'test' }, 0, 1, 2); // 't0e1s2t'
   p 结果为 true。

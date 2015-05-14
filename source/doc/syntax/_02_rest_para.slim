@@ -37,7 +37,9 @@ h5.subheader rest parameters
             && arguments[1] === "bar"
             && arguments[2] === "baz";
         }("foo", "bar", "baz"));
-  p Chrome 里的测试结果为：函数返回值为 false。arguments 为 ["qux", "bar", "baz"]，Chrome 还不支持这条。按照文档，此处的返回值应该为 true。现在还无法测试。
+  p 
+    | Chrome 42 里的测试结果为：函数返回值为 false。arguments 为 ["qux", "bar", "baz"]，Chrome 还不支持这条。按照文档，此处的返回值应该为 true。
+    span.label.radius.warning 待测试
   h5 4.不能在 setters 里使用
   h5.subheader can't be used in setters
   pre

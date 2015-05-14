@@ -1,8 +1,9 @@
-h4 八、正则表达式'y' 和 'u'标志
+h4 八、正则表达式 'y' 和 'u' 修饰符
 h5.subheader RegExp "y" and "u" flags
 .feature-content
-  h5 1.y 标志
+  h5 1.y 修饰符
   h5.subheader "y" flag
+  p y 修饰符确保匹配必须从剩余的第一个位置开始，且要求匹配必须从头部开始。
   pre
     code.javascript
       | var re = new RegExp('\\w');
@@ -10,7 +11,14 @@ h5.subheader RegExp "y" and "u" flags
         re.exec('xy');
         re2.exec('xy');
         console.log((re.exec('xy')[0] === 'x' && re2.exec('xy')[0] === 'y'));
-  h5 2.u 标志
+  p 结果为 true。
+  pre
+    code.javascript
+      | var s = "aaa_aa_a";
+        var r = /a+/y;
+        console.log(r.exec(s)); // ['aaa']
+        console.log(r.exec(s)); // null
+  h5 2.u 修饰符
   h5.subheader "u" flag
   pre
     code.javascript

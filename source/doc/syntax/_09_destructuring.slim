@@ -1,5 +1,6 @@
 h4 九、解构
 h5.subheader destructuring
+p ES6 允许按照一定的模式，从数组、字符串、对象等中提取值，对变量进行复制，称为解构。
 .feature-content
   h5 1.数组
   h5.subheader with arrays
@@ -31,22 +32,43 @@ h5.subheader destructuring
   p 结果为 true。
   h5 4.通用迭代器
   h5.subheader with generic iterables
+  p 首先定义一个通用的迭代器函数：
   pre
     code.javascript
-      | var [a, b, c] = global.__createIterableObject(1, 2);
+      | function __createIterableObject(a, b, c) {
+          if (typeof Symbol === "function" && Symbol.iterator) {
+            var arr = [a, b, c, ,];
+            var iterable = {
+              next: function() {
+                return { value: arr.shift(), done: arr.length <= 0 };
+              },
+            };
+            iterable[Symbol.iterator] = function(){ return iterable; }
+            return iterable;
+          }
+          else {
+            return eval("(function*() { yield a; yield b; yield c; }())");
+          }
+        }
+  p 通过调用这个迭代器函数，生成一个迭代器，就可以对其进行解构。
+  pre
+    code.javascript
+      | var [a, b, c] = __createIterableObject(1, 2);
         var d, e;
-        [d, e] = global.__createIterableObject(3, 4);
+        [d, e] = __createIterableObject(3, 4);
         console.log(a === 1 && b === 2 && c === undefined
          && d === 3 && e === 4);      
+  p 结果为 true。
   h5 5.通用迭代器的实例
   h5.subheader with instances of generic iterables
   pre
     code.javascript
-      | var [a, b, c] = Object.create(global.__createIterableObject(1, 2))
+      | var [a, b, c] = Object.create(__createIterableObject(1, 2))
         var d, e;
-        [d, e] = Object.create(global.__createIterableObject(3, 4));
+        [d, e] = Object.create(__createIterableObject(3, 4));
         console.log(a === 1 && b === 2 && c === undefined
          && d === 3 && e === 4);
+  p 结果为 true。
   h5 6.迭代器关闭
   h5.subheader iterator closing
   pre
@@ -56,6 +78,7 @@ h5.subheader destructuring
         iter['return'] = function(){ closed = true; return {}; }
         var [a, b] = iter;
         console.log(closed);
+  span.label.radius.warning 待测试
   h5 7.迭代解构
   h5.subheader iterable destructuring expression
   pre
@@ -77,6 +100,7 @@ h5.subheader destructuring
     code.javascript
       | var [a,] = [1];
         console.log(a === 1);
+  p 结果为 true。
   h5 10.对象
   h5.subheader with objects
   pre
@@ -126,6 +150,7 @@ h5.subheader destructuring
   p 结果为 true。
   h5 15.null 和 undefined 时抛出异常
   h5.subheader throws on null and undefined
+  p 不能对 null 或 undefined 进行对象解构。
   pre
     code.javascript
       | var status = true;
@@ -184,6 +209,7 @@ h5.subheader destructuring
          "return a === 1 && b === 2 && c === 3 && "
          + "d === 4 && e === undefined;"
         )({a:1, x:2}, [3, 4]));
+  p 结果为 true。
   h5 21.函数的 length 属性
   h5.subheader in parameters, function 'length' property
   pre
@@ -268,7 +294,7 @@ h5.subheader destructuring
           var b = 1;
           return a();
         }({})));
-  //- p 结果为 true/false。
+  span.label.radius.warning 待测试
   h5 30.new Function() 支持默认参数
   h5.subheader defaults in parameters, new Function() support
   pre
@@ -277,3 +303,4 @@ h5.subheader destructuring
           "return a === 1 && b === 2 && c === 3 && d === 4 && "
           + "e === 5 && f === undefined;"
         )({b:2, c:undefined, x:4}));      
+  span.label.radius.warning 待测试
