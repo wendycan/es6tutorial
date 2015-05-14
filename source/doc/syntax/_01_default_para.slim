@@ -3,26 +3,59 @@ h5.subheader Default function parameters
 .feature-content
   h5 1.基本特性
   h5.subheader Basic functionality
+  p 在 ES6 之前，如果函数的某个参数有默认参数，你可能会这样写：
   pre
     code.javascript
-      |let r = (function (a = 1, b = 2) { return a === 3 && b === 2; }(3));
+      | let r = (function (a,b) { 
+          a= a||1;
+          b=b||2;
+          return a === 3 && b === 2; 
+        }(3));
+  p 但是 ES6 里你可以如下设置默认参数，简洁且优美：
+  pre
+    code.javascript
+      | let r = (function (a = 1, b = 2) { 
+          return a === 3 && b === 2; 
+        }(3));
+  p 上述两段代码返回值均为 true。
+  p 参数指定了默认值以后，函数的 length 属性返回的参数个数将不包括默认参数，如下。
+  pre
+    code.javascript
+      | let r = (function (a, b = 2) { 
+          console.log(a,b);
+        }).length;
+        console.log(r);
+  p 结果为 1。
   h5 2.undefined 将触发该参数等于默认参数
   h5.subheader Explicit undefined defers to the default
+  p 这就意味着当函数声明某个参数有默认参数，且函数调用传入 undefined 给对应参数时，undefined 就有了特殊意义，那就是使用这个参数的默认值，null 则没有这个效果。
   pre
     code.javascript
-      |let r = (function (a = 1, b = 2) { return a === 1 && b === 3; }(undefined, 3));
+      | let r = (function (a = 1, b = 2) { 
+          return a === 1 && b === 3; 
+        }(undefined, 3));
+        console.log(r);
+  p 结果为 true。
   h5 3.默认参数可以设为前一个传入的参数
   h5.subheader Defaults can refer to previous params
   pre
     code.javascript
-      |let r = (function (a, b = a) { return b === 5; }(5));
-  p 结果为 true。
-  pre
-    code.javascript
-      |
-        let r = (function (a=b, b) { return a === 3; }(undefined,3));
+      | let r = (function (a, b = a) { 
+          return b === 5; 
+        }(5));
         console.log(r);
   p 结果为 true。
+  p 
+    | 但是默认参数不能设为后一个传入的参数，这是一个比较隐蔽的‘死区’，因为执行 
+    kbd 
+      |a=b
+    |  时，b 还没有声明。
+  pre
+    code.javascript
+      | let r = (function (a=b, b) { 
+          return a === 3; 
+        }(undefined,3));
+        console.log(r);
   h5 4.暂时性死区
   h5.subheader Temporal dead zone
   pre
@@ -45,18 +78,26 @@ h5.subheader Default function parameters
         }
         console.log('x', x);
         console.log('y', y);
-  h5 5.块级作用域
+  p 结果为 true， true。
+  p 在 let 声明变量前使用这个变量，会报错，因为此时这个变量虽然存在但不可得。
+  pre
+    code.javascript
+      | let condition = true
+        if (condition) {
+          console.log(typeof value);     // ReferenceError!
+          let value = "blue";
+        }
+  p 由上可知 typeof 不再是一个绝对安全的操作。
+  h5 5.独立作用域
   h5.subheader Separate scope
   pre
     code.javascript
-      | let r = (function(a=function(){
-          return typeof b === 'undefined';
-        }){
+      | let r = (function(a=function(){return typeof b === 'undefined';}){
           var b = 1;
           return a();
         }());
         console.log(r);
-
+  p 结果为 true。
   h5 6.新的 Function() 支持
   h5.subheader New Function() support
   pre
@@ -64,3 +105,4 @@ h5.subheader Default function parameters
       | let r = new Function("a = 1", "b = 2",
           "return a === 3 && b === 2;"
         )(3);
+  p 结果为 true。

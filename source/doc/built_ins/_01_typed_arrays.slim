@@ -1,7 +1,159 @@
 h4 一、typed arrays
 h5.subheader typed arrays
 .feature-content
-  h5 .
+  h5 1.Int8Array
+  h5.subheader Int8Array
+  pre
+    code.javascript
+      | var buffer = new ArrayBuffer(64);
+        var view = new Int8Array(buffer);         
+        view[0] = 0x80;
+        console.log(view[0] === -0x80);
+  p 结果为 true。
+  h5 2.Uint8Array
+  h5.subheader Uint8Array
+  pre
+    code.javascript
+      | var buffer = new ArrayBuffer(64);
+        var view = new Uint8Array(buffer);        
+        view[0] = 0x100;
+        console.log(view[0] === 0);
+  p 结果为 true。
+  h5 3.Uint8ClampedArray
+  h5.subheader Uint8ClampedArray
+  pre
+    code.javascript
+      | var buffer = new ArrayBuffer(64);
+        var view = new Uint8ClampedArray(buffer); view[0] = 0x100;
+        console.log(view[0] === 0xFF);
+  p 结果为 true。
+  h5 4.Int16Array
+  h5.subheader Int16Array
+  pre
+    code.javascript
+      | var buffer = new ArrayBuffer(64);
+        var view = new Int16Array(buffer);        
+        view[0] = 0x8000;
+        console.log(view[0] === -0x8000);
+  p 结果为 true。
+  h5 5.Uint16Array
+  h5.subheader Uint16Array
+  pre
+    code.javascript
+      | var buffer = new ArrayBuffer(64);
+        var view = new Uint16Array(buffer);       
+        view[0] = 0x10000;
+        console.log(view[0] === 0);
+  p 结果为 true。
+  h5 6.Int32Array
+  h5.subheader Int32Array
+  pre
+    code.javascript
+      | var buffer = new ArrayBuffer(64);
+        var view = new Int32Array(buffer);        
+        view[0] = 0x80000000;
+        console.log(view[0] === -0x80000000);
+  p 结果为 true。
+  h5 7.Uint32Array
+  h5.subheader Uint32Array
+  pre
+    code.javascript
+      | var buffer = new ArrayBuffer(64);
+        var view = new Uint32Array(buffer);       
+        view[0] = 0x100000000;
+        console.log(view[0] === 0);
+  p 结果为 true。
+  h5 8.Float32Array
+  h5.subheader Float32Array
+  pre
+    code.javascript
+      | var buffer = new ArrayBuffer(64);
+        var view = new Float32Array(buffer);       
+        view[0] = 0.1;
+        console.log(view[0] === 0.10000000149011612);
+  p 结果为 true。
+  h5 9.Float64Array
+  h5.subheader Float64Array
+  pre
+    code.javascript
+      | var buffer = new ArrayBuffer(64);
+        var view = new Float64Array(buffer);       
+        view[0] = 0.1;
+        console.log(view[0] === 0.1);
+  p 结果为 true。
+  h5 10.DataView (Int8)
+  h5.subheader DataView (Int8)
+  pre
+    code.javascript
+      | var buffer = new ArrayBuffer(64);
+        var view = new DataView(buffer);
+        view.setInt8 (0, 0x80);
+        console.log(view.getInt8(0) === -0x80);
+  p 结果为 true。
+  h5 11.DataView (Uint8)
+  h5.subheader DataView (Uint8)
+  pre
+    code.javascript
+      | var buffer = new ArrayBuffer(64);
+        var view = new DataView(buffer);
+        view.setUint8(0, 0x100);
+        console.log(view.getUint8(0) === 0);
+  p 结果为 true。
+  h5 12.DataView (Int16)
+  h5.subheader DataView (Int16)
+  pre
+    code.javascript
+      | var buffer = new ArrayBuffer(64);
+        var view = new DataView(buffer);
+        view.setInt16(0, 0x8000);
+        console.log(view.getInt16(0) === -0x8000);
+  p 结果为 true。
+  h5 13.DataView (Uint16)
+  h5.subheader DataView (Uint16)
+  pre
+    code.javascript
+      | var buffer = new ArrayBuffer(64);
+        var view = new DataView(buffer);
+        view.setUint16(0, 0x10000);
+        console.log(view.getUint16(0) === 0);
+  p 结果为 true。
+  h5 14.DataView (Int32)
+  h5.subheader DataView (Int32)
+  pre
+    code.javascript
+      | var buffer = new ArrayBuffer(64);
+        var view = new DataView(buffer);
+        view.setInt32(0, 0x80000000);
+        console.log(view.getInt32(0) === -0x80000000);
+  p 结果为 true。
+  h5 15.DataView (Uint32)
+  h5.subheader DataView (Uint32)
+  pre
+    code.javascript
+      | var buffer = new ArrayBuffer(64);
+        var view = new DataView(buffer);
+        view.setUint32(0, 0x100000000);
+        console.log(view.getUint32(0) === 0);
+  p 结果为 true。
+  h5 16.DataView (Float32)
+  h5.subheader DataView (Float32)
+  pre
+    code.javascript
+      | var buffer = new ArrayBuffer(64);
+        var view = new DataView(buffer);
+        view.setFloat32(0, 0.1);
+        console.log(view.getFloat32(0) === 0.10000000149011612);
+  p 结果为 true。
+  h5 17.DataView (Float64)
+  h5.subheader DataView (Float64)
+  pre
+    code.javascript
+      | var buffer = new ArrayBuffer(64);
+        var view = new DataView(buffer);
+        view.setFloat64(0, 0.1);
+        console.log(view.getFloat64(0) === 0.1);
+  p 结果为 true。
+  h5 18.
   h5.subheader 
   pre
     code.javascript
