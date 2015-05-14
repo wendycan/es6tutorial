@@ -3,13 +3,23 @@ h5.subheader rest parameters
 .feature-content
   h5 1.基本特性
   h5.subheader basic functionality
+  p 在 ES6 之前，如果你想取得函数的剩余参数，你可能使用 arguments 这个实参对象。
+  pre
+    code.javascirpt
+      | let r = (function () {
+          return arguments;
+        }("foo", "bar", "baz"));
+        console.log(r);
+  p 结果为 ["foo", "bar", "baz"]。虽然函数没有形参，但是 arguments 这个实参对象可获得传递给函数的所有实参。我们可以通过 ES6 的 rest 参数也可以来获取函数的剩余参数，如下，因为 rest 参数是函数的第二个形参，所有第二个以及第二个以后的所有实参都会被放到 args 里面，args 是一个数组。
   pre
     code.javascript
       | let r = (function (foo, ...args) {
           return args instanceof Array && args + "" === "bar,baz";
         }("foo", "bar", "baz"));
+  p 函数返回值为 true。
   h5 2.函数的 length 属性
   h5.subheader function 'length' property
+  p 函数的 length 属性返回的参数个数将不包括 rest 参数。
   pre
     code.javascript
       |let r = function(a, ...b){}.length === 1 && function(...c){}.length === 0;
@@ -27,7 +37,9 @@ h5.subheader rest parameters
             && arguments[1] === "bar"
             && arguments[2] === "baz";
         }("foo", "bar", "baz"));
-  p 函数返回值为 false。arguments 为 ["qux", "bar", "baz"]。
+  p 
+    | Chrome 42 里的测试结果为：函数返回值为 false。arguments 为 ["qux", "bar", "baz"]，Chrome 还不支持这条。按照文档，此处的返回值应该为 true。
+    span.label.radius.warning 待测试
   h5 4.不能在 setters 里使用
   h5.subheader can't be used in setters
   pre
@@ -39,7 +51,8 @@ h5.subheader rest parameters
             return true;
           }
         }());
-  p 函数返回值为 true。
+        console.log(r);
+  p 结果为 true。
   h5 4.新的 Function() 支持
   h5.subheader new Function() support
   pre
@@ -47,4 +60,5 @@ h5.subheader rest parameters
       | let r = new Function("a", "...b",
           "return b instanceof Array && a+b === 'foobar,baz';"
         )('foo','bar','baz');
+  p 结果为 true。
       

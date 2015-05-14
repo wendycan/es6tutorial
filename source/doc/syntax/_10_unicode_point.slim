@@ -7,10 +7,10 @@ h5.subheader Unicode code point escapes
     code.javascript
       |console.log('\u{1d306}' == '\ud834\udf06');
   p 结果为 true。
-  h5 2.y 标志
+  h5 2.y 修饰符
   h5.subheader in identifiers
   pre
     code.javascript
       | var \u{102C0} = { \u{102C0} : 2 };
         console.log(\u{102C0}['\ud800\udec0'] === 2);
-      
+  span.label.radius.warning 待测试

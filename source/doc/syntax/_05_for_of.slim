@@ -1,5 +1,6 @@
 h4 五、for...of 循环
 h5.subheader for..of loops
+p for...of 循环内部调用的是数据结构的 Symbol.iterator 方法。只要这个数据结构部署了 Symbol.iterator 方法就可以使用 for...of 循环。ES6 中有一些数据结构原生具备 iterator 接口，如数组、字符串、Set 和 Map 结构、某些类似数组的对象（arguments 对象、DOM NodeList对象等）、Generator 对象等，对于这些数据类型，我们就可以直接使用 for...of；对于那些没有 Symbol.iterator 的类型，比如普通对象，如果想使用 for...of，我们就需要手动添加 Symbol.iterator 方法。
 .feature-content
   h5 1.数组
   h5.subheader with arrays
@@ -29,24 +30,45 @@ h5.subheader for..of loops
   p 结果为 true。
   h5 4.通用迭代器
   h5.subheader with generic iterables
+  p 首先定义一个通用的迭代器函数：
+  pre
+    code.javascript
+      | function __createIterableObject(a, b, c) {
+          if (typeof Symbol === "function" && Symbol.iterator) {
+            var arr = [a, b, c, ,];
+            var iterable = {
+              next: function() {
+                return { value: arr.shift(), done: arr.length <= 0 };
+              },
+            };
+            iterable[Symbol.iterator] = function(){ return iterable; }
+            return iterable;
+          }
+          else {
+            return eval("(function*() { yield a; yield b; yield c; }())");
+          }
+        }
+  p 通过调用这个迭代器函数，生成一个迭代器，就可以对其使用 for...of 循环。
   pre
     code.javascript
       | var result = "";
-        var iterable = global.__createIterableObject(1, 2, 3);
+        var iterable = __createIterableObject(1, 2, 3);
         for (var item of iterable) {
         result += item;
         }
-        console.log(return result === "123");
+        console.log(result === "123");
+  p 结果为 true。
   h5 5.通用迭代的实例
   h5.subheader with instances of generic iterables
   pre
     code.javascript
       | var result = "";
-        var iterable = global.__createIterableObject(1, 2, 3);
+        var iterable = __createIterableObject(1, 2, 3);
         for (var item of Object.create(iterable)) {
          result += item;
         }
         console.log(result === "123");
+  p 结果为 true。
   h5 6.迭代关闭，break
   h5.subheader iterator closing, break
   pre
@@ -56,6 +78,9 @@ h5.subheader for..of loops
         iter['return'] = function(){ closed = true; return {}; }
         for (var it of iter) break;
         console.log(closed);
+  p 
+    | Chrome 42 里的测试结果为：false。Chrome 等其他浏览器还不支持这条。
+    span.label.radius.warning 待测试
   h5 7.迭代关闭，throw
   h5.subheader iterator closing, throw
   pre
@@ -67,3 +92,6 @@ h5.subheader for..of loops
         for (var it of iter) throw 0;
         } catch(e){}
         console.log(closed);
+  p 
+    | Chrome 42 里的测试结果为：false。Chrome 等其他浏览器还不支持这条。待测试。
+    span.label.radius.warning 待测试

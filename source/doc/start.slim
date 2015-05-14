@@ -1,16 +1,46 @@
 .row
   .large-12.columns
-    h3 前言
+    h4 一、ECMAScript 简介
     p 
-      |ECMAScript 6（以下简称ES6）是JavaScript语言的下一代标准，正处在快速开发之中，大部分已经完成了，预计将在2015年6月正式发布。
+      |ECMAScript 6 是JavaScript语言的下一代标准，正处在快速开发之中，大部分已经完成了，预计将在2015年正式发布。
+    p 
+      |在1997年发布的 
+      a href="http://www.ecma-international.org/publications/files/ECMA-ST-ARCH/ECMA-262, 1st edition, June 1997.pdf" target="_blank" ECMAScript 1 
+      |中介绍了关于 ECMAScript 是什么以及由什么组成等问题。
+    p.panel 
+      |ECMAScript: A general purpose,cross-platform programming language.
+      br
+      |This ECMA Standard is based on several originating technologies, the most well known being JavaScript™ (NetscapeCommunications) and JScript™ (Microsoft Corporation). The development of this Standard has started in November 1996.The ECMA Standard is submitted to ISO/IEC JTC 1 for adoption under the fast-track procedure.
+    p ECMAScript 的发布历史如下图：
+    img src="/images/ecmascript_history.png"
+
 .row
   .large-12.columns
-    h4 工具
+    h4 二、工具
     ul
-      li Node  
-      li io.js
       li Traceur
       li Babel
-
+    p 这两个编译器可以用来将下一代的 ECMAScript 代码编译为现在使用的 ECMAScript 代码。对现在而言，也就是将 ECMAScritp 6 的代码编译为 ECMAScript 5 的代码。使用时可以加载对应的 javascript 库到客户端的 javascript 代码中，也可以通过命令行将某个文件或某个目录里的文件转为 ECMAScript 5 的代码。
+  .large-7.columns
+    img.has-border src="/images/traceur.png"
+  .large-5.columns
+    img.has-border src="/images/babel.png"
+  .large-12.columns
+    p 
+      |Chrome 浏览器下有一款插件（Scratch JS），你可以输入 ES6 的代码，然后 Scratch 会自动生成 ES5 的代码，然后点击
+      kbd Run It
+      |或者输入
+      kbd Command
+      |+
+      kbd Enter
+      |，即可在 Chrome 的 Console 里看到运行结果。在设置里面可以更改编译器，如 traceur，babel等。
+    img.has-border src="/images/scratch.png"
+    h3 三、兼容性
+    p 
+      |可以到
+      a href="http://kangax.github.io/compat-table/es6/#ie11tp" target="_blank"  ECMAScript compatibility table 
+      |查看各平台对 ES6 新特性的兼容性。
+    img.has-border src="/images/compat_table.png"
+    
 javascript:
   $("#tool").addClass('active');

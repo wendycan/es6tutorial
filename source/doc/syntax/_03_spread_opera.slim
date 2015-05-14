@@ -1,4 +1,4 @@
-h4 三、... 操作符
+h4 三、扩展操作符
 h5.subheader spread (...) operator
 .feature-content
   h5 1.函数调用传入数组
@@ -6,61 +6,84 @@ h5.subheader spread (...) operator
   pre
     code.javascript
       |let r = Math.max(...[1, 2, 3]) === 3
-      
+  p 函数返回值为 true。
   h5 2.数组字面量中使用数组
   h5.subheader with arrays, in array literals
   pre
     code.javascript
       |let r = [...[1, 2, 3]][2] === 3;
-      
+  p 函数返回值为 true。
   h5 3.函数调用传入字符串
   h5.subheader with strings, in function calls
   pre
     code.javascript
       |let r = Math.max(..."1234") === 4;
-      
+  p 函数返回值为 true。
   h5 4.数组字面量中使用字符串
   h5.subheader with strings, in array literals
   pre
     code.javascript
       |let r = ["a", ..."bcd", "e"][3] === "d";
-      
-  h5 
+  p 函数返回值为 true。
+  h5 5.函数调用中使用特殊字符串
   h5.subheader with astral plane strings, in function calls
   pre
     code.javascript
       |let r = Array(..."𠮷𠮶")[0] === "𠮷";
-      
-  h5
+  p 函数返回值为 true。
+  h5 6.数组字面量中使用特殊字符串
   h5.subheader with astral plane strings, in array literals
   pre
     code.javascript
       |let r = [..."𠮷𠮶"][0] === "𠮷";
-
-  h5
+  p 函数返回值为 true。
+  h5 7.函数调用中使用通用迭代
   h5.subheader with generic iterables, in calls
+  p 首先定义一个通用的迭代器函数：
   pre
     code.javascript
-      | var iterable = global.__createIterableObject(1, 2, 3);
+      | function __createIterableObject(a, b, c) {
+          if (typeof Symbol === "function" && Symbol.iterator) {
+            var arr = [a, b, c, ,];
+            var iterable = {
+              next: function() {
+                return { value: arr.shift(), done: arr.length <= 0 };
+              },
+            };
+            iterable[Symbol.iterator] = function(){ return iterable; }
+            return iterable;
+          }
+          else {
+            return eval("(function*() { yield a; yield b; yield c; }())");
+          }
+        }
+  p 
+    | 调用这个迭代器函数会生成一个迭代器(iterator)，迭代器拥有 Symbol.iterator 属性。一个数据结构只要具有 Symbol.iterator 属性，就认为是“可遍历的”（iterable），就可以对其使用扩展运算符。
+  pre
+    code.javascript
+      | var iterable = __createIterableObject(1, 2, 3);
         let r = Math.max(...iterable) === 3;
-  h5
+        console.log(r);
+  p 结果为 true。
+  h5 8.数组中使用通用迭代
   h5.subheader with generic iterables, in arrays
   pre
     code.javascript
-      | var iterable = global.__createIterableObject("b", "c", "d");
+      | var iterable = __createIterableObject("b", "c", "d");
         let r = ["a", ...iterable, "e"][3] === "d";
-      
-  h5
+        console.log(r);
+  p 结果为 true。
+  h5 9.函数调用中使用迭代实例
   h5.subheader with instances of iterables, in calls
   pre
     code.javascript
-      | var iterable = global.__createIterableObject(1, 2, 3);
+      | var iterable = __createIterableObject(1, 2, 3);
         let r = Math.max(...Object.create(iterable)) === 3;
-      
-  h5
+  p 结果为 true。
+  h5 10.数组中使用迭代实例
   h5.subheader with instances of iterables, in arrays
   pre
     code.javascript
-      | var iterable = global.__createIterableObject("b", "c", "d");
+      | var iterable = __createIterableObject("b", "c", "d");
         let r = ["a", ...Object.create(iterable), "e"][3] === "d";
       
