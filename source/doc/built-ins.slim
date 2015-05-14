@@ -1,6 +1,25 @@
 .row
   .large-12.columns
-    h4 Build ins
+    .feature
+      == partial 'doc/built_ins/_01_typed_arrays'
+    .feature
+      == partial 'doc/built_ins/_02_map'
+    .feature
+      == partial 'doc/built_ins/_03_set'
+    .feature
+      == partial 'doc/built_ins/_04_weak_map'
+    .feature
+      == partial 'doc/built_ins/_05_weak_set'
+    .feature
+      == partial 'doc/built_ins/_06_proxy'
+    .feature
+      == partial 'doc/built_ins/_07_reflect'
+    .feature
+      == partial 'doc/built_ins/_08_promise'
+    .feature
+      == partial 'doc/built_ins/_09_symbol'
+    .feature
+      == partial 'doc/built_ins/_10_well_known_symbols'
 
 javascript:
   $("#built-ins").addClass('active');
