@@ -1,4 +1,22 @@
-<!DOCTYPE html><html><head><meta charset="utf-8" /><title>ECMAScript6 特性</title><link href="/stylesheets/app.css" rel="stylesheet" type="text/css" /><script src="/javascripts/app.js" type="text/javascript"></script></head><body><div class="sticky"><nav class="top-bar" data-options="sticky_on: large" data-topbar="" role="navigation"><ul class="title-area"><li class="name"><h1><a href="/"> ECMAScript6 Tutorial</a></h1></li><lwi class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></lwi></ul><section class="top-bar-section"><ul class="right"><li id="tool"><a href="/doc/start.html"> 前言</a></li><li id="optimisation"><a href="/doc/optimisation.html"> 优化</a></li><li id="syntax"><a href="/doc/syntax.html"> 语法</a></li><li id="bindings"><a href="/doc/bindings.html"> 绑定</a></li><li id="functions"><a href="/doc/functions.html"> 函数</a></li><li id="built-ins"><a href="/doc/built-ins.html"> 内建</a></li><li id="built-in-extensions"><a href="/doc/built-in-extensions.html"> 内建扩展</a></li><li id="subclassing"><a href="/doc/subclassing.html"> 子类</a></li><li id="misc"><a href="/doc/misc.html"> 混杂</a></li><li id="annex-b"><a href="/doc/annex-b.html"> 附录</a></li><li><a href="http://kangax.github.io/compat-table/es6/#ie11tp" target="_blank"> 兼容性</a></li></ul></section></nav></div><div class="wrap"><div class="row"><div class="large-12 columns"><div class="feature"><h4>一、函数的默认参数</h4><h5 class="subheader">Default function parameters</h5><div class="feature-content"><h5>1.基本特性</h5><h5 class="subheader">Basic functionality</h5><pre><code class="javascript">let r = (function (a = 1, b = 2) { return a === 3 && b === 2; }(3));</code></pre><h5>2.undefined 将触发该参数等于默认参数</h5><h5 class="subheader">Explicit undefined defers to the default</h5><pre><code class="javascript">let r = (function (a = 1, b = 2) { return a === 1 && b === 3; }(undefined, 3));</code></pre><h5>3.默认参数可以设为前一个传入的参数</h5><h5 class="subheader">Defaults can refer to previous params</h5><pre><code class="javascript">let r = (function (a, b = a) { return b === 5; }(5));</code></pre><h5>4.暂时性死区</h5><h5 class="subheader">Temporal dead zone</h5><pre><code class="javascript">let x;
+<!DOCTYPE html><html><head><meta charset="utf-8" /><title>ECMAScript6 特性</title><link href="/stylesheets/app.css" rel="stylesheet" type="text/css" /><script src="/javascripts/app.js" type="text/javascript"></script></head><body><div class="sticky"><nav class="top-bar" data-options="sticky_on: large" data-topbar="" role="navigation"><ul class="title-area"><li class="name"><h1><a href="/"> ECMAScript6 Tutorial</a></h1></li><lwi class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></lwi></ul><section class="top-bar-section"><ul class="right"><li id="tool"><a href="/doc/start.html"> 前言</a></li><li id="optimisation"><a href="/doc/optimisation.html"> 优化</a></li><li id="syntax"><a href="/doc/syntax.html"> 语法</a></li><li id="bindings"><a href="/doc/bindings.html"> 绑定</a></li><li id="functions"><a href="/doc/functions.html"> 函数</a></li><li id="built-ins"><a href="/doc/built-ins.html"> 内建</a></li><li id="built-in-extensions"><a href="/doc/built-in-extensions.html"> 内建扩展</a></li><li id="subclassing"><a href="/doc/subclassing.html"> 子类</a></li><li id="misc"><a href="/doc/misc.html"> 混杂</a></li><li id="annex-b"><a href="/doc/annex-b.html"> 附录</a></li><li><a href="http://kangax.github.io/compat-table/es6/#ie11tp" target="_blank"> 兼容性</a></li></ul></section></nav></div><div class="wrap"><div class="row"><div class="large-12 columns"><div class="feature"><h4>一、函数的默认参数</h4><h5 class="subheader">Default function parameters</h5><div class="feature-content"><h5>1.基本特性</h5><h5 class="subheader">Basic functionality</h5><p>在 ES6 之前，如果函数的某个参数有默认参数，你可能会这样写：</p><pre><code class="javascript">let r = (function (a,b) { 
+  a= a||1;
+  b=b||2;
+  return a === 3 && b === 2; 
+}(3));</code></pre><p>但是 ES6 里你可以如下设置默认参数，简洁且优美：</p><pre><code class="javascript">let r = (function (a = 1, b = 2) { 
+  return a === 3 && b === 2; 
+}(3));</code></pre><p>上述两段代码返回值均为 true。</p><p>参数指定了默认值以后，函数的 length 属性返回的参数个数将不包括默认参数，如下。</p><pre><code class="javascript">let r = (function (a, b = 2) { 
+  console.log(a,b);
+}).length;
+console.log(r);</code></pre><p>结果为 1。</p><h5>2.undefined 将触发该参数等于默认参数</h5><h5 class="subheader">Explicit undefined defers to the default</h5><p>这就意味着当函数声明某个参数有默认参数，且函数调用传入 undefined 给对应参数时，undefined 就有了特殊意义，那就是使用这个参数的默认值，null 则没有这个效果。</p><pre><code class="javascript">let r = (function (a = 1, b = 2) { 
+  return a === 1 && b === 3; 
+}(undefined, 3));
+console.log(r);</code></pre><p>结果为 true。</p><h5>3.默认参数可以设为前一个传入的参数</h5><h5 class="subheader">Defaults can refer to previous params</h5><pre><code class="javascript">let r = (function (a, b = a) { 
+  return b === 5; 
+}(5));
+console.log(r);</code></pre><p>结果为 true。</p><p>但是默认参数不能设为后一个传入的参数，这是一个比较隐蔽的‘死区’，因为执行 <kbd>a=b</kbd> 时，b 还没有声明。</p><pre><code class="javascript">let r = (function (a=b, b) { 
+  return a === 3; 
+}(undefined,3));
+console.log(r);</code></pre><h5>4.暂时性死区</h5><h5 class="subheader">Temporal dead zone</h5><pre><code class="javascript">let x;
 let y;
 try {
   (function(a=a){}());
@@ -15,17 +33,22 @@ try {
   y = true;
 }
 console.log('x', x);
-console.log('y', y);</code></pre><h5>5.块级作用域</h5><h5 class="subheader">Separate scope</h5><pre><code class="javascript">let r = (function(a=function(){
-  return typeof b === 'undefined';
-}){
+console.log('y', y);</code></pre><p>结果为 true， true。</p><p>在 let 声明变量前使用这个变量，会报错，因为此时这个变量虽然存在但不可得。</p><pre><code class="javascript">let condition = true
+if (condition) {
+  console.log(typeof value);     // ReferenceError!
+  let value = "blue";
+}</code></pre><p>由上可知 typeof 不再是一个绝对安全的操作。</p><h5>5.独立作用域</h5><h5 class="subheader">Separate scope</h5><pre><code class="javascript">let r = (function(a=function(){return typeof b === 'undefined';}){
   var b = 1;
   return a();
 }());
-console.log(r);</code></pre><h5>6.新的 Function() 支持</h5><h5 class="subheader">New Function() support</h5><pre><code class="javascript">let r = new Function("a = 1", "b = 2",
+console.log(r);</code></pre><p>结果为 true。</p><h5>6.新的 Function() 支持</h5><h5 class="subheader">New Function() support</h5><pre><code class="javascript">let r = new Function("a = 1", "b = 2",
   "return a === 3 && b === 2;"
-)(3);</code></pre></div></div><div class="feature"><h4>二、函数的剩余参数</h4><h5 class="subheader">rest parameters</h5><div class="feature-content"><h5>1.基本特性</h5><h5 class="subheader">basic functionality</h5><pre><code class="javascript">let r = (function (foo, ...args) {
+)(3);</code></pre><p>结果为 true。</p></div></div><div class="feature"><h4>二、函数的剩余参数</h4><h5 class="subheader">rest parameters</h5><div class="feature-content"><h5>1.基本特性</h5><h5 class="subheader">basic functionality</h5><p>在 ES6 之前，如果你想取得函数的剩余参数，你可能使用 arguments 这个实参对象。</p><pre><code class="javascirpt">let r = (function () {
+  return arguments;
+}("foo", "bar", "baz"));
+console.log(r);</code></pre><p>结果为 ["foo", "bar", "baz"]。虽然函数没有形参，但是 arguments 这个实参对象可获得传递给函数的所有实参。我们可以通过 ES6 的 rest 参数也可以来获取函数的剩余参数，如下，因为 rest 参数是函数的第二个形参，所有第二个以及第二个以后的所有实参都会被放到 args 里面，args 是一个数组。</p><pre><code class="javascript">let r = (function (foo, ...args) {
   return args instanceof Array && args + "" === "bar,baz";
-}("foo", "bar", "baz"));</code></pre><h5>2.函数的 length 属性</h5><h5 class="subheader">function 'length' property</h5><pre><code class="javascript">let r = function(a, ...b){}.length === 1 && function(...c){}.length === 0;</code></pre><p>函数返回值为 true。</p><h5>3.参数对象</h5><h5 class="subheader">arguments object interaction</h5><pre><code class="javascript">let r = (function (foo, ...args) {
+}("foo", "bar", "baz"));</code></pre><p>函数返回值为 true。</p><h5>2.函数的 length 属性</h5><h5 class="subheader">function 'length' property</h5><p>函数的 length 属性返回的参数个数将不包括 rest 参数。</p><pre><code class="javascript">let r = function(a, ...b){}.length === 1 && function(...c){}.length === 0;</code></pre><p>函数返回值为 true。</p><h5>3.参数对象</h5><h5 class="subheader">arguments object interaction</h5><pre><code class="javascript">let r = (function (foo, ...args) {
   foo = "qux";
   // The arguments object is not mapped to the
   // parameters, even outside of strict mode.
@@ -33,29 +56,60 @@ console.log(r);</code></pre><h5>6.新的 Function() 支持</h5><h5 class="subhea
     && arguments[0] === "foo"
     && arguments[1] === "bar"
     && arguments[2] === "baz";
-}("foo", "bar", "baz"));</code></pre><p>函数返回值为 false。arguments 为 ["qux", "bar", "baz"]。</p><h5>4.不能在 setters 里使用</h5><h5 class="subheader">can't be used in setters</h5><pre><code class="javascript">let r = (function (...args) {
+}("foo", "bar", "baz"));</code></pre><p>Chrome 42 里的测试结果为：函数返回值为 false。arguments 为 ["qux", "bar", "baz"]，Chrome 还不支持这条。按照文档，此处的返回值应该为 true。<span class="label radius warning">待测试</span></p><h5>4.不能在 setters 里使用</h5><h5 class="subheader">can't be used in setters</h5><pre><code class="javascript">let r = (function (...args) {
   try {
     eval("({set e(...args){}})");
   } catch(e) {
     return true;
   }
-}());</code></pre><p>函数返回值为 true。</p><h5>4.新的 Function() 支持</h5><h5 class="subheader">new Function() support</h5><pre><code class="javascript">let r = new Function("a", "...b",
+}());
+console.log(r);</code></pre><p>结果为 true。</p><h5>4.新的 Function() 支持</h5><h5 class="subheader">new Function() support</h5><pre><code class="javascript">let r = new Function("a", "...b",
   "return b instanceof Array && a+b === 'foobar,baz';"
-)('foo','bar','baz');</code></pre></div></div><div class="feature"><h4>三、... 操作符</h4><h5 class="subheader">spread (...) operator</h5><div class="feature-content"><h5>1.函数调用传入数组</h5><h5 class="subheader">with arrays, in function calls</h5><pre><code class="javascript">let r = Math.max(...[1, 2, 3]) === 3</code></pre><h5>2.数组字面量中使用数组</h5><h5 class="subheader">with arrays, in array literals</h5><pre><code class="javascript">let r = [...[1, 2, 3]][2] === 3;</code></pre><h5>3.函数调用传入字符串</h5><h5 class="subheader">with strings, in function calls</h5><pre><code class="javascript">let r = Math.max(..."1234") === 4;</code></pre><h5>4.数组字面量中使用字符串</h5><h5 class="subheader">with strings, in array literals</h5><pre><code class="javascript">let r = ["a", ..."bcd", "e"][3] === "d";</code></pre><h5></h5><h5 class="subheader">with astral plane strings, in function calls</h5><pre><code class="javascript">let r = Array(..."𠮷𠮶")[0] === "𠮷";</code></pre><h5></h5><h5 class="subheader">with astral plane strings, in array literals</h5><pre><code class="javascript">let r = [..."𠮷𠮶"][0] === "𠮷";</code></pre><h5></h5><h5 class="subheader">with generic iterables, in calls</h5><pre><code class="javascript">var iterable = global.__createIterableObject(1, 2, 3);
-let r = Math.max(...iterable) === 3;</code></pre><h5></h5><h5 class="subheader">with generic iterables, in arrays</h5><pre><code class="javascript">var iterable = global.__createIterableObject("b", "c", "d");
-let r = ["a", ...iterable, "e"][3] === "d";</code></pre><h5></h5><h5 class="subheader">with instances of iterables, in calls</h5><pre><code class="javascript">var iterable = global.__createIterableObject(1, 2, 3);
-let r = Math.max(...Object.create(iterable)) === 3;</code></pre><h5></h5><h5 class="subheader">with instances of iterables, in arrays</h5><pre><code class="javascript">var iterable = global.__createIterableObject("b", "c", "d");
-let r = ["a", ...Object.create(iterable), "e"][3] === "d";</code></pre></div></div><div class="feature"><h4>四、对象字面量扩展</h4><h5 class="subheader">object literal extensions</h5><div class="feature-content"><h5>1.属性计算</h5><h5 class="subheader">computed properties</h5><pre><code class="javascript">var x = 'y';
-console.log(({ [x]: 1 }).y === 1);</code></pre><p>结果为 true。</p><h5>2.属性简写</h5><h5 class="subheader">shorthand properties</h5><pre><code class="javascript">var a = 7, b = 8, c = {a,b};
-console.log(c.a === 7 && c.b === 8);</code></pre><p>结果为 true。</p><h5>3.方法简写</h5><h5 class="subheader">shorthand methods</h5><pre><code class="javascript">console.log({ y() { return 2; } }.y() === 2);</code></pre><p>结果为 true。</p><h5>4.特殊字符的方法简写</h5><h5 class="subheader">string-keyed shorthand methods</h5><pre><code class="javascript">console.log(({ "foo bar"() { return 4; } })["foo bar"]() === 4);</code></pre><p>结果为 true。    </p><h5>5.简写的计算方法</h5><h5 class="subheader">computed shorthand methods</h5><pre><code class="javascript">var x = 'y';
-console.log(({ [x](){ return 1 } }).y() === 1);</code></pre><p>结果为 true。    </p><h5>6.访问</h5><h5 class="subheader">computed accessors</h5><pre><code class="javascript">var x = 'y',
+)('foo','bar','baz');</code></pre><p>结果为 true。</p></div></div><div class="feature"><h4>三、扩展操作符</h4><h5 class="subheader">spread (...) operator</h5><div class="feature-content"><h5>1.函数调用传入数组</h5><h5 class="subheader">with arrays, in function calls</h5><pre><code class="javascript">let r = Math.max(...[1, 2, 3]) === 3</code></pre><p>函数返回值为 true。</p><h5>2.数组字面量中使用数组</h5><h5 class="subheader">with arrays, in array literals</h5><pre><code class="javascript">let r = [...[1, 2, 3]][2] === 3;</code></pre><p>函数返回值为 true。</p><h5>3.函数调用传入字符串</h5><h5 class="subheader">with strings, in function calls</h5><pre><code class="javascript">let r = Math.max(..."1234") === 4;</code></pre><p>函数返回值为 true。</p><h5>4.数组字面量中使用字符串</h5><h5 class="subheader">with strings, in array literals</h5><pre><code class="javascript">let r = ["a", ..."bcd", "e"][3] === "d";</code></pre><p>函数返回值为 true。</p><h5>5.函数调用中使用特殊字符串</h5><h5 class="subheader">with astral plane strings, in function calls</h5><pre><code class="javascript">let r = Array(..."𠮷𠮶")[0] === "𠮷";</code></pre><p>函数返回值为 true。</p><h5>6.数组字面量中使用特殊字符串</h5><h5 class="subheader">with astral plane strings, in array literals</h5><pre><code class="javascript">let r = [..."𠮷𠮶"][0] === "𠮷";</code></pre><p>函数返回值为 true。</p><h5>7.函数调用中使用通用迭代</h5><h5 class="subheader">with generic iterables, in calls</h5><p>首先定义一个通用的迭代器函数：</p><pre><code class="javascript">function __createIterableObject(a, b, c) {
+  if (typeof Symbol === "function" && Symbol.iterator) {
+    var arr = [a, b, c, ,];
+    var iterable = {
+      next: function() {
+        return { value: arr.shift(), done: arr.length <= 0 };
+      },
+    };
+    iterable[Symbol.iterator] = function(){ return iterable; }
+    return iterable;
+  }
+  else {
+    return eval("(function*() { yield a; yield b; yield c; }())");
+  }
+}</code></pre><p>调用这个迭代器函数会生成一个迭代器(iterator)，迭代器拥有 Symbol.iterator 属性。一个数据结构只要具有 Symbol.iterator 属性，就认为是“可遍历的”（iterable），就可以对其使用扩展运算符。</p><pre><code class="javascript">var iterable = __createIterableObject(1, 2, 3);
+let r = Math.max(...iterable) === 3;
+console.log(r);</code></pre><p>结果为 true。</p><h5>8.数组中使用通用迭代</h5><h5 class="subheader">with generic iterables, in arrays</h5><pre><code class="javascript">var iterable = __createIterableObject("b", "c", "d");
+let r = ["a", ...iterable, "e"][3] === "d";
+console.log(r);</code></pre><p>结果为 true。</p><h5>9.函数调用中使用迭代实例</h5><h5 class="subheader">with instances of iterables, in calls</h5><pre><code class="javascript">var iterable = __createIterableObject(1, 2, 3);
+let r = Math.max(...Object.create(iterable)) === 3;</code></pre><p>结果为 true。</p><h5>10.数组中使用迭代实例</h5><h5 class="subheader">with instances of iterables, in arrays</h5><pre><code class="javascript">var iterable = __createIterableObject("b", "c", "d");
+let r = ["a", ...Object.create(iterable), "e"][3] === "d";</code></pre></div></div><div class="feature"><h4>四、对象字面量扩展</h4><h5 class="subheader">object literal extensions</h5><div class="feature-content"><h5>1.计算属性</h5><h5 class="subheader">computed properties</h5><p>javascipt 中定义对象的属性有两种方法：</p><pre><code class="javascirpt">obj.foo = 'hello';
+obj['fo'+'o'] = 'hello';</code></pre><p>但是在用大括号定义对象时，只能使用第一种方式,如下：</p><pre><code class="javascript">var obj = {
+  foo: 'hello'
+}</code></pre><p>ES6 中两种方法都可以。</p><pre><code class="javascript">var x = 'y';
+var obj = { 
+  x: 2,
+  [x]: 1
+};
+console.log(obj.x == 2 && obj.y == 1);</code></pre><p>结果为 true。</p><h5>2.属性简写</h5><h5 class="subheader">shorthand properties</h5><pre><code class="javascript">var c = { 
+  a: 7,
+  b: 8
+};</code></pre><p>ES6允许直接写入变量和函数，作为对象的属性和方法。对于如上的对象定义可以用下面的简写方式：</p><pre><code class="javascript">var a = 7, b = 8, c = {a,b};
+console.log(c.a === 7 && c.b === 8);</code></pre><p>结果为 true。</p><h5>3.方法简写</h5><h5 class="subheader">shorthand methods</h5><pre><code class="javascript">var obj = { 
+  y: function y() {
+     return 2;
+  }
+};</code></pre><p>对于如上的对象定义可以用下面的简写方式：</p><pre><code class="javascript">console.log({ y() { return 2; } }.y() === 2);</code></pre><p>结果为 true。</p><h5>4.特殊字符的方法简写</h5><h5 class="subheader">string-keyed shorthand methods</h5><pre><code class="javascript">console.log(({ "foo bar"() { return 4; } })["foo bar"]() === 4);</code></pre><p>结果为 true。    </p><h5>5.简写的计算方法</h5><h5 class="subheader">computed shorthand methods</h5><pre><code class="javascript">var x = 'y';
+console.log(({ [x](){ return 1 } }).y() === 1);</code></pre><p>结果为 true。    </p><h5>6.访问</h5><h5 class="subheader">computed accessors</h5><p>简写的计算方法同样也可以用在 getter 和 setter 中。</p><pre><code class="javascript">var x = 'y',
     valueSet,
     obj = {
       get [x] () { return 1 },
       set [x] (value) { valueSet = value }
     };
 obj.y = 'foo';
-console.log(obj.y === 1 && valueSet === 'foo');</code></pre><p>结果为 true。</p></div></div><div class="feature"><h4>五、for...of 循环</h4><h5 class="subheader">for..of loops</h5><div class="feature-content"><h5>1.数组</h5><h5 class="subheader">with arrays</h5><pre><code class="javascript">var arr = [5];
+console.log(obj.y === 1 && valueSet === 'foo');</code></pre><p>结果为 true。</p></div></div><div class="feature"><h4>五、for...of 循环</h4><h5 class="subheader">for..of loops</h5><p>for...of 循环内部调用的是数据结构的 Symbol.iterator 方法。只要这个数据结构部署了 Symbol.iterator 方法就可以使用 for...of 循环。ES6 中有一些数据结构原生具备 iterator 接口，如数组、字符串、Set 和 Map 结构、某些类似数组的对象（arguments 对象、DOM NodeList对象等）、Generator 对象等，对于这些数据类型，我们就可以直接使用 for...of；对于那些没有 Symbol.iterator 的类型，比如普通对象，如果想使用 for...of，我们就需要手动添加 Symbol.iterator 方法。</p><div class="feature-content"><h5>1.数组</h5><h5 class="subheader">with arrays</h5><pre><code class="javascript">var arr = [5];
 for (var item of arr)
 console.log(item === 5);</code></pre><p>结果为 true。</p><h5>2.字符串</h5><h5 class="subheader">with strings</h5><pre><code class="javascript">var str = "";
 for (var item of "foo")
@@ -63,44 +117,62 @@ for (var item of "foo")
 console.log(str === "foo");</code></pre><p>结果为 true。</p><h5>3.特殊字符串</h5><h5 class="subheader">with astral plane strings</h5><pre><code class="javascript">var str = "";
 for (var item of "𠮷𠮶")
  str += item + " ";
-console.log(str === "𠮷 𠮶 ");</code></pre><p>结果为 true。</p><h5>4.通用迭代器</h5><h5 class="subheader">with generic iterables</h5><pre><code class="javascript">var result = "";
-var iterable = global.__createIterableObject(1, 2, 3);
+console.log(str === "𠮷 𠮶 ");</code></pre><p>结果为 true。</p><h5>4.通用迭代器</h5><h5 class="subheader">with generic iterables</h5><p>首先定义一个通用的迭代器函数：</p><pre><code class="javascript">function __createIterableObject(a, b, c) {
+  if (typeof Symbol === "function" && Symbol.iterator) {
+    var arr = [a, b, c, ,];
+    var iterable = {
+      next: function() {
+        return { value: arr.shift(), done: arr.length <= 0 };
+      },
+    };
+    iterable[Symbol.iterator] = function(){ return iterable; }
+    return iterable;
+  }
+  else {
+    return eval("(function*() { yield a; yield b; yield c; }())");
+  }
+}</code></pre><p>通过调用这个迭代器函数，生成一个迭代器，就可以对其使用 for...of 循环。</p><pre><code class="javascript">var result = "";
+var iterable = __createIterableObject(1, 2, 3);
 for (var item of iterable) {
 result += item;
 }
-console.log(return result === "123");</code></pre><h5>5.通用迭代的实例</h5><h5 class="subheader">with instances of generic iterables</h5><pre><code class="javascript">var result = "";
-var iterable = global.__createIterableObject(1, 2, 3);
+console.log(result === "123");</code></pre><p>结果为 true。</p><h5>5.通用迭代的实例</h5><h5 class="subheader">with instances of generic iterables</h5><pre><code class="javascript">var result = "";
+var iterable = __createIterableObject(1, 2, 3);
 for (var item of Object.create(iterable)) {
  result += item;
 }
-console.log(result === "123");</code></pre><h5>6.迭代关闭，break</h5><h5 class="subheader">iterator closing, break</h5><pre><code class="javascript">var closed = false;
+console.log(result === "123");</code></pre><p>结果为 true。</p><h5>6.迭代关闭，break</h5><h5 class="subheader">iterator closing, break</h5><pre><code class="javascript">var closed = false;
 var iter = __createIterableObject(1, 2, 3);
 iter['return'] = function(){ closed = true; return {}; }
 for (var it of iter) break;
-console.log(closed);</code></pre><h5>7.迭代关闭，throw</h5><h5 class="subheader">iterator closing, throw</h5><pre><code class="javascript">var closed = false;
+console.log(closed);</code></pre><p>Chrome 42 里的测试结果为：false。Chrome 等其他浏览器还不支持这条。<span class="label radius warning">待测试</span></p><h5>7.迭代关闭，throw</h5><h5 class="subheader">iterator closing, throw</h5><pre><code class="javascript">var closed = false;
 var iter = __createIterableObject(1, 2, 3);
 iter['return'] = function(){ closed = true; return {}; }
 try {
 for (var it of iter) throw 0;
 } catch(e){}
-console.log(closed);</code></pre></div></div><div class="feature"><h4>六、八进制和二进制</h4><h5 class="subheader">octal and binary literals</h5><div class="feature-content"><h5>1.八进制</h5><h5 class="subheader">octal literals</h5><pre><code class="javascript">console.log(0o10 === 8 && 0O10 === 8);</code></pre><p>结果为 true。</p><h5>2.二进制</h5><h5 class="subheader">binary literals</h5><pre><code class="javascript">console.log(0b10 === 2 && 0B10 === 2);</code></pre><p>结果为 true。</p><h5>3.Number() 支持八进制 </h5><h5 class="subheader">octal supported by Number()</h5><pre><code class="javascript">console.log(Number('0o1') === 1);</code></pre><p>结果为 true。</p><h5>4.Number() 支持二进制 </h5><h5 class="subheader">binary supported by Number()</h5><pre><code class="javascript">console.log(Number('0b1') === 1);</code></pre><p>结果为 true。</p></div></div><div class="feature"><h4>七、模板字符串</h4><h5 class="subheader">template strings</h5><div class="feature-content"><h5>1.基本功能</h5><h5 class="subheader">basic functionality</h5><pre><code class="javascript">var a = "ba", b = "QUX";
+console.log(closed);</code></pre><p>Chrome 42 里的测试结果为：false。Chrome 等其他浏览器还不支持这条。待测试。<span class="label radius warning">待测试</span></p></div></div><div class="feature"><h4>六、八进制和二进制</h4><h5 class="subheader">octal and binary literals</h5><p>ES6 增加了二进制和八进制数值的新写法，分别用前缀 0b 和 0o 表示。</p><div class="feature-content"><h5>1.八进制</h5><h5 class="subheader">octal literals</h5><pre><code class="javascript">console.log(0o10 === 8 && 0O10 === 8);</code></pre><p>结果为 true。</p><h5>2.二进制</h5><h5 class="subheader">binary literals</h5><pre><code class="javascript">console.log(0b10 === 2 && 0B10 === 2);</code></pre><p>结果为 true。</p><h5>3.Number() 支持八进制 </h5><h5 class="subheader">octal supported by Number()</h5><pre><code class="javascript">console.log(Number('0o1') === 1);</code></pre><p>结果为 true。</p><h5>4.Number() 支持二进制 </h5><h5 class="subheader">binary supported by Number()</h5><pre><code class="javascript">console.log(Number('0b1') === 1);</code></pre><p>结果为 true。</p></div></div><div class="feature"><h4>七、模板字符串</h4><h5 class="subheader">template strings</h5><div class="feature-content"><h5>1.基本功能</h5><h5 class="subheader">basic functionality</h5><p>在 ES6 之前如果在字符串包含变量，你可能会这样写：</p><pre><code class="javascript">var a = "ba", b = "QUX";
+var r = "foo bar\n" + a + 'z ' + b.toLowerCase();
+console.log(r);</code></pre><p>当然你可以使用第三方库，如 coffeescript：</p><pre><code class="javascript">a = "ba";b = "QUX";r = "foo bar\n#{a}z #{b.toLowerCase()}"</code></pre><p>ES6 也增加了对模板字符串的支持。你需要把它们写到反引号里面，就像 coffeescript 的模板字符串需要写在双引号里面一样，表达式写到<kbd>${}</kbd>中即可。</p><pre><code class="javascript">var a = "ba", b = "QUX";
 console.log(`foo bar
-${a + "z"} ${b.toLowerCase()}` === "foo bar\nbaz qux");</code></pre><p>结果为 true。</p><h5>2.标签模板字符串</h5><h5 class="subheader">tagged template strings</h5><pre><code class="javascript">var called = false;
-function fn(parts, a, b) {
-  called = true;
-  return parts instanceof Array &&
-    parts[0]     === "foo"      &&
-    parts[1]     === "bar\n"    &&
-    parts.raw[0] === "foo"      &&
-    parts.raw[1] === "bar\\n"   &&
-    a === 123                   &&
-    b === 456;
+${a + "z"} ${b.toLowerCase()}` === "foo bar\nbaz qux");</code></pre><p>结果为 true。</p><h5>2.标签模板字符串</h5><h5 class="subheader">tagged template strings</h5><p>标签模板字符串, 可以通过函数的输出修改模板字符串。只需要将模板字符串紧跟在一个函数名后面，如下。函数 fn 依次接收三个参数。第一个参数是数组，该数组的成员是模板字符串中那些没有变量替换的部分。第一个参数之后的参数，都是模板字符串各个变量被替换后对应的值。</p><pre><code class="javascript">function fn(parts, a, b) {
+  console.log(parts); //["foo", "bar\n", "", raw: ["foo", "bar\n", ""]]
+  console.log(a);     //123
+  console.log(b);     //456
 }
-console.log(fn `foo${123}bar\n${456}` && called);</code></pre><p>结果为 true。</p></div></div><div class="feature"><h4>八、正则表达式'y' 和 'u'标志</h4><h5 class="subheader">RegExp "y" and "u" flags</h5><div class="feature-content"><h5>1.y 标志</h5><h5 class="subheader">"y" flag</h5><pre><code class="javascript">var re = new RegExp('\\w');
+fn `foo${123}bar\n${456}`;</code></pre><p>当输入的字符串只是一个变量替换时，结果如下;而且这种写法里， fn 后面紧跟的必须是反引号引起来的字符串;String.raw 方法，往往用来处理模板字符串，返回字符串被转义前的原始格式。</p><pre><code class="javascript">function fn() {
+  console.log(arguments); //[["",""], 123]
+}
+fn `${123}`;
+
+String.raw({ raw: 'test' }, 0, 1, 2); // 't0e1s2t'</code></pre><p>结果为 true。</p></div></div><div class="feature"><h4>八、正则表达式 'y' 和 'u' 修饰符</h4><h5 class="subheader">RegExp "y" and "u" flags</h5><div class="feature-content"><h5>1.y 修饰符</h5><h5 class="subheader">"y" flag</h5><p>y 修饰符确保匹配必须从剩余的第一个位置开始，且要求匹配必须从头部开始。</p><pre><code class="javascript">var re = new RegExp('\\w');
 var re2 = new RegExp('\\w', 'y');
 re.exec('xy');
 re2.exec('xy');
-console.log((re.exec('xy')[0] === 'x' && re2.exec('xy')[0] === 'y'));</code></pre><h5>2.u 标志</h5><h5 class="subheader">"u" flag</h5><pre><code class="javascript">console.log("𠮷".match(/^.$/u)[0].length === 2);</code></pre><p>结果为 true。</p></div></div><div class="feature"><h4>九、解构</h4><h5 class="subheader">destructuring</h5><div class="feature-content"><h5>1.数组</h5><h5 class="subheader">with arrays</h5><pre><code class="javascript">var [a, , [b], c] = [5, null, [6]];
+console.log((re.exec('xy')[0] === 'x' && re2.exec('xy')[0] === 'y'));</code></pre><p>结果为 true。</p><pre><code class="javascript">var s = "aaa_aa_a";
+var r = /a+/y;
+console.log(r.exec(s)); // ['aaa']
+console.log(r.exec(s)); // null</code></pre><h5>2.u 修饰符</h5><h5 class="subheader">"u" flag</h5><pre><code class="javascript">console.log("𠮷".match(/^.$/u)[0].length === 2);</code></pre><p>结果为 true。</p></div></div><div class="feature"><h4>九、解构</h4><h5 class="subheader">destructuring</h5><p>ES6 允许按照一定的模式，从数组、字符串、对象等中提取值，对变量进行复制，称为解构。</p><div class="feature-content"><h5>1.数组</h5><h5 class="subheader">with arrays</h5><pre><code class="javascript">var [a, , [b], c] = [5, null, [6]];
 var d, e;
 [d,e] = [7,8];
 console.log(a === 5 && b === 6 && c === undefined
@@ -110,23 +182,37 @@ var d, e;
 console.log(a === "a" && b === "b" && c === undefined
  && d === "d" && e === "e");</code></pre><p>结果为 true。</p><h5>3.特殊字符</h5><h5 class="subheader">with astral plane strings</h5><pre><code class="javascript">var c;
 [c] = "𠮷𠮶";
-console.log(c === "𠮷");</code></pre><p>结果为 true。</p><h5>4.通用迭代器</h5><h5 class="subheader">with generic iterables</h5><pre><code class="javascript">var [a, b, c] = global.__createIterableObject(1, 2);
+console.log(c === "𠮷");</code></pre><p>结果为 true。</p><h5>4.通用迭代器</h5><h5 class="subheader">with generic iterables</h5><p>首先定义一个通用的迭代器函数：</p><pre><code class="javascript">function __createIterableObject(a, b, c) {
+  if (typeof Symbol === "function" && Symbol.iterator) {
+    var arr = [a, b, c, ,];
+    var iterable = {
+      next: function() {
+        return { value: arr.shift(), done: arr.length <= 0 };
+      },
+    };
+    iterable[Symbol.iterator] = function(){ return iterable; }
+    return iterable;
+  }
+  else {
+    return eval("(function*() { yield a; yield b; yield c; }())");
+  }
+}</code></pre><p>通过调用这个迭代器函数，生成一个迭代器，就可以对其进行解构。</p><pre><code class="javascript">var [a, b, c] = __createIterableObject(1, 2);
 var d, e;
-[d, e] = global.__createIterableObject(3, 4);
+[d, e] = __createIterableObject(3, 4);
 console.log(a === 1 && b === 2 && c === undefined
- && d === 3 && e === 4);      </code></pre><h5>5.通用迭代器的实例</h5><h5 class="subheader">with instances of generic iterables</h5><pre><code class="javascript">var [a, b, c] = Object.create(global.__createIterableObject(1, 2))
+ && d === 3 && e === 4);      </code></pre><p>结果为 true。</p><h5>5.通用迭代器的实例</h5><h5 class="subheader">with instances of generic iterables</h5><pre><code class="javascript">var [a, b, c] = Object.create(__createIterableObject(1, 2))
 var d, e;
-[d, e] = Object.create(global.__createIterableObject(3, 4));
+[d, e] = Object.create(__createIterableObject(3, 4));
 console.log(a === 1 && b === 2 && c === undefined
- && d === 3 && e === 4);</code></pre><h5>6.迭代器关闭</h5><h5 class="subheader">iterator closing</h5><pre><code class="javascript">var closed = false;
+ && d === 3 && e === 4);</code></pre><p>结果为 true。</p><h5>6.迭代器关闭</h5><h5 class="subheader">iterator closing</h5><pre><code class="javascript">var closed = false;
 var iter = __createIterableObject(1, 2, 3);
 iter['return'] = function(){ closed = true; return {}; }
 var [a, b] = iter;
-console.log(closed);</code></pre><h5>7.迭代解构</h5><h5 class="subheader">iterable destructuring expression</h5><pre><code class="javascript">var a, b, iterable = [1,2];
+console.log(closed);</code></pre><span class="label radius warning">待测试</span><h5>7.迭代解构</h5><h5 class="subheader">iterable destructuring expression</h5><pre><code class="javascript">var a, b, iterable = [1,2];
 console.log(([a, b] = iterable) === iterable);</code></pre><p>结果为 true。</p><h5>8.链式迭代解构</h5><h5 class="subheader">chained iterable destructuring</h5><pre><code class="javascript">var a,b,c,d;
 [a,b] = [c,d] = [1,2];
 console.log(a === 1 && b === 2 && c === 1 && d === 2);</code></pre><p>结果为 true。</p><h5>9.迭代模式中的逗号</h5><h5 class="subheader">trailing commas in iterable patterns</h5><pre><code class="javascript">var [a,] = [1];
-console.log(a === 1);</code></pre><h5>10.对象</h5><h5 class="subheader">with objects</h5><pre><code class="javascript">var {c, x:d, e} = {c:7, x:8};
+console.log(a === 1);</code></pre><p>结果为 true。</p><h5>10.对象</h5><h5 class="subheader">with objects</h5><pre><code class="javascript">var {c, x:d, e} = {c:7, x:8};
 var f, g;
 ({f,g} = {f:9,g:10});
 console.log(c === 7 && d === 8 && e === undefined
@@ -142,7 +228,7 @@ console.log(toFixed === Number.prototype.toFixed
 console.log(a === 1);</code></pre><p>结果为 true。</p><h5>13.对象解构表达式</h5><h5 class="subheader">object destructuring expression</h5><pre><code class="javascript">var a, b, obj = { a:1, b:2 };
 console.log(({a,b} = obj) === obj);</code></pre><p>结果为 true。</p><h5>14.链式的对象解构</h5><h5 class="subheader">chained object destructuring</h5><pre><code class="javascript">var a,b,c,d;
 ({a,b} = {c,d} = {a:1,b:2,c:3,d:4});
-console.log(a === 1 && b === 2 && c === 3 && d === 4);</code></pre><p>结果为 true。</p><h5>15.null 和 undefined 时抛出异常</h5><h5 class="subheader">throws on null and undefined</h5><pre><code class="javascript">var status = true;
+console.log(a === 1 && b === 2 && c === 3 && d === 4);</code></pre><p>结果为 true。</p><h5>15.null 和 undefined 时抛出异常</h5><h5 class="subheader">throws on null and undefined</h5><p>不能对 null 或 undefined 进行对象解构。</p><pre><code class="javascript">var status = true;
 try {
 var {a} = null;
  status = false;
@@ -167,7 +253,7 @@ console.log(e === 9 && f === 10 && g === undefined
 }({a:1, x:2}, [3, 4])));</code></pre><p>结果为 true。</p><h5>20.new Function() 支持参数解构</h5><h5 class="subheader">in parameters, new Function() support</h5><pre><code class="javascript">console.log(new Function("{a, x:b, y:e}","[c, d]",
  "return a === 1 && b === 2 && c === 3 && "
  + "d === 4 && e === undefined;"
-)({a:1, x:2}, [3, 4]));</code></pre><h5>21.函数的 length 属性</h5><h5 class="subheader">in parameters, function 'length' property</h5><pre><code class="javascript">console.log(function({a, b}, [c, d]){}.length === 2);</code></pre><p>结果为 true。</p><h5>22.for-in 循环</h5><h5 class="subheader">in for-in loop heads</h5><pre><code class="javascript">for(var [i, j, k] in { qux: 1 }) {
+)({a:1, x:2}, [3, 4]));</code></pre><p>结果为 true。</p><h5>21.函数的 length 属性</h5><h5 class="subheader">in parameters, function 'length' property</h5><pre><code class="javascript">console.log(function({a, b}, [c, d]){}.length === 2);</code></pre><p>结果为 true。</p><h5>22.for-in 循环</h5><h5 class="subheader">in for-in loop heads</h5><pre><code class="javascript">for(var [i, j, k] in { qux: 1 }) {
  console.log(i === "q" && j === "u" && k === "x");
 }</code></pre><p>结果为 true。</p><h5>23.for-of 循环</h5><h5 class="subheader">in for-of loop heads</h5><pre><code class="javascript">for(var [i, j, k] of [[1,2,3]]) {
  console.log(i === 1 && j === 2 && k === 3);
@@ -198,18 +284,18 @@ console.log(status);</code></pre><p>结果为 true 和 false。</p><h5>29.默认
 }}){
   var b = 1;
   return a();
-}({})));</code></pre><h5>30.new Function() 支持默认参数</h5><h5 class="subheader">defaults in parameters, new Function() support</h5><pre><code class="javascript">console.log(new Function("{a = 1, b = 0, c = 3, x:d = 0, y:e = 5, z:f}",
+}({})));</code></pre><span class="label radius warning">待测试</span><h5>30.new Function() 支持默认参数</h5><h5 class="subheader">defaults in parameters, new Function() support</h5><pre><code class="javascript">console.log(new Function("{a = 1, b = 0, c = 3, x:d = 0, y:e = 5, z:f}",
   "return a === 1 && b === 2 && c === 3 && d === 4 && "
   + "e === 5 && f === undefined;"
-)({b:2, c:undefined, x:4}));      </code></pre></div></div><div class="feature"><h4>十、Unicode 点</h4><h5 class="subheader">Unicode code point escapes</h5><div class="feature-content"><h5>1.字符串</h5><h5 class="subheader">in strings</h5><pre><code class="javascript">console.log('\u{1d306}' == '\ud834\udf06');</code></pre><p>结果为 true。</p><h5>2.y 标志</h5><h5 class="subheader">in identifiers</h5><pre><code class="javascript">var \u{102C0} = { \u{102C0} : 2 };
-console.log(\u{102C0}['\ud800\udec0'] === 2);</code></pre></div></div><div class="feature"><h4>十一、new.target</h4><h5 class="subheader">new.target</h5><div class="feature-content"><h5>1.字符串</h5><h5 class="subheader">in constructors</h5><pre><code class="javascript">var passed = false;
+)({b:2, c:undefined, x:4}));      </code></pre><span class="label radius warning">待测试</span></div></div><div class="feature"><h4>十、Unicode 点</h4><h5 class="subheader">Unicode code point escapes</h5><div class="feature-content"><h5>1.字符串</h5><h5 class="subheader">in strings</h5><pre><code class="javascript">console.log('\u{1d306}' == '\ud834\udf06');</code></pre><p>结果为 true。</p><h5>2.y 修饰符</h5><h5 class="subheader">in identifiers</h5><pre><code class="javascript">var \u{102C0} = { \u{102C0} : 2 };
+console.log(\u{102C0}['\ud800\udec0'] === 2);</code></pre><span class="label radius warning">待测试</span></div></div><div class="feature"><h4>十一、new.target</h4><h5 class="subheader">new.target</h5><div class="feature-content"><h5>1.字符串</h5><h5 class="subheader">in constructors</h5><pre><code class="javascript">var passed = false;
 new (function f() {
   passed = (new.target === f);
 }());
 (function() {
   passed &= (new.target === undefined);
 }());
-console.log(passed);</code></pre><h5>2.不能被赋值</h5><h5 class="subheader">can't be assigned to</h5><pre><code class="javascript">var passed = false;
+console.log(passed);</code></pre><span class="label radius warning">待测试</span><h5>2.不能被赋值</h5><h5 class="subheader">can't be assigned to</h5><pre><code class="javascript">var passed = false;
 new (function f() {
   passed = (new.target === f);
 }());     
@@ -219,5 +305,5 @@ try {
   }());
 } catch(e) {
   console.log(passed);
-}</code></pre></div></div></div></div><script type="text/javascript">$("#syntax").addClass('active');</script></div><script type="text/javascript">$(document).foundation();
+}</code></pre><span class="label radius warning">待测试</span></div></div></div></div><script type="text/javascript">$("#syntax").addClass('active');</script></div><script type="text/javascript">$(document).foundation();
 hljs.initHighlightingOnLoad();</script></body></html>

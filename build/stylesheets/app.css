@@ -6673,6 +6673,10 @@ p {
   margin-bottom: 3px;
   margin-top: 3px; }
 
+/* line 28, /Users/wendy/Workspace/Wendycan/es6tutorial/source/stylesheets/main.scss */
+.has-border {
+  border: solid 1px #d8d8d8; }
+
 /* line 2, /Users/wendy/Workspace/Wendycan/es6tutorial/source/stylesheets/home.scss */
 .container table th:first-child {
   width: 10%;

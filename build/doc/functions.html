@@ -141,7 +141,7 @@ class A {
 }
 class B extends A {}
 new B();
-console.log(passed);</code></pre></div></div><div class="feature"><h4>一、super</h4><h5 class="subheader">super</h5><div class="feature-content"><h5>1.构造函数中的 super 声明</h5><h5 class="subheader">statement in constructors</h5><pre><code class="javascript"> var passed = false;
+console.log(passed);</code></pre></div></div><div class="feature"><h4>三、super</h4><h5 class="subheader">super</h5><div class="feature-content"><h5>1.构造函数中的 super 声明</h5><h5 class="subheader">statement in constructors</h5><pre><code class="javascript"> var passed = false;
 class B {
   constructor(a) { passed = (a === "barbaz"); }
 }
@@ -194,7 +194,7 @@ var obj = {
   qux: C.prototype.qux,
   corge: "ley"
 };
-console.log(obj.qux() === "barley");</code></pre><p>结果为 true。</p></div></div><div class="feature"><h4>一、Generators</h4><h5 class="subheader">generators</h5><div class="feature-content"><h5>1.基本功能</h5><h5 class="subheader">basic functionality</h5><pre><code class="javascript">function * generator(){
+console.log(obj.qux() === "barley");</code></pre><p>结果为 true。</p></div></div><div class="feature"><h4>四、Generators</h4><h5 class="subheader">generators</h5><div class="feature-content"><h5>1.基本功能</h5><h5 class="subheader">basic functionality</h5><pre><code class="javascript">function * generator(){
   yield 5; yield 6;
 };
 var iterator = generator();
