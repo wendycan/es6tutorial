@@ -1,5 +1,11 @@
 h4 四、Generators
 h5.subheader generators
+p 
+  | generator 是函数内部状态的遍历器。每调用一次，内部状态改变一次。generator 函数有两个特征，一是 function 后面带有一个 
+  kbd *
+  | ，二是函数体内有 
+  kbd yield
+  | 语句。
 .feature-content
   h5 1.基本功能
   h5.subheader basic functionality
@@ -62,9 +68,10 @@ h5.subheader generators
         catch (e) {
         console.log(true);
         }
-  p 结果为 true。
-  h5 5.发送
+  span.label.radius.warning 待测试
+  h5 5.传递参数
   h5.subheader sending
+  p yield 语句总是返回 undefined。next 方法可以带一个参数，该参数就会被当作上一个 yield 语句的返回值。
   pre
     code.javascript
       | var sent;
@@ -91,7 +98,7 @@ h5.subheader generators
         console.log(passed);
       
   p 结果为 true。
-  h5 7.generator 抛出异常
+  h5 7.generator throw
   h5.subheader %GeneratorPrototype%.throw
   pre
     code.javascript
@@ -124,8 +131,12 @@ h5.subheader generators
         passed = passed && item.value === undefined && item.done === true;
         console.log(passed);
   p 结果为 true。
-  h5 9.yield 操作符优先
+  h5 9.yield 操作符优先级
   h5.subheader yield operator precedence
+  p 
+    | yield 操作符的优先级低于 
+    kbd ?:
+    |  操作符的优先级。
   pre
     code.javascript
       | var passed;
@@ -185,10 +196,29 @@ h5.subheader generators
   p 结果为 true。
   h5 13.yield *，通用迭代器
   h5.subheader yield *, generic iterables
+  p 首先定义一个通用的迭代器函数：
+  pre
+    code.javascript
+      | function __createIterableObject(a, b, c) {
+          if (typeof Symbol === "function" && Symbol.iterator) {
+            var arr = [a, b, c, ,];
+            var iterable = {
+              next: function() {
+                return { value: arr.shift(), done: arr.length <= 0 };
+              },
+            };
+            iterable[Symbol.iterator] = function(){ return iterable; }
+            return iterable;
+          }
+          else {
+            return eval("(function*() { yield a; yield b; yield c; }())");
+          }
+        }
+  p 通过调用这个迭代器函数，生成一个迭代器。
   pre
     code.javascript
       | var iterator = (function * generator() {
-          yield * global.__createIterableObject(5, 6, 7);
+          yield * __createIterableObject(5, 6, 7);
         }());
         var item = iterator.next();
         var passed = item.value === 5 && item.done === false;
@@ -199,7 +229,7 @@ h5.subheader generators
         item = iterator.next();
         passed = passed && item.value === undefined && item.done === true;
         console.log(passed);
-  //- p 结果为 true。
+  p 结果为 true。
   h5 14.yield *，迭代器实例
   h5.subheader yield *, instances of iterables
   pre
@@ -216,7 +246,7 @@ h5.subheader generators
         item = iterator.next();
         passed = passed && item.value === undefined && item.done === true;
         console.log(passed);
-  //- p 结果为 true。
+  p 结果为 true。
   h5 15.yield *，迭代器关闭
   h5.subheader yield *, iterator closing
   pre
@@ -237,7 +267,7 @@ h5.subheader generators
         gen.next();
         gen['return']();
         console.log(closed === 'ab');
-  //- p 结果为 true。
+  span.label.radius.warning 待测试
   h5 16.yield *，迭代器通过 throw 关闭
   h5.subheader yield *, iterator closing via throw()
   pre
@@ -256,8 +286,8 @@ h5.subheader generators
         })();
         gen.next();
         gen['throw']();
-        return closed;
-  //- p 结果为 true。
+        console.log(closed);
+  span.label.radius.warning 待测试
   h5 17.简写 generator 方法
   h5.subheader shorthand generator methods
   pre
