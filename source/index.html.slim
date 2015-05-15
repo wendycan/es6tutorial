@@ -54,8 +54,8 @@ script#t-tr type="text/template"
     td <%= text %>
 
 javascript:
-  $('.scroll-nav td').width($('.scroll-nav').parent('.large-3').width()/2-40);
   $(document).ready(function() {
+    $('.scroll-nav td').width($('.scroll-nav').parent('.large-3').width()/2-40);
     $.get('/public/data.json').done(function (data) {
       data.forEach(function(t, index){
         var html = _.template($('#t-table').html())({category: t.category.replace(' ', '-').replace('\n',''),table_index: index});
