@@ -6677,6 +6677,17 @@ p {
 .has-border {
   border: solid 1px #d8d8d8; }
 
+/* line 36, /Users/wendy/Workspace/Wendycan/es6tutorial/source/stylesheets/main.scss */
+.footer {
+  background-color: #efefef; }
+  /* line 39, /Users/wendy/Workspace/Wendycan/es6tutorial/source/stylesheets/main.scss */
+  .footer p {
+    color: #666;
+    font-size: 14px; }
+  /* line 44, /Users/wendy/Workspace/Wendycan/es6tutorial/source/stylesheets/main.scss */
+  .footer p > a {
+    padding-left: 10px; }
+
 /* line 2, /Users/wendy/Workspace/Wendycan/es6tutorial/source/stylesheets/home.scss */
 .container table th:first-child {
   width: 10%;
