@@ -3,9 +3,10 @@ h5.subheader super
 .feature-content
   h5 1.构造函数中的 super 声明
   h5.subheader statement in constructors
+  p ES6 要求子类必须在 constructor 方法中调用 super 方法，否则新建实例时会报错。而且，在子类的构造函数中，只有调用 super 之后，才可以使用 this 关键字，否则会报错。
   pre
     code.javascript
-      |  var passed = false;
+      | var passed = false;
         class B {
           constructor(a) { passed = (a === "barbaz"); }
         }
@@ -27,7 +28,7 @@ h5.subheader super
         }
         console.log(new C("baz")[0] === "foobarbaz");
   p 结果为 true。
-  h5 3.方法中，属性访问
+  h5 3.方法中用 super 访问属性
   h5.subheader in methods, property access
   pre
     code.javascript
@@ -40,7 +41,7 @@ h5.subheader super
         C.prototype.qux = "garply";
         console.log(new C().quux("bar") === "foobarbaz");
   p 结果为 true。
-  h5 4.方法中，方法调用
+  h5 4.方法中用 super 调用方法
   h5.subheader in methods, method calls
   pre
     code.javascript
@@ -79,7 +80,7 @@ h5.subheader super
         }
         new C();
         console.log(passed);
-  //- p 结果为 true。
+  span.label.radius.warning 待测试
   h5 7.静态绑定
   h5.subheader is statically bound
   pre

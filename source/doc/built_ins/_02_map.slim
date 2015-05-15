@@ -1,8 +1,147 @@
 h4 二、Map
 h5.subheader Map
 .feature-content
-  h5 .
-  h5.subheader 
+  h5 1.基本功能
+  h5.subheader basic functionality
+  p JavaScript 的对象，本质上是键值对的集合，但是只能用字符串或者 symbol 当作键。Object 结构提供了“字符串/symbox—值”的映射，Map结构提供了“值—值”的映射。Map 的键是跟内存地址绑定的，只要内存地址不一样，那就是两个不同的键。
   pre
     code.javascript
+      | var map = new Map();
+        var k1 = ['a'];
+        var k2 = ['a'];
+        map.set(k1, 111);
+        map.set(k2, 222);
+        console.log(map.get(k1)); //111
+        console.log(map.get(k2)); //222
+  p 虽然 k1 和 k2 的值相同，但是指向不同的内存地址，所以视为两个 key。
+  pre
+    code.javascript
+      | var key = {};
+        var map = new Map();
+        map.set(key, 123);
+        console.log(map.has(key) && map.get(key) === 123);
   p 结果为 true。
+  h5 2.构造函数传入参数
+  h5.subheader constructor arguments
+  pre
+    code.javascript
+      | var key1 = {};
+        var key2 = {};
+        var map = new Map([[key1, 123], [key2, 456]]);
+        console.log(map.has(key1) && map.get(key1) === 123 &&
+               map.has(key2) && map.get(key2) === 456);
+  p 结果为 true。
+  h5 3.迭代关闭
+  h5.subheader iterator closing
+  p 
+    kbd __createIterableObject
+    | 为自定义的迭代器函数。
+  pre
+    code.javascript
+      | function __createIterableObject(a, b, c) {
+          if (typeof Symbol === "function" && Symbol.iterator) {
+            var arr = [a, b, c, ,];
+            var iterable = {
+              next: function() {
+                return { value: arr.shift(), done: arr.length <= 0 };
+              },
+            };
+            iterable[Symbol.iterator] = function(){ return iterable; }
+            return iterable;
+          }
+          else {
+            return eval("(function*() { yield a; yield b; yield c; }())");
+          }
+        }
+
+        var closed = false;
+        var iter = __createIterableObject(1, 2, 3);
+        iter['return'] = function(){ closed = true; return {}; }
+        try {
+          new Map(iter);
+        } catch(e){}
+        console.log(closed);
+  span.label.radius.warning 待测试
+  h5 4.map.set() 方法返回 this，因此可以进行链式操作。
+  h5.subheader Map.prototype.set returns this
+  pre
+    code.javascript
+      | var map = new Map();
+        console.log(map.set(0, 0) === map);
+  p 结果为 true。
+  h5 5. -0 和 +0 作为 key ，是相同的 key。
+  h5.subheader -0 key converts to +0
+  pre
+    code.javascript
+      | var map = new Map();
+        map.set(-0, "foo");
+        var k;
+        map.forEach(function (value, key) {
+          k = 1 / key;
+        });
+        console.log(k === Infinity && map.get(+0) == "foo");
+  p 结果为 true。
+  h5 6.map 的长度
+  h5.subheader Map.prototype.size
+  pre
+    code.javascript
+      | var key = {};
+        var map = new Map();
+        map.set(key, 123);
+        console.log(map.size === 1);
+  p 结果为 true。
+  h5 7.map 的 delete 方法
+  h5.subheader Map.prototype.delete
+  pre
+    code.javascript
+      | var a = {x:1};
+        var b = {x:2};
+        var map = new Map([[a,'xa'],[b,'xb']]);
+        map.delete(a);
+        console.log(map); //Map {Object {x: 2} => "xb"}
+  h5 8.map 的清空 clear 方法
+  h5.subheader Map.prototype.clear
+  pre
+    code.javascript
+      | var a = {x:1};
+        var b = {x:2};
+        var map = new Map([[a,'xa'],[b,'xb']]);
+        map.clear();
+        console.log(map); //Map {}
+  h5 9.map 的 forEach 方法
+  h5.subheader Map.prototype.forEach
+  pre
+    code.javascript
+      | var a = {x:1};
+        var b = {x:2};
+        var map = new Map([[a,'xa'],[b,'xb']]);
+        map.forEach(function(value,key){console.log(value,key)});
+        //xa Object {x: 1}
+        //xb Object {x: 2}
+  h5 10.map 的 keys 方法
+  h5.subheader Map.prototype.keys
+  pre
+    code.javascript
+      | var a = {x:1};
+        var b = {x:2};
+        var map = new Map([[a,'xa'],[b,'xb']]);
+        console.log(map.keys()); //MapIterator {Object {x: 1}, Object {x: 2}}
+  p keys 方法返回的是一个包含 map 所有键的迭代器。
+  h5 11.map 的 values 方法
+  h5.subheader Map.prototype.values
+  pre
+    code.javascript
+      | var a = {x:1};
+        var b = {x:2};
+        var map = new Map([[a,'xa'],[b,'xb']]);
+        console.log(map.values()); //MapIterator {"xa", "xb"}
+  p values 方法返回的是一个包含 map 所有值的迭代器。
+  h5 12.map 的 entries 方法
+  h5.subheader Map.prototype.entries
+  pre
+    code.javascript
+      | var a = {x:1};
+        var b = {x:2};
+        var map = new Map([[a,'xa'],[b,'xb']]);
+        console.log(map.entries()); //MapIterator {[Object, "xa"], [Object, "xb"]}
+  p entries 方法是返回 map 所有成员的遍历器。

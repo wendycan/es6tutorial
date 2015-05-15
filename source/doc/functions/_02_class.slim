@@ -1,5 +1,6 @@
 h4 二、类
 h5.subheader class
+p ES6 引入了 Class（类）这个概念，作为对象的模板。通过 class 关键字，可以定义类，class 可以看作是一个语法糖，新的 class 写法只是让对象原型的写法更加清晰、更像面向对象编程的语法。
 .feature-content
   h5 1.class 声明
   h5.subheader class statement
@@ -34,9 +35,12 @@ h5.subheader class
   p 结果为 true。
   h5 5.构造函数
   h5.subheader constructor
+  p constructor 方法是类的默认方法，通过 new 实例化对象时，自动调用该方法。一个类必须有 constructor 方法，如果没有显式定义，该方法会被默认添加，如下：
   pre
     code.javascript
-      | class C {
+      | constructor() {} //默认添加
+
+        class C {
          constructor() { this.x = 1; }
         }
         console.log(C.prototype.constructor === C
@@ -44,6 +48,7 @@ h5.subheader class
   p 结果为 true。
   h5 6.原型方法
   h5.subheader prototype methods
+  p 除了 constructor 方法外，类的方法都定义在类的 prototype 属性上面。你可以直接把函数定义放到类的定义（大括号内）里面，而且前面不需要加 function 这个保留字。
   pre
     code.javascript
       | class C {
@@ -52,7 +57,7 @@ h5.subheader class
         console.log(typeof C.prototype.method === "function"
          && new C().method() === 2);
   p 结果为 true。
-  h5 7.带空格的字符方法
+  h5 7.方法名带空格
   h5.subheader string-keyed methods
   pre
     code.javascript
@@ -75,6 +80,7 @@ h5.subheader class
   p 结果为 true。
   h5 9.静态方法
   h5.subheader static methods
+  p 在一个方法前，加上 static 关键字，该方法就不会被实例继承，而是直接通过类来调用。
   pre
     code.javascript
       | class C {
@@ -110,10 +116,10 @@ h5.subheader class
   h5.subheader computed accessor properties
   pre
     code.javascript
-      | var baz = false;
+      | var garply = "foo", grault = "bar", baz = false;
         class C {
-         get foo() { return "foo"; }
-         set bar(x) { baz = x; }
+          get [garply]() { return "foo"; }
+          set [grault](x) { baz = x; }
         }
         new C().bar = true;
         console.log(new C().foo === "foo" && baz);
@@ -164,6 +170,7 @@ h5.subheader class
         } catch(e) {
          console.log(true);
         }
+  span.label.radius.warning 待测试
   h5 17.方法不能枚举
   h5.subheader methods aren't enumerable
   pre
@@ -185,6 +192,7 @@ h5.subheader class
   p 结果为 0,false
   h5 19.构造函数需要 new
   h5.subheader constructor requires new
+  p 实例化对象时，必须加上 new，否则会报错。
   pre
     code.javascript
       | class C {}
@@ -197,6 +205,7 @@ h5.subheader class
   p 结果为 true。
   h5 20.继承
   h5.subheader extends
+  p Class 之间可以通过 extends 关键字实现继承，而不需要修改原型链实现继承。
   pre
     code.javascript
       | class B {}
@@ -244,4 +253,4 @@ h5.subheader class
         class B extends A {}
         new B();
         console.log(passed);
-  //- p 结果为 true。
+  span.label.radius.warning 待测试

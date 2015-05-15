@@ -1,12 +1,24 @@
 h4 一、箭头函数
 h5.subheader arrow functions
+p ES6 支持使用“箭头”（=>）来定义函数。
 .feature-content
   h5 1.不带参数
   h5.subheader 0 parameters
   pre
     code.javascript
-      |console.log((() =&gt; 5)() === 5);
-  p 结果为 true。
+      | console.log((() =&gt; 5)() === 5); //true
+        console.log((() => {5;4+2;})());  //undefined
+  p 函数体只有一行代码时，可以省略大括号，指定返回值时可以省略 return；多于一行必须用大括号括起来，且指定返回值时必须带 ‘return’。
+  p 上面代码编译为 ES5 后如下：
+  pre
+    code.javascript
+      | console.log((function () {
+          return 5;
+        })() === 5); //true
+        console.log((function () {
+          5;
+          4 + 2;
+        })()); //undefined
   h5 2.一个参数可以不带括号
   h5.subheader 1 parameter, no brackets
   pre
@@ -14,6 +26,10 @@ h5.subheader arrow functions
       | var b = x =&gt; x + "foo";
         console.log((b("fee fie foe ") === "fee fie foe foo"));
   p 结果为 true。
+  pre
+    code.javascript
+      | var b = x => x + "foo";console.log(x);  //ReferenceError: x is not defined
+        console.log((b("fee fie foe ") === "fee fie foe foo"));
   h5 3.多个参数
   h5.subheader multiple parameters
   pre
@@ -23,6 +39,7 @@ h5.subheader arrow functions
   p 结果为 true。
   h5 4.this 绑定
   h5.subheader lexical "this" binding
+  p 函数体内的 this 对象，绑定到定义时的 this 对象。
   pre
     code.javascript
       | var d = { x : "bar", y : function() { return z =&gt; this.x + z; }}.y();
@@ -31,12 +48,7 @@ h5.subheader arrow functions
   p 结果为 true。
   h5 5.call 和 apply 都不改变 this
   h5.subheader "this" unchanged by call or apply
-  pre
-    code.javascript
-      | var d = { x : "foo", y : function() { return () =&gt; this.x; }};
-        var e = { x : "bar" };
-        console.log(d.y().call(e) === "foo" && d.y().apply(e) === "foo");
-  p 结果为 true。
+  p 由于 this 在箭头函数中被绑定，所以不能用 call()、apply()、bind() 这些方法来改变 this 的指向。
   pre
     code.javascript
       | console.log('arrow')
@@ -51,7 +63,7 @@ h5.subheader arrow functions
         console.log(d.y().call(e));
         console.log(d.y().apply(e));
   p 结果为 arrow,foo,foo,function,bar,bar。
-  h5 6.can't be bound, can be curried
+  h5 6.无法绑定 this
   h5.subheader can't be bound, can be curried
   pre
     code.javascript
@@ -63,10 +75,20 @@ h5.subheader arrow functions
   h5.subheader lexical "arguments" binding
   pre
     code.javascript
+      | function a(){
+          console.log(arguments);
+        }
+        var b = () => console.log(arguments);
+        a(1,2); //[1, 2]
+        b(3,4); //ReferenceError: arguments is not defined
+  p arguments 对象，在箭头函数体内不存在。
+  pre
+    code.javascript
       | var f = (function() { return z =&gt; arguments[0]; }(5));
         console.log(f(6) === 5);
-  p 结果为 true。
-  h5 8.参数和<之间不能换行
+  p 结果为 true。此时指向的应该是其父函数的 arguments 对象。
+  h5 
+    |8.参数和 => 之间不能换行
   h5.subheader no line break between params and =&gt;
   pre
     code.javascript
@@ -76,11 +98,12 @@ h5.subheader arrow functions
   p 结果为 true。
   h5 9.没有 prototype 属性
   h5.subheader no "prototype" property
+  p 箭头函数没有 prototype 属性。
   pre
     code.javascript
       | var a = () =&gt; 5;
         console.log(!a.hasOwnProperty("prototype"));
-  //- p 结果为 true/false。
+  p 结果为 true。
   h5 10.super 绑定
   h5.subheader lexical "super" binding
   pre
@@ -106,4 +129,4 @@ h5.subheader arrow functions
            return x =&gt; new.target;
         }
         console.log(new C()() === C && C()() === undefined);
-  //- p 结果为 true。
+  span.label.radius.warning 待测试
