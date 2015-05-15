@@ -28,3 +28,19 @@ p {
 .has-border {
   border: solid 1px #d8d8d8;
 }
+
+.feature h4 {
+  // padding-top: 5px;
+}
+
+.footer {
+  background-color: #efefef;
+
+  p {
+    color: #666;
+  }
+
+  p > a {
+    padding-left: 10px;
+  }
+}

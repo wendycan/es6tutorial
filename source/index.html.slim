@@ -10,15 +10,16 @@ title: ECMAScript6 新特性
   .large-3.columns
     table.pos-fixed.scroll-nav
       tr
-        td
+        td.active
           a href="#c-Optimisation"  优化
         td
           a href="#c-Syntax"  语法
-        td
-          a href="#c-Bindings"  绑定
       tr
         td
+          a href="#c-Bindings"  绑定
+        td
           a href="#c-Functions"  函数
+      tr
         td
           a href="#c-Built-ins"  内建
         td
@@ -28,12 +29,14 @@ title: ECMAScript6 新特性
           a href="#c-Subclassing"  子类
         td
           a href="#c-Misc"  混杂
+      tr
         td
           a href="#c-Annex-b"  附录
+        td
+          a href="#c-Annex-b"  
+
   .large-9.columns
     #container.container
-
-== javascript_include_tag "main"
 
 script#t-table type="text/template" 
   h4 id="c-<%= category %>" 
@@ -49,3 +52,28 @@ script#t-tr type="text/template"
   tr
     td <%= index %>
     td <%= text %>
+
+javascript:
+  $('.scroll-nav td').width($('.scroll-nav').parent('.large-3').width()/2-40);
+  $(document).ready(function() {
+    $.get('/public/data.json').done(function (data) {
+      data.forEach(function(t, index){
+        var html = _.template($('#t-table').html())({category: t.category.replace(' ', '-').replace('\n',''),table_index: index});
+        $('#container').append(html);
+        t.data.forEach(function(item, i){
+          var tr = _.template($('#t-tr').html())({text: item,index: i + 1});
+          $('#table-' + index).find('tbody').append(tr);
+        });
+      })
+    })
+
+    $('.scroll-nav td').on('click', function(e){
+      e.preventDefault();
+      var target = $( $(this).find('a').attr('href') );
+      $('.scroll-nav td').removeClass('active');
+      $(this).addClass('active');
+      $('html, body').animate({
+        scrollTop: target.offset().top - 50
+      }, 1000);
+    });
+  });
