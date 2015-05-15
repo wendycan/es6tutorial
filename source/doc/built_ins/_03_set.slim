@@ -1,8 +1,134 @@
 h4 三、Set
 h5.subheader Set
+p set 类似于数组，但是成员的值都是唯一的，没有重复的值。
 .feature-content
-  h5 .
-  h5.subheader 
+  h5 1.基本功能
+  h5.subheader basic functionality
   pre
     code.javascript
+      | var obj = {};
+        var set = new Set();
+        set.add(123);
+        set.add(123);
+        console.log(set.has(123));
   p 结果为 true。
+  h5 2.构造函数传入参数
+  h5.subheader constructor arguments
+  pre
+    code.javascript
+      | var obj1 = {};
+        var obj2 = {};
+        var set = new Set([obj1, obj2]);
+        console.log(set.has(obj1) && set.has(obj2));
+  p 结果为 true。
+  h5 3.迭代关闭
+  h5.subheader iterator closing
+  p 
+    kbd __createIterableObject
+    | 为自定义的迭代器函数。
+  pre
+    code.javascript
+      | function __createIterableObject(a, b, c) {
+          if (typeof Symbol === "function" && Symbol.iterator) {
+            var arr = [a, b, c, ,];
+            var iterable = {
+              next: function() {
+                return { value: arr.shift(), done: arr.length <= 0 };
+              },
+            };
+            iterable[Symbol.iterator] = function(){ return iterable; }
+            return iterable;
+          }
+          else {
+            return eval("(function*() { yield a; yield b; yield c; }())");
+          }
+        }
+
+        var closed = false;
+        var iter = __createIterableObject(1, 2, 3);
+        iter['return'] = function(){ closed = true; return {}; }
+        var add = Set.prototype.add;
+        Set.prototype.add = function(){ throw 0 };
+        try {
+          new Set(iter);
+        } catch(e){}
+        Set.prototype.add = add;
+        console.log(closed);
+      
+  span.label.radius.warning 待测试
+  h5 4.set.add() 方法返回 this，因此可以进行链式操作。
+  h5.subheader Set.prototype.add returns this
+  pre
+    code.javascript
+      | var set = new Set();
+        console.log(set.add(0) === set);
+  p 结果为 true。
+  h5 5. -0 和 +0 作为 key ，是相同的 key。
+  h5.subheader 
+    |-0 key converts to +0
+  pre
+    code.javascript
+      | var set = new Set();
+        set.add(-0);
+        var k;
+        set.forEach(function (value) {
+          k = 1 / value;
+        });
+        console.log(k === Infinity && set.has(+0));
+  p 结果为 true。
+  h5 6.set 的长度
+  h5.subheader Set.prototype.size
+  pre
+    code.javascript
+      | var obj = {};
+        var set = new Set();
+        set.add(123);
+        set.add(123);
+        set.add(456);
+        console.log(set.size === 2);
+  p 结果为 true。
+  h5 7.set 的 delete 方法
+  h5.subheader Set.prototype.delete
+  pre
+    code.javascript
+      | var set = new Set(['s','x','y','x']);
+        set.delete('s');
+        console.log(set);  //Set {"x", "y"}
+  h5 8.set 的清空 clear 方法
+  h5.subheader Set.prototype.clear
+  pre
+    code.javascript
+      | var set = new Set(['s','x','y','x']);
+        set.clear();
+        console.log(set); //Set {}
+  h5 9.set 的 forEach 方法
+  h5.subheader Set.prototype.forEach
+  pre
+    code.javascript
+      | var set = new Set(['s','x','y','x']);
+        set.forEach(function(value){console.log(value)});
+        //s
+        //x
+        //y
+  h5 10.set 的 keys 方法
+  h5.subheader Set.prototype.keys
+  p Set结构也有 keys 和 entries 方法，这时每个值的键名就是键值。
+  pre
+    code.javascript
+      | var set = new Set(['s','x','y','x']);
+        console.log(set.keys()); //SetIterator {"s", "x", "y"}
+  p keys 方法返回的是一个包含 set 所有键的迭代器。
+  h5 11.set 的 values 方法
+  h5.subheader Set.prototype.values
+  pre
+    code.javascript
+      | var set = new Set(['s','x','y','x']);
+        console.log(set.values()); //SetIterator {"s", "x", "y"}
+  p values 方法返回的是一个包含 set 所有值的迭代器。
+  h5 12.set 的 entries 方法
+  h5.subheader Set.prototype.entries
+  pre
+    code.javascript
+      | var set = new Set(['s','x','y','x']);
+        console.log(set.entries()); //SetIterator {["s", "s"], ["x", "x"], ["y", "y"]}
+  p entries 方法是返回 set 所有成员的遍历器。
