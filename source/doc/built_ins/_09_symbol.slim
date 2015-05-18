@@ -1,8 +1,108 @@
 h4 九、Symbol
 h5.subheader Symbol
+p Symbol 是一种新的原始数据类型，表示独一无二的 ID。通过 Symbol 函数生成。Symbol 类型对象和字符串一样，可以作为属性名。
 .feature-content
-  / h5 .
-  / h5.subheader 
-  / pre
-  /   code.javascript
-  / p 结果为 true。
+  h5 1.基本功能
+  h5.subheader basic functionality
+  pre
+    code.javascript
+      | var object = {};
+        var symbol = Symbol();
+        var value = {};
+        object[symbol] = value;
+        console.log(object[symbol] === value);
+  p 结果为 true。
+  h5 2.typeof 支持
+  h5.subheader typeof support
+  pre
+    code.javascript
+      | console.log(typeof Symbol() === "symbol");
+  p 结果为 true。
+  h5 3.symbol 键在 pre-ES6 里是隐藏的
+  h5.subheader symbol keys are hidden to pre-ES6 code
+  p Symbol作为属性名，该属性不会出现在for...in循环中，也不会被Object.keys()、Object.getOwnPropertyNames()返回。Object.getOwnPropertySymbols 可以获得对象的 symbol 键值对。
+  pre
+    code.javascript
+      | var object = {};
+        var symbol = Symbol();
+        object[symbol] = 1;
+
+        for (var x in object){}
+        var passed = !x;
+
+        if (Object.keys && Object.getOwnPropertyNames) {
+          passed = passed && Object.keys(object).length === 0
+            && Object.getOwnPropertyNames(object).length === 0;
+        }
+        console.log(passed);
+  p 结果为 true。
+  h5 4.Object.defineProperty 支持
+  h5.subheader Object.defineProperty support
+  pre
+    code.javascript
+      | var object = {};
+        var symbol = Symbol();
+        var value = {};
+
+        if (Object.defineProperty) {
+          Object.defineProperty(object, symbol, { value: value });
+          console.log(object[symbol] === value);
+        }
+  p 结果为 true。
+  h5 5.不能强制转换为字符串或数字
+  h5.subheader cannot coerce to string or number
+  p Symbol 类型的值与其他类型的值进行运算会报错。
+  pre
+    code.javascript
+      | var symbol = Symbol();
+        var passed;
+        try {
+          symbol + "";
+          passed = false;
+        }
+        catch(e) {}
+        try {
+          symbol + 0;
+          passed = false;
+        } catch(e) {}
+
+        console.log(true);
+  p 结果为 true。
+  h5 6.可以通过 String() 转换为字符串
+  h5.subheader can convert with String()
+  pre
+    code.javascript
+      | console.log(String(Symbol("foo")) === "Symbol(foo)");
+  p 结果为 true。
+  h5 7.new Symbol() 会抛出异常
+  h5.subheader new Symbol() throws
+  p symbol 类型为原始数据类型，不是对象，所以不能用 new Symbol() 实例化。
+  pre
+    code.javascript
+      | var symbol = Symbol();
+        try {
+          new Symbol();
+        } catch(e) {
+          console.log(true);
+        }
+  p 结果为 true。
+  h5 8.Object(symbol)
+  h5.subheader Object(symbol)
+  pre
+    code.javascript
+      | var symbol = Symbol();
+        var symbolObject = Object(symbol);
+
+        console.log(typeof symbolObject === "object" &&
+          symbolObject == symbol &&
+          symbolObject !== symbol &&
+          symbolObject.valueOf() === symbol);
+  p 结果为 true。
+  h5 9.全局 symbol 注册
+  h5.subheader global symbol registry
+  pre
+    code.javascript
+      | var symbol = Symbol.for('foo');
+        console.log(Symbol.for('foo') === symbol &&
+           Symbol.keyFor(symbol) === 'foo');
+  p 结果为 true。

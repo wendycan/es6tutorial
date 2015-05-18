@@ -1,8 +1,70 @@
 h4 八、Promise
-h5.subheader Promise
+h5.subheader Promise、
+p Promise 对象，代表了未来某个将要发生的事件（通常是一个异步操作）。
 .feature-content
-  / h5 .
-  / h5.subheader 
-  / pre
-  /   code.javascript
-  / p 结果为 true。
+  h5 1.basic functionality
+  h5.subheader 基本功能
+  pre
+    code.javascript
+      | var p1 = new Promise(function(resolve, reject) { resolve("foo"); });
+        var p2 = new Promise(function(resolve, reject) { reject("quux"); });
+        var score = 0;
+
+        function thenFn(result)  { score += (result === "foo");  check(); }
+        function catchFn(result) { score += (result === "quux"); check(); }
+        function shouldNotRun(result)  { score = -Infinity;   }
+
+        p1.then(thenFn, shouldNotRun);
+        p2.then(shouldNotRun, catchFn);
+        p1.catch(shouldNotRun);
+        p2.catch(catchFn);
+
+        p1.then(function() {
+          // Promise.prototype.then() should return a new Promise
+          score += p1.then() !== p1;
+          check();
+        });
+
+        function check() {
+          if (score === 4) asyncTestPassed();
+        }
+  h5 2.Promise.all
+  h5.subheader Promise.all
+  p p1、p2的状态都变成 fulfilled，p 的状态才会变成 fulfilled，p1、p2 的返回值组成一个数组，传给 p 的回调函数。p1、p2 有一个被rejected，p的状态就变成 rejected，第一个被 reject 的实例的返回值，传给 p 的回调函数。
+  pre
+    code.javascript
+      | var fulfills = Promise.all([ //p
+          new Promise(function(resolve)   { setTimeout(resolve,200,"foo"); }), //p1
+          new Promise(function(resolve)   { setTimeout(resolve,100,"bar"); }), //p2
+        ]);
+        var rejects = Promise.all([
+          new Promise(function(_, reject) { setTimeout(reject, 200,"baz"); }),
+          new Promise(function(_, reject) { setTimeout(reject, 100,"qux"); }),
+        ]);
+        var score = 0;
+        fulfills.then(function(result) { score += (result + "" === "foo,bar"); check(); });
+        rejects.catch(function(result) { score += (result === "qux"); check(); });
+
+        function check() {
+          if (score === 2) asyncTestPassed();
+        }
+  h5 3.Promise.race
+  h5.subheader Promise.race
+  p 只要 p1、p2 之中有一个实例率先改变状态，p 的状态就跟着改变。那个率先改变的 Promise 实例的返回值，就传递给 p 的返回值。
+  pre
+    code.javascript
+      | var fulfills = Promise.race([ //p
+          new Promise(function(resolve)   { setTimeout(resolve,200,"foo"); }), //p1
+          new Promise(function(_, reject) { setTimeout(reject, 300,"bar"); }), //p2
+        ]);
+        var rejects = Promise.race([
+          new Promise(function(_, reject) { setTimeout(reject, 200,"baz"); }),
+          new Promise(function(resolve)   { setTimeout(resolve,300,"qux"); }),
+        ]);
+        var score = 0;
+        fulfills.then(function(result) { score += (result === "foo"); check(); });
+        rejects.catch(function(result) { score += (result === "baz"); check(); });
+
+        function check() {
+          if (score === 2) asyncTestPassed();
+        }
