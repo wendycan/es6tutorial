@@ -1,8 +1,67 @@
 h4 五、weakSet
 h5.subheader weakSet
+p WeakSet 的成员只能是对象，而不能是其他原始类型类型的值。其次，WeakSet 中的对象都是弱引用，即垃圾回收机制不考虑 WeakSet 对该对象的引用，也就是说，如果其他对象都不再引用该对象，那么垃圾回收机制会自动回收该对象所占用的内存，不考虑该对象还存在于 WeakSet 之中。这个特点意味着，无法引用 WeakSet 的成员，因此 WeakSet 是不可遍历的。
 .feature-content
-  / h5 .
-  / h5.subheader 
-  / pre
-  /   code.javascript
-  / p 结果为 true。
+  h5 1.基本功能
+  h5.subheader basic functionality
+  pre
+    code.javascript
+      | var obj1 = {};
+        var weakset = new WeakSet();
+        weakset.add(obj1);
+        weakset.add(obj1);
+        console.log(weakset.has(obj1));
+  p 结果为 true。
+  h5 2.构造函数传入参数
+  h5.subheader constructor arguments
+  pre
+    code.javascript
+      | var obj1 = {}, obj2 = {};
+        var weakset = new WeakSet([obj1, obj2]);
+        console.log(weakset.has(obj1) && weakset.has(obj2));
+  p 结果为 true。
+  h5 3.迭代关闭
+  h5.subheader iterator closing
+  pre
+    code.javascript
+      | function __createIterableObject(a, b, c) {
+          if (typeof Symbol === "function" && Symbol.iterator) {
+            var arr = [a, b, c, ,];
+            var iterable = {
+              next: function() {
+                return { value: arr.shift(), done: arr.length <= 0 };
+              },
+            };
+            iterable[Symbol.iterator] = function(){ return iterable; }
+            return iterable;
+          }
+          else {
+            return eval("(function*() { yield a; yield b; yield c; }())");
+          }
+        }
+        
+        var closed = false;
+        var iter = __createIterableObject(1, 2, 3);
+        iter['return'] = function(){ closed = true; return {}; }
+        try {
+          new WeakSet(iter);
+        } catch(e){}
+        console.log(closed);
+  span.label.radius.warning 待测试
+  h5 4.add 方法返回 this
+  h5.subheader WeakSet.prototype.set returns this
+  pre
+    code.javascript
+      | var weakset = new WeakSet();
+        var obj = {};
+        console.log(weakset.add(obj) === weakset);
+  p 结果为 true。
+  h5 5.delete 方法
+  h5.subheader WeakSet.prototype.delete
+  pre
+    code.javascript
+      | var key = {};
+        var weakset = new WeakSet();
+        weakset.add(key, 123);
+        weakset.delete(key);
+        console.log(weakset); //WeakSet {}

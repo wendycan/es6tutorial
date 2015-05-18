@@ -1,8 +1,77 @@
 h4 四、weakMap
 h5.subheader weakMap
+p WeakMap 与 Map 类似，唯一的区别是它只接受对象作为键名（null 除外），不接受原始类型的值作为键名，而且键名所指向的对象，不计入垃圾回收机制。WeakMap 适用于，键所对应的对象可能会在将来消失，WeakMap 自动移除对应的键值对。WeakMap 结构有助于防止内存泄漏。
 .feature-content
-  / h5 .
-  / h5.subheader 
-  / pre
-  /   code.javascript
-  / p 结果为 true。
+  h5 1.基本功能
+  h5.subheader basic functionality
+  pre
+    code.javascript
+      | var key = {};
+        var weakmap = new WeakMap();
+        weakmap.set(key, 123);
+        console.log(weakmap.has(key) && weakmap.get(key) === 123);
+  p 结果为 true。
+  h5 2.构造函数传入参数
+  h5.subheader constructor arguments
+  pre
+    code.javascript
+      | var key1 = {};
+        var key2 = {};
+        var weakmap = new WeakMap([[key1, 123], [key2, 456]]);
+        console.log(weakmap.has(key1) && weakmap.get(key1) === 123 &&
+               weakmap.has(key2) && weakmap.get(key2) === 456);
+  p 结果为 true。
+  h5 3.迭代关闭
+  h5.subheader iterator closing
+  pre
+    code.javascript
+      | function __createIterableObject(a, b, c) {
+          if (typeof Symbol === "function" && Symbol.iterator) {
+            var arr = [a, b, c, ,];
+            var iterable = {
+              next: function() {
+                return { value: arr.shift(), done: arr.length <= 0 };
+              },
+            };
+            iterable[Symbol.iterator] = function(){ return iterable; }
+            return iterable;
+          }
+          else {
+            return eval("(function*() { yield a; yield b; yield c; }())");
+          }
+        }
+
+        var closed = false;
+        var iter = __createIterableObject(1, 2, 3);
+        iter['return'] = function(){ closed = true; return {}; }
+        try {
+          new WeakMap(iter);
+        } catch(e){}
+       console.log(closed);
+  span.label.radius.warning 待测试
+  h5 4.set 方法返回 this
+  h5.subheader WeakMap.prototype.set returns this
+  pre
+    code.javascript
+      | var weakmap = new WeakMap();
+        var key = {};
+       console.log(weakmap.set(key, 0) === weakmap);
+  p 结果为 true。
+  h5 5.delete 方法
+  h5.subheader WeakMap.prototype.delete
+  pre
+    code.javascript
+      | var key = {};
+        var weakmap = new WeakMap();
+        weakmap.set(key, 123);
+        weakmap.delete(key);
+        console.log(weakmap); //WeakMap {}
+  h5 6.支持对象作为键
+  h5.subheader Support frozen objects as keys
+  pre
+    code.javascript
+      | var f = Object.freeze({});
+        var m = new WeakMap;
+        m.set(f, 42);
+        console.log(m.get(f) === 42);
+  p 结果为 true。

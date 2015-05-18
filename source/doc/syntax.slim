@@ -25,31 +25,6 @@
     .feature
       == partial "doc/syntax/_11_new_target"
 
+== partial 'layouts/sub_nav_js'
 javascript:
   $("#syntax").addClass('active');
-  $(document).ready(function() {
-    $('.scroll-nav').width($('.scroll-nav').parent('.large-3').width()-20);
-    $('.feature h4').each(function(i, el){
-      $(this).attr('data-text', $(el).text().split('、')[1]);
-      if(i == 0){
-        $('.scroll-nav').append('<tr><td class="active">' + $(el).text().split('、')[1] + '</td></tr>');
-      } else {
-        $('.scroll-nav').append('<tr><td>' + $(el).text().split('、')[1] + '</td></tr>');
-      }
-    });
-    $('.scroll-nav td').on('click', function(e){
-      e.preventDefault();
-      if($(this).find('a').length > 0){
-        var target = $( $(this).find('a').attr('href') );
-      } else {
-        console.log($(this).text());
-        var target = $('.feature').find('[data-text="' + $(this).text() + '"]');
-        console.log(target);
-      }
-      $('.scroll-nav td').removeClass('active');
-      $(this).addClass('active');
-      $('html, body').animate({
-        scrollTop: target.offset().top - 48
-      }, 1000);
-    });
-  });

@@ -1,8 +1,86 @@
 h4 十、常用的 symbols
 h5.subheader well known symbols
 .feature-content
-  / h5 .
-  / h5.subheader 
-  / pre
-  /   code.javascript
-  / p 结果为 true。
+  h5 1.Symbol.hasInstance
+  h5.subheader Symbol.hasInstance
+  pre
+    code.javascript
+      | var passed = false;
+        var obj = { foo: true };
+        var C = function(){};
+        Object.defineProperty(C, Symbol.hasInstance, {
+          value: function(inst) { passed = inst.foo; return false; }
+        });
+        obj instanceof C;
+        console.log(passed);
+  span.label.radius.warning 待测试
+  h5 2.Symbol.isConcatSpreadable
+  h5.subheader Symbol.isConcatSpreadable
+  pre
+    code.javascript
+      | var a = [], b = [];
+        b[Symbol.isConcatSpreadable] = false;
+        a = a.concat(b);
+        console.log(a[0] === b);
+  span.label.radius.warning 待测试
+  h5 3.Symbol.iterator
+  h5.subheader Symbol.iterator
+  pre
+    code.javascript
+      | var a = 0, b = {};
+        b[Symbol.iterator] = function() {
+          return {
+            next: function() {
+              return {
+                done: a++ === 1,
+                value: "foo"
+              };
+            }
+          };
+        };
+        var c;
+        for (c of b) {}
+        console.log(c === "foo");
+  p 结果为 true。
+  h5 4.Symbol.species
+  h5.subheader Symbol.species
+  pre
+    code.javascript
+      | console.log(RegExp[Symbol.species] === RegExp
+        && Array[Symbol.species] === Array
+        && !(Symbol.species in Object));
+      
+  span.label.radius.warning 待测试
+  h5 5.Symbol.toPrimitive
+  h5.subheader Symbol.toPrimitive
+  pre
+    code.javascript
+      | var a = {}, b = {}, c = {};
+        var passed = 0;
+        a[Symbol.toPrimitive] = function(hint) { passed += hint === "number";  return 0; };
+        b[Symbol.toPrimitive] = function(hint) { passed += hint === "string";  return 0; };
+        c[Symbol.toPrimitive] = function(hint) { passed += hint === "default"; return 0; };
+
+        a >= 0;
+        b in {};
+        c == 0;
+        console.log(passed === 3);
+  span.label.radius.warning 待测试
+  h5 6.Symbol.toStringTag
+  h5.subheader Symbol.toStringTag
+  pre
+    code.javascript
+      | var a = {};
+        a[Symbol.toStringTag] = "foo";
+        console.log((a + "") === "[object foo]");
+  span.label.radius.warning 待测试
+  h5 7.Symbol.unscopables
+  h5.subheader Symbol.unscopables
+  pre
+    code.javascript
+      | var a = { foo: 1, bar: 2 };
+        a[Symbol.unscopables] = { bar: true };
+        with (a) {
+          console.log(foo === 1 && typeof bar === "undefined");
+        }
+  span.label.radius.warning 待测试
