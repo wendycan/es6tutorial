@@ -55,6 +55,17 @@ script#t-tr type="text/template"
 
 javascript:
   $(document).ready(function() {
+    var animate = false;
+    var active_nav =  function(){
+      $('.container h4').each(function(i, el){
+        if (animate) return;
+        if (Math.abs($(window).scrollTop() - $(el).offset().top) < 60) {
+          $('.scroll-nav td').removeClass('active');
+          $($('.scroll-nav td')[i]).addClass('active');
+        }
+      });
+    };
+    active_nav();
     $('.scroll-nav td').width($('.scroll-nav').parent('.large-3').width()/2-40);
     $.get('/public/data.json').done(function (data) {
       data.forEach(function(t, index){
@@ -72,8 +83,16 @@ javascript:
       var target = $( $(this).find('a').attr('href') );
       $('.scroll-nav td').removeClass('active');
       $(this).addClass('active');
+      animate = true;
       $('html, body').animate({
         scrollTop: target.offset().top - 50
-      }, 1000);
+      }, 1000,
+      function(){
+        animate = false;
+      }
+      );
+    });
+    $(document).scroll(function(){
+      active_nav();
     });
   });
