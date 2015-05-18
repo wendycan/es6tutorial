@@ -354,8 +354,226 @@ set.forEach(function(value){console.log(value)});
 //y</code></pre><h5>10.set 的 keys 方法</h5><h5 class="subheader">Set.prototype.keys</h5><p>Set结构也有 keys 和 entries 方法，这时每个值的键名就是键值。</p><pre><code class="javascript">var set = new Set(['s','x','y','x']);
 console.log(set.keys()); //SetIterator {"s", "x", "y"}</code></pre><p>keys 方法返回的是一个包含 set 所有键的迭代器。</p><h5>11.set 的 values 方法</h5><h5 class="subheader">Set.prototype.values</h5><pre><code class="javascript">var set = new Set(['s','x','y','x']);
 console.log(set.values()); //SetIterator {"s", "x", "y"}</code></pre><p>values 方法返回的是一个包含 set 所有值的迭代器。</p><h5>12.set 的 entries 方法</h5><h5 class="subheader">Set.prototype.entries</h5><pre><code class="javascript">var set = new Set(['s','x','y','x']);
-console.log(set.entries()); //SetIterator {["s", "s"], ["x", "x"], ["y", "y"]}</code></pre><p>entries 方法是返回 set 所有成员的遍历器。</p></div></div><div class="feature"><h4>四、weakMap</h4><h5 class="subheader">weakMap</h5><div class="feature-content"></div></div><div class="feature"><h4>五、weakSet</h4><h5 class="subheader">weakSet</h5><div class="feature-content"></div></div><div class="feature"><h4>六、Proxy</h4><h5 class="subheader">Proxy</h5><div class="feature-content"></div></div><div class="feature"><h4>七、Reflect</h4><h5 class="subheader">Reflect</h5><div class="feature-content"></div></div><div class="feature"><h4>八、Promise</h4><h5 class="subheader">Promise</h5><div class="feature-content"></div></div><div class="feature"><h4>九、Symbol</h4><h5 class="subheader">Symbol</h5><div class="feature-content"></div></div><div class="feature"><h4>十、常用的 symbols</h4><h5 class="subheader">well known symbols</h5><div class="feature-content"></div></div></div></div><script type="text/javascript">$("#built-ins").addClass('active');
-$(document).ready(function() {
+console.log(set.entries()); //SetIterator {["s", "s"], ["x", "x"], ["y", "y"]}</code></pre><p>entries 方法是返回 set 所有成员的遍历器。</p></div></div><div class="feature"><h4>四、weakMap</h4><h5 class="subheader">weakMap</h5><p>WeakMap 与 Map 类似，唯一的区别是它只接受对象作为键名（null 除外），不接受原始类型的值作为键名，而且键名所指向的对象，不计入垃圾回收机制。WeakMap 适用于，键所对应的对象可能会在将来消失，WeakMap 自动移除对应的键值对。WeakMap 结构有助于防止内存泄漏。</p><div class="feature-content"><h5>1.基本功能</h5><h5 class="subheader">basic functionality</h5><pre><code class="javascript">var key = {};
+var weakmap = new WeakMap();
+weakmap.set(key, 123);
+console.log(weakmap.has(key) && weakmap.get(key) === 123);</code></pre><p>结果为 true。</p><h5>2.构造函数传入参数</h5><h5 class="subheader">constructor arguments</h5><pre><code class="javascript">var key1 = {};
+var key2 = {};
+var weakmap = new WeakMap([[key1, 123], [key2, 456]]);
+console.log(weakmap.has(key1) && weakmap.get(key1) === 123 &&
+       weakmap.has(key2) && weakmap.get(key2) === 456);</code></pre><p>结果为 true。</p><h5>3.迭代关闭</h5><h5 class="subheader">iterator closing</h5><pre><code class="javascript">function __createIterableObject(a, b, c) {
+  if (typeof Symbol === "function" && Symbol.iterator) {
+    var arr = [a, b, c, ,];
+    var iterable = {
+      next: function() {
+        return { value: arr.shift(), done: arr.length <= 0 };
+      },
+    };
+    iterable[Symbol.iterator] = function(){ return iterable; }
+    return iterable;
+  }
+  else {
+    return eval("(function*() { yield a; yield b; yield c; }())");
+  }
+}
+
+var closed = false;
+var iter = __createIterableObject(1, 2, 3);
+iter['return'] = function(){ closed = true; return {}; }
+try {
+  new WeakMap(iter);
+} catch(e){}
+console.log(closed);</code></pre><span class="label radius warning">待测试</span><h5>4.set 方法返回 this</h5><h5 class="subheader">WeakMap.prototype.set returns this</h5><pre><code class="javascript">var weakmap = new WeakMap();
+var key = {};
+console.log(weakmap.set(key, 0) === weakmap);</code></pre><p>结果为 true。</p><h5>5.delete 方法</h5><h5 class="subheader">WeakMap.prototype.delete</h5><pre><code class="javascript">var key = {};
+var weakmap = new WeakMap();
+weakmap.set(key, 123);
+weakmap.delete(key);
+console.log(weakmap); //WeakMap {}</code></pre><h5>6.支持对象作为键</h5><h5 class="subheader">Support frozen objects as keys</h5><pre><code class="javascript">var f = Object.freeze({});
+var m = new WeakMap;
+m.set(f, 42);
+console.log(m.get(f) === 42);</code></pre><p>结果为 true。</p></div></div><div class="feature"><h4>五、weakSet</h4><h5 class="subheader">weakSet</h5><p>WeakSet 的成员只能是对象，而不能是其他原始类型类型的值。其次，WeakSet 中的对象都是弱引用，即垃圾回收机制不考虑 WeakSet 对该对象的引用，也就是说，如果其他对象都不再引用该对象，那么垃圾回收机制会自动回收该对象所占用的内存，不考虑该对象还存在于 WeakSet 之中。这个特点意味着，无法引用 WeakSet 的成员，因此 WeakSet 是不可遍历的。</p><div class="feature-content"><h5>1.基本功能</h5><h5 class="subheader">basic functionality</h5><pre><code class="javascript">var obj1 = {};
+var weakset = new WeakSet();
+weakset.add(obj1);
+weakset.add(obj1);
+console.log(weakset.has(obj1));</code></pre><p>结果为 true。</p><h5>2.构造函数传入参数</h5><h5 class="subheader">constructor arguments</h5><pre><code class="javascript">var obj1 = {}, obj2 = {};
+var weakset = new WeakSet([obj1, obj2]);
+console.log(weakset.has(obj1) && weakset.has(obj2));</code></pre><p>结果为 true。</p><h5>3.迭代关闭</h5><h5 class="subheader">iterator closing</h5><pre><code class="javascript">function __createIterableObject(a, b, c) {
+  if (typeof Symbol === "function" && Symbol.iterator) {
+    var arr = [a, b, c, ,];
+    var iterable = {
+      next: function() {
+        return { value: arr.shift(), done: arr.length <= 0 };
+      },
+    };
+    iterable[Symbol.iterator] = function(){ return iterable; }
+    return iterable;
+  }
+  else {
+    return eval("(function*() { yield a; yield b; yield c; }())");
+  }
+}
+
+var closed = false;
+var iter = __createIterableObject(1, 2, 3);
+iter['return'] = function(){ closed = true; return {}; }
+try {
+  new WeakSet(iter);
+} catch(e){}
+console.log(closed);</code></pre><span class="label radius warning">待测试</span><h5>4.add 方法返回 this</h5><h5 class="subheader">WeakSet.prototype.set returns this</h5><pre><code class="javascript">var weakset = new WeakSet();
+var obj = {};
+console.log(weakset.add(obj) === weakset);</code></pre><p>结果为 true。</p><h5>5.delete 方法</h5><h5 class="subheader">WeakSet.prototype.delete</h5><pre><code class="javascript">var key = {};
+var weakset = new WeakSet();
+weakset.add(key, 123);
+weakset.delete(key);
+console.log(weakset); //WeakSet {}</code></pre></div></div><div class="feature"><h4>六、Proxy</h4><h5 class="subheader">Proxy</h5><div class="feature-content"></div></div><div class="feature"><h4>七、Reflect</h4><h5 class="subheader">Reflect</h5><div class="feature-content"></div></div><div class="feature"><h4>八、Promise</h4><h5 class="subheader">Promise、</h5><p>Promise 对象，代表了未来某个将要发生的事件（通常是一个异步操作）。</p><div class="feature-content"><h5>1.basic functionality</h5><h5 class="subheader">基本功能</h5><pre><code class="javascript">var p1 = new Promise(function(resolve, reject) { resolve("foo"); });
+var p2 = new Promise(function(resolve, reject) { reject("quux"); });
+var score = 0;
+
+function thenFn(result)  { score += (result === "foo");  check(); }
+function catchFn(result) { score += (result === "quux"); check(); }
+function shouldNotRun(result)  { score = -Infinity;   }
+
+p1.then(thenFn, shouldNotRun);
+p2.then(shouldNotRun, catchFn);
+p1.catch(shouldNotRun);
+p2.catch(catchFn);
+
+p1.then(function() {
+  // Promise.prototype.then() should return a new Promise
+  score += p1.then() !== p1;
+  check();
+});
+
+function check() {
+  if (score === 4) asyncTestPassed();
+}</code></pre><h5>2.Promise.all</h5><h5 class="subheader">Promise.all</h5><p>p1、p2的状态都变成 fulfilled，p 的状态才会变成 fulfilled，p1、p2 的返回值组成一个数组，传给 p 的回调函数。p1、p2 有一个被rejected，p的状态就变成 rejected，第一个被 reject 的实例的返回值，传给 p 的回调函数。</p><pre><code class="javascript">var fulfills = Promise.all([ //p
+  new Promise(function(resolve)   { setTimeout(resolve,200,"foo"); }), //p1
+  new Promise(function(resolve)   { setTimeout(resolve,100,"bar"); }), //p2
+]);
+var rejects = Promise.all([
+  new Promise(function(_, reject) { setTimeout(reject, 200,"baz"); }),
+  new Promise(function(_, reject) { setTimeout(reject, 100,"qux"); }),
+]);
+var score = 0;
+fulfills.then(function(result) { score += (result + "" === "foo,bar"); check(); });
+rejects.catch(function(result) { score += (result === "qux"); check(); });
+
+function check() {
+  if (score === 2) asyncTestPassed();
+}</code></pre><h5>3.Promise.race</h5><h5 class="subheader">Promise.race</h5><p>只要 p1、p2 之中有一个实例率先改变状态，p 的状态就跟着改变。那个率先改变的 Promise 实例的返回值，就传递给 p 的返回值。</p><pre><code class="javascript">var fulfills = Promise.race([ //p
+  new Promise(function(resolve)   { setTimeout(resolve,200,"foo"); }), //p1
+  new Promise(function(_, reject) { setTimeout(reject, 300,"bar"); }), //p2
+]);
+var rejects = Promise.race([
+  new Promise(function(_, reject) { setTimeout(reject, 200,"baz"); }),
+  new Promise(function(resolve)   { setTimeout(resolve,300,"qux"); }),
+]);
+var score = 0;
+fulfills.then(function(result) { score += (result === "foo"); check(); });
+rejects.catch(function(result) { score += (result === "baz"); check(); });
+
+function check() {
+  if (score === 2) asyncTestPassed();
+}</code></pre></div></div><div class="feature"><h4>九、Symbol</h4><h5 class="subheader">Symbol</h5><p>Symbol 是一种新的原始数据类型，表示独一无二的 ID。通过 Symbol 函数生成。Symbol 类型对象和字符串一样，可以作为属性名。</p><div class="feature-content"><h5>1.基本功能</h5><h5 class="subheader">basic functionality</h5><pre><code class="javascript">var object = {};
+var symbol = Symbol();
+var value = {};
+object[symbol] = value;
+console.log(object[symbol] === value);</code></pre><p>结果为 true。</p><h5>2.typeof 支持</h5><h5 class="subheader">typeof support</h5><pre><code class="javascript">console.log(typeof Symbol() === "symbol");</code></pre><p>结果为 true。</p><h5>3.symbol 键在 pre-ES6 里是隐藏的</h5><h5 class="subheader">symbol keys are hidden to pre-ES6 code</h5><p>Symbol作为属性名，该属性不会出现在for...in循环中，也不会被Object.keys()、Object.getOwnPropertyNames()返回。Object.getOwnPropertySymbols 可以获得对象的 symbol 键值对。</p><pre><code class="javascript">var object = {};
+var symbol = Symbol();
+object[symbol] = 1;
+
+for (var x in object){}
+var passed = !x;
+
+if (Object.keys && Object.getOwnPropertyNames) {
+  passed = passed && Object.keys(object).length === 0
+    && Object.getOwnPropertyNames(object).length === 0;
+}
+console.log(passed);</code></pre><p>结果为 true。</p><h5>4.Object.defineProperty 支持</h5><h5 class="subheader">Object.defineProperty support</h5><pre><code class="javascript">var object = {};
+var symbol = Symbol();
+var value = {};
+
+if (Object.defineProperty) {
+  Object.defineProperty(object, symbol, { value: value });
+  console.log(object[symbol] === value);
+}</code></pre><p>结果为 true。</p><h5>5.不能强制转换为字符串或数字</h5><h5 class="subheader">cannot coerce to string or number</h5><p>Symbol 类型的值与其他类型的值进行运算会报错。</p><pre><code class="javascript">var symbol = Symbol();
+var passed;
+try {
+  symbol + "";
+  passed = false;
+}
+catch(e) {}
+try {
+  symbol + 0;
+  passed = false;
+} catch(e) {}
+
+console.log(true);</code></pre><p>结果为 true。</p><h5>6.可以通过 String() 转换为字符串</h5><h5 class="subheader">can convert with String()</h5><pre><code class="javascript">console.log(String(Symbol("foo")) === "Symbol(foo)");</code></pre><p>结果为 true。</p><h5>7.new Symbol() 会抛出异常</h5><h5 class="subheader">new Symbol() throws</h5><p>symbol 类型为原始数据类型，不是对象，所以不能用 new Symbol() 实例化。</p><pre><code class="javascript">var symbol = Symbol();
+try {
+  new Symbol();
+} catch(e) {
+  console.log(true);
+}</code></pre><p>结果为 true。</p><h5>8.Object(symbol)</h5><h5 class="subheader">Object(symbol)</h5><pre><code class="javascript">var symbol = Symbol();
+var symbolObject = Object(symbol);
+
+console.log(typeof symbolObject === "object" &&
+  symbolObject == symbol &&
+  symbolObject !== symbol &&
+  symbolObject.valueOf() === symbol);</code></pre><p>结果为 true。</p><h5>9.全局 symbol 注册</h5><h5 class="subheader">global symbol registry</h5><pre><code class="javascript">var symbol = Symbol.for('foo');
+console.log(Symbol.for('foo') === symbol &&
+   Symbol.keyFor(symbol) === 'foo');</code></pre><p>结果为 true。</p></div></div><div class="feature"><h4>十、常用的 symbols</h4><h5 class="subheader">well known symbols</h5><div class="feature-content"><h5>1.Symbol.hasInstance</h5><h5 class="subheader">Symbol.hasInstance</h5><pre><code class="javascript">var passed = false;
+var obj = { foo: true };
+var C = function(){};
+Object.defineProperty(C, Symbol.hasInstance, {
+  value: function(inst) { passed = inst.foo; return false; }
+});
+obj instanceof C;
+console.log(passed);</code></pre><span class="label radius warning">待测试</span><h5>2.Symbol.isConcatSpreadable</h5><h5 class="subheader">Symbol.isConcatSpreadable</h5><pre><code class="javascript">var a = [], b = [];
+b[Symbol.isConcatSpreadable] = false;
+a = a.concat(b);
+console.log(a[0] === b);</code></pre><span class="label radius warning">待测试</span><h5>3.Symbol.iterator</h5><h5 class="subheader">Symbol.iterator</h5><pre><code class="javascript">var a = 0, b = {};
+b[Symbol.iterator] = function() {
+  return {
+    next: function() {
+      return {
+        done: a++ === 1,
+        value: "foo"
+      };
+    }
+  };
+};
+var c;
+for (c of b) {}
+console.log(c === "foo");</code></pre><p>结果为 true。</p><h5>4.Symbol.species</h5><h5 class="subheader">Symbol.species</h5><pre><code class="javascript">console.log(RegExp[Symbol.species] === RegExp
+&& Array[Symbol.species] === Array
+&& !(Symbol.species in Object));</code></pre><span class="label radius warning">待测试</span><h5>5.Symbol.toPrimitive</h5><h5 class="subheader">Symbol.toPrimitive</h5><pre><code class="javascript">var a = {}, b = {}, c = {};
+var passed = 0;
+a[Symbol.toPrimitive] = function(hint) { passed += hint === "number";  return 0; };
+b[Symbol.toPrimitive] = function(hint) { passed += hint === "string";  return 0; };
+c[Symbol.toPrimitive] = function(hint) { passed += hint === "default"; return 0; };
+
+a >= 0;
+b in {};
+c == 0;
+console.log(passed === 3);</code></pre><span class="label radius warning">待测试</span><h5>6.Symbol.toStringTag</h5><h5 class="subheader">Symbol.toStringTag</h5><pre><code class="javascript">var a = {};
+a[Symbol.toStringTag] = "foo";
+console.log((a + "") === "[object foo]");</code></pre><span class="label radius warning">待测试</span><h5>7.Symbol.unscopables</h5><h5 class="subheader">Symbol.unscopables</h5><pre><code class="javascript">var a = { foo: 1, bar: 2 };
+a[Symbol.unscopables] = { bar: true };
+with (a) {
+  console.log(foo === 1 && typeof bar === "undefined");
+}</code></pre><span class="label radius warning">待测试</span></div></div></div></div><script type="text/javascript">$(document).ready(function() {
+  var animate = false;
+  var active_nav =  function(){
+    $('.feature h4').each(function(i, el){
+      if (animate) return;
+      if (Math.abs($(window).scrollTop() - $(el).offset().top) < 60) {
+        $('.scroll-nav td').removeClass('active');
+        $($('.scroll-nav td')[i]).addClass('active');
+      }
+    });
+  };
+  active_nav();
   $('.scroll-nav').width($('.scroll-nav').parent('.large-3').width()-20);
   $('.feature h4').each(function(i, el){
     $(this).attr('data-text', $(el).text().split('、')[1]);
@@ -370,15 +588,20 @@ $(document).ready(function() {
     if($(this).find('a').length > 0){
       var target = $( $(this).find('a').attr('href') );
     } else {
-      console.log($(this).text());
       var target = $('.feature').find('[data-text="' + $(this).text() + '"]');
-      console.log(target);
     }
     $('.scroll-nav td').removeClass('active');
     $(this).addClass('active');
+    animate = true;
     $('html, body').animate({
       scrollTop: target.offset().top - 48
-    }, 1000);
+    }, 1000, 
+    function(){
+      animate = false;
+    });
   });
-});</script></div><div class="footer wrap"><div class="row"><div class="large-8 large-centered small-10 small-centered"><p>项目托管在 <a href="https://github.com/wendycan/es6tutorial" target="_blank"><i class="fa fa-ok"></i>GitHub</a></p><p>作者 <a href="https://github.com/wendycan" target="_blank">wendy</a></p><p>友情链接<a href="http://wendycan.org" target="_blank">wendy的小站</a><a href="http://yuetai.wendycan.org" target="_blank">阅台</a></p></div></div></div><script type="text/javascript">$(document).foundation();
+  $(document).scroll(function(){
+    active_nav();
+  });
+});</script><script type="text/javascript">$("#built-ins").addClass('active');</script></div><div class="footer wrap"><div class="row"><div class="large-8 large-centered small-10 small-centered"><p>项目托管在 <a href="https://github.com/wendycan/es6tutorial" target="_blank"><i class="fa fa-ok"></i>GitHub</a></p><p>作者 <a href="https://github.com/wendycan" target="_blank">wendy</a></p><p>友情链接<a href="http://wendycan.org" target="_blank">wendy的小站</a><a href="http://yuetai.wendycan.org" target="_blank">阅台</a></p></div></div></div><script type="text/javascript">$(document).foundation();
 hljs.initHighlightingOnLoad();</script></body></html>
