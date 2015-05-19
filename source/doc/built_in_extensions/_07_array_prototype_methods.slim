@@ -1,0 +1,59 @@
+h4 七、数组原型方法
+h5.subheader Array.prototype methods
+.feature-content
+  h5 1.copyWithin
+  h5.subheader Array.prototype.copyWithin
+  pre
+    code.javascript
+      | console.log(typeof Array.prototype.copyWithin === 'function');
+  p 结果为 true。
+  h5 2.find
+  h5.subheader Array.prototype.find
+  pre
+    code.javascript
+      | console.log(typeof Array.prototype.find === 'function');
+  p 结果为 true。
+  h5 3.findIndex
+  h5.subheader Array.prototype.findIndex
+  pre
+    code.javascript
+      | console.log(typeof Array.prototype.findIndex === 'function');
+  p 结果为 true。
+  h5 4.fill
+  h5.subheader Array.prototype.fill
+  pre
+    code.javascript
+      | console.log(typeof Array.prototype.fill === 'function');
+  p 结果为 true。
+  h5 5.keys
+  h5.subheader Array.prototype.keys
+  pre
+    code.javascript
+      | console.log(typeof Array.prototype.keys === 'function');
+  p 结果为 true。
+  h5 6.values
+  h5.subheader Array.prototype.values
+  pre
+    code.javascript
+      | console.log(typeof Array.prototype.values === 'function');
+  span.label.radius.warning 待测试
+  h5 7.entries
+  h5.subheader Array.prototype.entries
+  pre
+    code.javascript
+      | console.log(typeof Array.prototype.entries === 'function');
+  p 结果为 true。
+  h5 8.Symbol.unscopables
+  h5.subheader Array.prototype[Symbol.unscopables]
+  pre
+    code.javascript
+      | var unscopables = Array.prototype[Symbol.unscopables];
+        if (!unscopables) {
+          console.log(false);
+        }
+        var ns = "find,findIndex,fill,copyWithin,entries,keys,values".split(",");
+        for (var i = 0; i < ns.length; i++) {
+          if (Array.prototype[ns[i]] && !unscopables[ns[i]]) console.log(false);
+        }
+        console.log(true);
+  p 结果为 true。

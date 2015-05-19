@@ -1,0 +1,33 @@
+h4 五、正则表达式属性
+h5.subheader RegExp.prototype properties
+.feature-content
+  h5 1.flags
+  h5.subheader RegExp.prototype.flags
+  pre
+    code.javascript
+      | console.log(/./igm.flags === "gim" && /./.flags === "");
+  p 结果为 true。
+  h5 2.Symbol.match
+  h5.subheader RegExp.prototype[Symbol.match]
+  pre
+    code.javascript
+      | console.log(typeof RegExp.prototype[Symbol.match] === 'function');
+  span.label.radius.warning 待测试
+  h5 3.Symbol.replace
+  h5.subheader RegExp.prototype[Symbol.replace]
+  pre
+    code.javascript
+      | console.log(typeof RegExp.prototype[Symbol.replace] === 'function');
+  span.label.radius.warning 待测试
+  h5 4.Symbol.split
+  h5.subheader RegExp.prototype[Symbol.split]
+  pre
+    code.javascript
+      | console.log(typeof RegExp.prototype[Symbol.split] === 'function');
+  span.label.radius.warning 待测试
+  h5 5.Symbol.search
+  h5.subheader RegExp.prototype[Symbol.search]
+  pre
+    code.javascript
+      | console.log(typeof RegExp.prototype[Symbol.search] === 'function');
+  span.label.radius.warning 待测试

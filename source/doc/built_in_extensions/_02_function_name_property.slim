@@ -1,0 +1,147 @@
+h4 二、函数 name 属性
+h5.subheader function "name" property
+.feature-content
+  h5 1.函数声明
+  h5.subheader function statements
+  pre
+    code.javascript
+      | function foo(){};
+        console.log(foo.name === 'foo' &&
+          (function(){}).name === '');
+  p 结果为 true。
+  h5 2.函数表达式
+  h5.subheader function expressions
+  pre
+    code.javascript
+      | console.log((function foo(){}).name === 'foo' &&
+        (function(){}).name === '');
+  p 结果为 true。
+  h5 3.new Function
+  h5.subheader new Function
+  pre
+    code.javascript
+      | console.log((new Function).name === "anonymous");
+  p 结果为 true。
+  h5 4.bound functions
+  h5.subheader bound functions
+  pre
+    code.javascript
+      | function foo() {};
+        console.log(foo.bind({}).name === "bound foo" &&
+          (function(){}).bind({}).name === "bound ");
+  span.label.radius.warning 待测试
+  h5 5. 变量
+  h5.subheader variables (function)
+  pre
+    code.javascript
+      | var foo = function() {};
+        var bar = function baz() {};
+        console.log(foo.name === "foo" && bar.name === "baz");
+  p 结果为 true。
+  h5 6.对象方法
+  h5.subheader object methods (function)
+  pre
+    code.javascript
+      | var o = { foo: function(){}, bar: function baz(){}};
+        o.qux = function(){};
+        console.log(o.foo.name === "foo" &&
+               o.bar.name === "baz" &&
+               o.qux.name === "");
+  p 结果为 true。
+  h5 7.accessor 属性
+  h5.subheader accessor properties
+  pre
+    code.javascript
+      | var o = { get foo(){}, set foo(x){} };
+        var descriptor = Object.getOwnPropertyDescriptor(o, "foo");
+        console.log(descriptor.get.name === "get foo" &&
+               descriptor.set.name === "set foo");
+  span.label.radius.warning 待测试
+  h5 8.简写方法
+  h5.subheader shorthand methods
+  pre
+    code.javascript
+      | var o = { foo(){} };
+        console.log(o.foo.name === "foo");
+  p 结果为 true。
+  h5 9.简写方法（没有绑定）
+  h5.subheader shorthand methods (no lexical binding)
+  pre
+    code.javascript
+      | var f = "foo";
+        console.log(({f() { return f; }}).f() === "foo");
+  p 结果为 true。
+  h5 10.symbol 作为 key 的方法
+  h5.subheader symbol-keyed methods
+  pre
+    code.javascript
+      | var sym1 = Symbol("foo");
+        var sym2 = Symbol();
+        var o = {
+          [sym1]: function(){},
+          [sym2]: function(){}
+        };
+
+        console.log(o[sym1].name === "[foo]" &&
+               o[sym2].name === "");
+  span.label.radius.warning 待测试
+  h5 11.类声明
+  h5.subheader class statements
+  pre
+    code.javascript
+      | class foo {};
+        class bar { static name() {} };
+        console.log(foo.name === "foo" &&
+          typeof bar.name === "function");
+  span.label.radius.warning 待测试
+  h5 12.类表达式
+  h5.subheader class expressions
+  pre
+    code.javascript
+      | console.log(class foo {}.name === "foo" &&
+        typeof class bar { static name() {} }.name === "function");
+  span.label.radius.warning 待测试
+  h5 13.变量（类）
+  h5.subheader variables (class)
+  pre
+    code.javascript
+      | var foo = class {};
+        var bar = class baz {};
+        var qux = class { static name() {} };
+        console.log(foo.name === "foo" &&
+               bar.name === "baz" &&
+               typeof qux.name === "function");
+  span.label.radius.warning 待测试
+  h5 14.对象方法（类）
+  h5.subheader object methods (class)
+  pre
+    code.javascript
+      | var o = { foo: class {}, bar: class baz {}};
+        o.qux = class {};
+        console.log(o.foo.name === "foo" &&
+               o.bar.name === "baz" &&
+               o.qux.name === "");
+  span.label.radius.warning 待测试
+  h5 15.类原型方法
+  h5.subheader class prototype methods
+  pre
+    code.javascript
+      | class C { foo(){} };
+        console.log((new C).foo.name === "foo");
+  p 结果为 true。
+  h5 16.类静态方法
+  h5.subheader class static methods
+  pre
+    code.javascript
+      | class C { static foo(){} };
+        console.log(C.foo.name === "foo");
+  p 结果为 true。
+  h5 17.可配置但不可写
+  h5.subheader isn't writable, is configurable
+  pre
+    code.javascript
+      | var descriptor = Object.getOwnPropertyDescriptor(function f(){},"name");
+        console.log(descriptor.enumerable   === false &&
+               descriptor.writable     === false &&
+               descriptor.configurable === true);
+  p 结果为 true。
