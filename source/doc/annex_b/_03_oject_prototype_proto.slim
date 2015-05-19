@@ -1,0 +1,50 @@
+h4 三、对象原型 _proto_
+h5.subheader Object.prototype.__proto__
+.feature-content
+  h5 1.获取原型
+  h5.subheader get prototype
+  pre
+    code.javascript
+      | var A = function(){};
+        console.log((new A()).__proto__ === A.prototype);
+  p 结果为 true。
+  h5 2.设定原型
+  h5.subheader set prototype
+  pre
+    code.javascript
+      | var o = {};
+        o.__proto__ = Array.prototype;
+        console.log(o instanceof Array);
+  p 结果为 true。
+  h5 3.Object.create
+  h5.subheader absent from Object.create(null)
+  pre
+    code.javascript
+      | var o = Object.create(null), p = {};
+        o.__proto__ = p;
+        console.log(Object.getPrototypeOf(o) !== p);
+  p 结果为 true。
+  h5 4.hasOwnProperty
+  h5.subheader present in hasOwnProperty()
+  pre
+    code.javascript
+      | console.log(Object.prototype.hasOwnProperty('__proto__'));
+  p 结果为 true。
+  h5 5.正确的属性描述
+  h5.subheader correct property descriptor
+  pre
+    code.javascript
+      | var desc = Object.getOwnPropertyDescriptor(Object.prototype,"__proto__");
+        var A = function(){};
+        console.log(desc
+          && "get" in desc
+          && "set" in desc
+          && desc.configurable
+          && !desc.enumerable);
+  p 结果为 true。
+  h5 6.getOwnPropertyNames
+  h5.subheader present in Object.getOwnPropertyNames()
+  pre
+    code.javascript
+      | console.log(Object.getOwnPropertyNames(Object.prototype).indexOf('__proto__') > -1);
+  p 结果为 true。

@@ -1,0 +1,13 @@
+h4 一、块级函数声明
+h5.subheader hoisted block-level function declaration
+.feature-content
+  pre
+    code.javascript
+      | // Note: only available outside of strict mode.
+        { function f() { return 1; } }
+          function g() { return 1; }
+        { function g() { return 2; } }
+        { function h() { return 1; } }
+          function h() { return 2; }
+        console.log(f() === 1 && g() === 2 && h() === 1);
+  p 结果为 true。
