@@ -1,0 +1,41 @@
+h4 四、字符串原型 HTML 方法
+h5.subheader String.prototype HTML methods
+.feature-content
+  h5 1.存在
+  h5.subheader existence
+  pre
+    code.javascript
+      | var i, names = ["anchor", "big", "bold", "fixed", "fontcolor", "fontsize",
+          "italics", "link", "small", "strike", "sub", "sup"];
+        for (i = 0; i < names.length; i++) {
+          if (typeof String.prototype[names[i]] !== 'function') {
+            console.log(false);
+          }
+        }
+        console.log(true);
+  p 结果为 true。
+  h5 2.tag name 是小写
+  h5.subheader tags' names are lowercase
+  pre
+    code.javascript
+      | var i, names = ["anchor", "big", "bold", "fixed", "fontcolor", "fontsize",
+          "italics", "link", "small", "strike", "sub", "sup"];
+        for (i = 0; i < names.length; i++) {
+          if (""[names[i]]().toLowerCase() !== ""[names[i]]()) {
+            console.log(false);
+          }
+        }
+        console.log(true);
+  p 结果为 true。
+  h5 3.参数里的引号会被转义
+  h5.subheader quotes in arguments are escaped
+  pre
+    code.javascript
+      | var i, names = ["anchor", "fontcolor", "fontsize", "link"];
+        for (i = 0; i < names.length; i++) {
+          if (""[names[i]]('"') !== ""[names[i]]('&' + 'quot;')) {
+            console.log(false);
+          }
+        }
+        console.log(true);
+  p 结果为 true。

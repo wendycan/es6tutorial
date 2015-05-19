@@ -1,0 +1,45 @@
+h4 四、字符串原型方法
+h5.subheader String.prototype methods 
+.feature-content
+  h5 1.codePointAt
+  h5.subheader String.prototype.codePointAt
+  pre
+    code.javascript
+      | console.log(typeof String.prototype.codePointAt === 'function');
+  p 结果为 true。
+  h5 2.normalize
+  h5.subheader String.prototype.normalize
+  pre
+    code.javascript
+      | console.log(typeof String.prototype.normalize === "function"
+        && "c\u0327\u0301".normalize("NFC") === "\u1e09"
+        && "\u1e09".normalize("NFD") === "c\u0327\u0301");
+  p 结果为 true。
+  h5 3.repeat
+  h5.subheader String.prototype.repeat
+  pre
+    code.javascript
+      | console.log(typeof String.prototype.repeat === 'function'
+        && "foo".repeat(3) === "foofoofoo");
+  p 结果为 true。
+  h5 4.startsWith
+  h5.subheader String.prototype.startsWith
+  pre
+    code.javascript
+      | console.log(typeof String.prototype.startsWith === 'function'
+        && "foobar".startsWith("foo"));
+  p 结果为 true。
+  h5 5.endsWith
+  h5.subheader String.prototype.endsWith
+  pre
+    code.javascript
+      | console.log(typeof String.prototype.endsWith === 'function'
+        && "foobar".endsWith("bar"));
+  p 结果为 true。
+  h5 6.includes
+  h5.subheader String.prototype.includes
+  pre
+    code.javascript
+      | console.log(typeof String.prototype.includes === 'function'
+        && "foobar".includes("oba"));
+  p 结果为 true。

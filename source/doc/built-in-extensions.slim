@@ -1,6 +1,26 @@
 .row
-  .large-12.columns
-    h4 Build in extentsions
+  .large-3.columns.show-for-large-up
+    table.pos-fixed.scroll-nav
+  .large-9.columns
+    .feature
+      == partial 'doc/built_in_extensions/_01_object_static_methods'
+    .feature
+      == partial 'doc/built_in_extensions/_02_function_name_property'
+    .feature
+      == partial 'doc/built_in_extensions/_03_string_static_methods'
+    .feature
+      == partial 'doc/built_in_extensions/_04_string_prototype_methods'
+    .feature
+      == partial 'doc/built_in_extensions/_05_regExp_prototype_properties'
+    .feature
+      == partial 'doc/built_in_extensions/_06_array_static_methods'
+    .feature
+      == partial 'doc/built_in_extensions/_07_array_prototype_methods'
+    .feature
+      == partial 'doc/built_in_extensions/_08_number_properties'
+    .feature
+      == partial 'doc/built_in_extensions/_09_math_methods'
 
+== partial 'layouts/sub_nav_js'
 javascript:
   $("#built-in-extensions").addClass('active');

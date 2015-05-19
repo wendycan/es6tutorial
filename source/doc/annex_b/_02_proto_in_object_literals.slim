@@ -1,0 +1,50 @@
+h4 二、_proto_ 对象字面量
+h5.subheader __proto__ in object literals
+.feature-content
+  h5 1.基本支持
+  h5.subheader basic support
+  pre
+    code.javascript
+      | console.log({ __proto__ : [] } instanceof Array
+          && !({ __proto__ : null } instanceof Object));
+  p 结果为 true。
+  h5 2.多个 _proto_ 会报错
+  h5.subheader multiple __proto__ is an error
+  pre
+    code.javascript
+      | try {
+          eval("({ __proto__ : [], __proto__: {} })");
+        }
+        catch(e) {
+          console.log(true);
+        }
+  p 结果为 true。
+  h5 3.不是一个可计算的属性
+  h5.subheader not a computed property
+  pre
+    code.javascript
+      | if (!({ __proto__ : [] } instanceof Array)) {
+          console.log(false);
+        }
+        var a = "__proto__";
+        console.log(!({ [a] : [] } instanceof Array));
+  p 结果为 true。
+  h5 4.不是一个简写的属性
+  h5.subheader not a shorthand property
+  pre
+    code.javascript
+      | if (!({ __proto__ : [] } instanceof Array)) {
+          console.log(false);
+        }
+        var __proto__ = [];
+        console.log(!({ __proto__ } instanceof Array));
+  p 结果为 true。
+  h5 5.不是一个简写的方法
+  h5.subheader not a shorthand method
+  pre
+    code.javascript
+      | if (!({ __proto__ : [] } instanceof Array)) {
+          console.log(false);
+        }
+        console.log(!({ __proto__(){} } instanceof Function));
+  p 结果为 true。

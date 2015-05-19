@@ -1,0 +1,87 @@
+h4 六、数组静态方法
+h5.subheader Array static methods
+.feature-content
+  h5 1.类数组对象
+  h5.subheader Array.from, array-like objects
+  pre
+    code.javascript
+      | console.log(Array.from({ 0: "foo", 1: "bar", length: 2 }) + '' === "foo,bar");
+  p 结果为 true。
+  h5 2.通用迭代
+  h5.subheader Array.from, generic iterables
+  p 首先定义一个通用的迭代器函数：
+  pre
+    code.javascript
+      | function __createIterableObject(a, b, c) {
+          if (typeof Symbol === "function" && Symbol.iterator) {
+            var arr = [a, b, c, ,];
+            var iterable = {
+              next: function() {
+                return { value: arr.shift(), done: arr.length <= 0 };
+              },
+            };
+            iterable[Symbol.iterator] = function(){ return iterable; }
+            return iterable;
+          }
+          else {
+            return eval("(function*() { yield a; yield b; yield c; }())");
+          }
+        }
+  p 通过调用这个迭代器函数，生成一个迭代器。
+  pre
+    code.javascript
+      | var iterable = __createIterableObject(1, 2, 3);
+        console.log(Array.from(iterable) + '' === "1,2,3");
+  p 结果为 true。
+  h5 3.通用迭代实例
+  h5.subheader Array.from, instances of generic iterables
+  pre
+    code.javascript
+      | var iterable = __createIterableObject(1, 2, 3);
+        console.log(Array.from(Object.create(iterable)) + '' === "1,2,3");
+  p 结果为 true。
+  h5 4.类数组对象（map）
+  h5.subheader Array.from map function, array-like objects
+  pre
+    code.javascript
+      | console.log(Array.from({ 0: "foo", 1: "bar", length: 2 }, function(e, i) {
+          return e + this.baz + i;
+        }, { baz: "d" }) + '' === "food0,bard1");
+  p 结果为 true。
+  h5 5.通用迭代（map）
+  h5.subheader Array.from map function, generic iterables
+  pre
+    code.javascript
+      | var iterable = __createIterableObject("foo", "bar", "bal");
+        console.log(Array.from(iterable, function(e, i) {
+          return e + this.baz + i;
+        }, { baz: "d" }) + '' === "food0,bard1,bald2");
+  p 结果为 true。
+  h5 6.通用迭代实例（map）
+  h5.subheader Array.from map function, instances of iterables
+  pre
+    code.javascript
+      | var iterable = __createIterableObject("foo", "bar", "bal");
+        console.log(Array.from(Object.create(iterable), function(e, i) {
+          return e + this.baz + i;
+        }, { baz: "d" }) + '' === "food0,bard1,bald2");
+  p 结果为 true。
+  h5 7.迭代关闭
+  h5.subheader Array.from, iterator closing
+  pre
+    code.javascript
+      | var closed = false;
+        var iter = __createIterableObject(1, 2, 3);
+        iter['return'] = function(){ closed = true; return {}; }
+        try {
+          Array.from(iter, function() { throw 42 });
+        } catch(e){}
+        console.log(closed);
+  span.label.radius.warning 待测试
+  h5 8.of
+  h5.subheader Array.of
+  pre
+    code.javascript
+      | console.log(typeof Array.of === 'function' &&
+          Array.of(2)[0] === 2);
+  p 结果为 true。

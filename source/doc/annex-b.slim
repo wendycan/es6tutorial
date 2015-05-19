@@ -1,6 +1,18 @@
 .row
-  .large-12.columns
-    h4 Annex
-    
+  .large-3.columns.show-for-large-up
+    table.pos-fixed.scroll-nav
+  .large-9.columns
+    .feature
+      == partial 'doc/annex_b/_01_hoisted_block_level_function_declaration'
+    .feature
+      == partial 'doc/annex_b/_02_proto_in_object_literals'
+    .feature
+      == partial 'doc/annex_b/_03_oject_prototype_proto'
+    .feature
+      == partial 'doc/annex_b/_04_string_prototype_HTML_methods'
+    .feature
+      == partial 'doc/annex_b/_05_regExp_prototype_compile'
+
+== partial 'layouts/sub_nav_js'
 javascript:
   $("#annex-b").addClass('active');

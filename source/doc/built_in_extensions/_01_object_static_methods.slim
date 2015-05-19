@@ -1,0 +1,38 @@
+h4 一、对象的静态方法
+h5.subheader Object static methods
+.feature-content
+  h5 1.assign
+  h5.subheader Object.assign
+  pre
+    code.javascript
+      | var o = Object.assign({a:true}, {b:true}, {c:true});
+        console.log("a" in o && "b" in o && "c" in o);
+  p 结果为 true。
+  h5 2.is
+  h5.subheader Object.is
+  pre
+    code.javascript
+      | console.log(typeof Object.is === 'function' &&
+        Object.is(NaN, NaN) &&
+       !Object.is(-0, 0));
+  p 结果为 true。
+  h5 3.getOwnPropertySymbols
+  h5.subheader Object.getOwnPropertySymbols
+  pre
+    code.javascript
+      | var o = {};
+        var sym = Symbol(), sym2 = Symbol(), sym3 = Symbol();
+        o[sym]  = true;
+        o[sym2] = true;
+        o[sym3] = true;
+        var result = Object.getOwnPropertySymbols(o);
+        console.log(result[0] === sym
+          && result[1] === sym2
+          && result[2] === sym3);
+  p 结果为 true。
+  h5 4.setPrototypeOf
+  h5.subheader Object.setPrototypeOf
+  pre
+    code.javascript
+      | console.log(Object.setPrototypeOf({}, Array.prototype) instanceof Array);
+  p 结果为 true。
