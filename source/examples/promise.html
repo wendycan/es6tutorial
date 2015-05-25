@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Promise</title>
+    <script type="text/javascript" src="/javascripts/app.js"></script>
+    <script type="text/javascript" src="/javascripts/es6-promise.js"></script>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/app.css">
+  </head>
+  <body>
+    <div class="row">
+      <div class="columns large-12"></div>
+        <h4>Wendy</h4>
+    </div>
+    <script>
+      function getWordsBetweenAnglebrackets(str) {
+        var results = [], re = /<([^>]+)>/g, text;
+
+        while(text = re.exec(str)) {
+          results.push(text[1]);
+        }
+        return results;
+      }
+
+      function renderUsers (users) {
+        for (var i = 0; i < users.length; i++) {
+          console.log(users[i]);
+        };
+      }
+
+      window.addEventListener('load', function () {
+        function load_res (url) {
+          return new Promise(function (resolve) {
+            $.ajax({
+              url: url,
+              type: 'GET',
+              success: function(data, status, xhr){
+                var result = {
+                  body: data,
+                  xhr: xhr
+                }
+                resolve(result);
+              },
+              error: function (e) {
+                console.log(e);
+              }
+            });
+          })
+        }
+        var p1 = load_res('http://api.github.com/users/wendycan/followers');
+        p1.then(function (data) {
+          var users = [];
+          var links = data.xhr.getResponseHeader('Link');
+          var urlPrefix = getWordsBetweenAnglebrackets(links)[0].split('page=')[0] + 'page=';
+          var length = getWordsBetweenAnglebrackets(links)[1].split('page=')[1];
+          var p_pages = [];
+          for(var i = 1;i <= length;i++){
+            var url = urlPrefix + i;
+            p_pages.push(load_res(url));
+          }
+          var p = Promise.all(p_pages).then(function (data) {
+            for (var i = 0; i < data.length; i++) {
+              for (var j = 0; j < data[i].body.length; j++) {
+                users.push(data[i].body[j]);
+              };
+            };
+            renderUsers(users);
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
