@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>Promise</title>
     <script type="text/javascript" src="/javascripts/app.js"></script>
-    <script type="text/javascript" src="/javascripts/es6-promise.js"></script>
+    <script type="text/javascript" src="/javascripts/promise.js"></script>
     <link rel="stylesheet" type="text/css" href="/stylesheets/app.css">
   </head>
   <body>
@@ -59,6 +59,7 @@
             p_pages.push(load_res(url));
           }
           var p = Promise.all(p_pages).then(function (data) {
+            console.log('success');
             for (var i = 0; i < data.length; i++) {
               for (var j = 0; j < data[i].body.length; j++) {
                 users.push(data[i].body[j]);
