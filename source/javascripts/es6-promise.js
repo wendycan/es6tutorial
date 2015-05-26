@@ -370,7 +370,6 @@
 
       enumerator._instanceConstructor = Constructor;
       enumerator.promise = new Constructor(lib$es6$promise$$internal$$noop);
-
       if (enumerator._validateInput(input)) {
         enumerator._input     = input;
         enumerator.length     = input.length;

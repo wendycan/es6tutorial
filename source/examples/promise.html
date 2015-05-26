@@ -5,6 +5,7 @@
     <title>Promise</title>
     <script type="text/javascript" src="/javascripts/app.js"></script>
     <script type="text/javascript" src="/javascripts/promise.js"></script>
+    <!--<script type="text/javascript" src="/javascripts/promise.js"></script> !-->
     <link rel="stylesheet" type="text/css" href="/stylesheets/app.css">
   </head>
   <body>
@@ -47,7 +48,7 @@
             });
           })
         }
-        var p1 = load_res('http://api.github.com/users/wendycan/followers');
+        var p1 = load_res('http://api.github.com/users/wendycan/starred');
         p1.then(function (data) {
           var users = [];
           var links = data.xhr.getResponseHeader('Link');
