@@ -4,8 +4,8 @@
     <meta charset="utf-8">
     <title>Promise</title>
     <script type="text/javascript" src="/javascripts/app.js"></script>
+    <script type="text/javascript" src="/javascripts/enumerator.js"></script>
     <script type="text/javascript" src="/javascripts/promise.js"></script>
-    <!--<script type="text/javascript" src="/javascripts/promise.js"></script> !-->
     <link rel="stylesheet" type="text/css" href="/stylesheets/app.css">
   </head>
   <body>
@@ -25,16 +25,20 @@
 
       function renderUsers (users) {
         for (var i = 0; i < users.length; i++) {
-          console.log(users[i]);
+          // console.log(users[i]);
         };
       }
 
       window.addEventListener('load', function () {
         function load_res (url) {
-          return new Promise(function (resolve) {
+          return new Promise(function (resolve, reject) {
             $.ajax({
               url: url,
               type: 'GET',
+              data: {
+                client_id: '6a853226916e0c9e3295',
+                client_secret: 'd677255b6d9b8d79d5bd52902bbcfaeae0b0ecd9'
+              },
               success: function(data, status, xhr){
                 var result = {
                   body: data,
@@ -43,13 +47,15 @@
                 resolve(result);
               },
               error: function (e) {
+                reject()
                 console.log(e);
               }
             });
           })
         }
-        var p1 = load_res('http://api.github.com/users/wendycan/starred');
+        var p1 = load_res('http://api.github.com/users/wendycan/followers');
         p1.then(function (data) {
+          console.log('success1')
           var users = [];
           var links = data.xhr.getResponseHeader('Link');
           var urlPrefix = getWordsBetweenAnglebrackets(links)[0].split('page=')[0] + 'page=';
@@ -60,12 +66,13 @@
             p_pages.push(load_res(url));
           }
           var p = Promise.all(p_pages).then(function (data) {
-            console.log('success');
+            console.log('success2');
             for (var i = 0; i < data.length; i++) {
               for (var j = 0; j < data[i].body.length; j++) {
                 users.push(data[i].body[j]);
               };
             };
+            console.log(users.length);
             renderUsers(users);
           });
         });
