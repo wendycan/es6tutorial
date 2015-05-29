@@ -241,11 +241,6 @@ function promise_race(entries) {
 
   var promise = new Constructor(_noop);
 
-  if (!Array.isArray(entries)) {
-    _reject(promise, new TypeError('You must pass an array to race.'));
-    return promise;
-  }
-
   var length = entries.length;
 
   function onFulfillment(value) {

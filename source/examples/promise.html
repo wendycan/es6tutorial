@@ -53,29 +53,37 @@
             });
           })
         }
-        var p1 = load_res('http://api.github.com/users/wendycan/followers');
-        p1.then(function (data) {
-          console.log('success1')
-          var users = [];
-          var links = data.xhr.getResponseHeader('Link');
-          var urlPrefix = getWordsBetweenAnglebrackets(links)[0].split('page=')[0] + 'page=';
-          var length = getWordsBetweenAnglebrackets(links)[1].split('page=')[1];
-          var p_pages = [];
-          for(var i = 1;i <= length;i++){
-            var url = urlPrefix + i;
-            p_pages.push(load_res(url));
-          }
-          var p = Promise.all(p_pages).then(function (data) {
-            console.log('success2');
-            for (var i = 0; i < data.length; i++) {
-              for (var j = 0; j < data[i].body.length; j++) {
-                users.push(data[i].body[j]);
-              };
-            };
-            console.log(users.length);
-            renderUsers(users);
-          });
-        });
+        var p1 = load_res('http://api.github.com/users/wendycan')
+        var p2 = load_res('http://api.github.com/users/yandy')
+        var p_users = [p1, p2];
+        var p = Promise.all(p_users).then(function (data) {
+          console.log(data);
+        }, function (reason) {
+          console.log(reason)
+        })
+        // var p1 = load_res('http://api.github.com/users/wendycan/followers');
+        // p1.then(function (data) {
+        //   console.log('success1')
+        //   var users = [];
+        //   var links = data.xhr.getResponseHeader('Link');
+        //   var urlPrefix = getWordsBetweenAnglebrackets(links)[0].split('page=')[0] + 'page=';
+        //   var length = getWordsBetweenAnglebrackets(links)[1].split('page=')[1];
+        //   var p_pages = [];
+        //   for(var i = 1;i <= length;i++){
+        //     var url = urlPrefix + i;
+        //     p_pages.push(load_res(url));
+        //   }
+        //   var p = Promise.race(p_pages).then(function (data) {
+        //     console.log('success2');
+        //     for (var i = 0; i < data.length; i++) {
+        //       for (var j = 0; j < data[i].body.length; j++) {
+        //         users.push(data[i].body[j]);
+        //       };
+        //     };
+        //     console.log(users.length);
+        //     renderUsers(users);
+        //   });
+        // });
       });
     </script>
   </body>
