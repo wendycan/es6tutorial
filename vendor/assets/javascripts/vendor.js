@@ -2,3 +2,5 @@
 //= require "foundation/js/foundation"
 //= require "underscore/underscore"
 //= require "highlight.pack"
+//= require "springy/springy"
+//= require "springy/springyui"
