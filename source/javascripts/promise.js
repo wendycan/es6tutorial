@@ -314,7 +314,6 @@ Promise.prototype = {
     } else {
       _subscribe(parent, child, onFulfillment, onRejection);
     }
-
     return child;
   },
 
