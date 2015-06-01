@@ -46,7 +46,7 @@ p {
   }
 }
 
-.followers-table {
+.followers-table, .followings-table {
   img {
     width: 60px;
   }
@@ -81,4 +81,16 @@ p {
     width: 11%;
   }
 
+}
+.emph {
+  font-size: 19px;
+  padding-left: 6px;
+  padding-right: 6px;
+  color: #b07c00;
+}
+
+.meta {
+  p {
+    font-size: 14px;
+  }
 }

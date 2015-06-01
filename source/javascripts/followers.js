@@ -6,10 +6,10 @@ function getWordsBetweenAnglebrackets(str) {
   return results;
 }
 
-function renderUsers (users) {
+function renderUsers (el, users) {
   for (var i = 0; i < users.length; i++) {
     var html = [
-    "<tr id=" + users[i].login + ">",
+    "<tr class=" + users[i].login + ">",
     " <td><img src=" + users[i].avatar_url + "></img></td>",
     " <td><a href=" + users[i].html_url + " target='_blank'>"+ users[i].login + "</a></td>",
     " <td class='followers'>" + "--" + "</td>",
@@ -21,22 +21,22 @@ function renderUsers (users) {
     " <td class='created_at'>" + "--" + "</td>",
     "</tr>"
     ];
-    $('tbody').append(html.join(''));
+    el.append(html.join(''));
   };
 }
 
-function fetchUsers (users) {
+function fetchUsers (el, users) {
   for (var i = 0; i < users.length; i++) {
     var url = "https://api.github.com/users/" + users[i].login;
     var p = load_res(url);
     p.then(function (data) {
-      renderUserMeta(data.body);
+      renderUserMeta(el, data.body);
     })
   };
 }
 
-function renderUserMeta (user) {
-  var user_ele = $('#' + user.login);
+function renderUserMeta (el, user) {
+  var user_ele = el.find('.' + user.login);
   var date = new Date(user.created_at);
   user_ele.find('.followers').text(user.followers);
   user_ele.find('.following').text(user.following);
@@ -44,7 +44,7 @@ function renderUserMeta (user) {
   user_ele.find('.gists').text(user.public_gists);
   if(user.company) user_ele.find('.company').text(user.company);
   if(user.location) user_ele.find('.location').text(user.location);
-  user_ele.find('.created_at').text(date.getFullYear() + '年' + date.getMonth() + '月');
+  user_ele.find('.created_at').text(date.getFullYear() + '年' + (date.getMonth() + 1) + '月');
 }
 
 function load_res (url) {
@@ -74,54 +74,80 @@ function load_res (url) {
 $(document).ready(function () {
   var p1 = load_res('http://api.github.com/users/wendycan/followers');
   var p2 = load_res('http://api.github.com/users/wendycan');
+  var p3 = load_res('http://api.github.com/users/wendycan/following');
+
   p1.then(function (data) {
     var users = [];
     var links = data.xhr.getResponseHeader('Link');
-    var urlPrefix = getWordsBetweenAnglebrackets(links)[0].split('page=')[0] + 'page=';
-    var length = getWordsBetweenAnglebrackets(links)[1].split('page=')[1];
-    var p_pages = [];
-    for(var i = 1;i <= length;i++){
-      var url = urlPrefix + i;
-      p_pages.push(load_res(url));
-     }
-     var p = Promise.all(p_pages).then(function (data) {
-      for (var i = 0; i < data.length; i++) {
-        for (var j = 0; j < data[i].body.length; j++) {
-          users.push(data[i].body[j]);
+    if(links){
+      var urlPrefix = getWordsBetweenAnglebrackets(links)[0].split('page=')[0] + 'page=';
+      var length = getWordsBetweenAnglebrackets(links)[1].split('page=')[1];      
+      var p_pages = [];
+      for(var i = 1;i <= length;i++){
+        var url = urlPrefix + i;
+        p_pages.push(load_res(url));
+       }
+       var p = Promise.all(p_pages).then(function (data) {
+        for (var i = 0; i < data.length; i++) {
+          for (var j = 0; j < data[i].body.length; j++) {
+            users.push(data[i].body[j]);
+          };
         };
-      };
-      renderUsers(users);
-      fetchUsers(users);
-    });
+        renderUsers($('.followers-table tbody'), users);
+        fetchUsers($('.followers-table tbody'), users);
+      });
+    } else {
+      cusers = data.body;
+      renderUsers($('.followings-table tbody'), users);
+      fetchUsers($('.followings-table tbody'), users);
+    }
   });
   p2.then(function (data) {
     data = data.body;
     var date = new Date(data.created_at);
     var html = [
-      "<div class='row'>",
+      "<div class='data-equalizer'>",
       "  <div class='columns large-2'>",
       "    <img src=" + data.avatar_url + "></img>",
       "  </div>",
-      "  <div class='columns large-10'>",
-      "    <p>被关注" + data.followers + "</p>",
-      "    <p>关注中" + data.following + "</p>",
-      "    <p>公开项目" + data.public_repos + "</p>",
-      "    <p>公开 Gist" + data.public_gists + "</p>",
-      "    <p>公司" + data.company + "</p>",
-      "    <p>位置" + data.location + "</p>",
-      "    <p>加入时间" + date.getFullYear() + '年' + date.getMonth() + '月' + "</p>",
+      "  <div class='columns large-10 panel'>",
+      "    <p>被<span class='emph'>" + data.followers + "</span>人关注</p>",
+      "    <p>关注了<span class='emph'>" + data.following + "</span>人</p>",
+      "    <p>拥用<span class='emph'>" + data.public_repos + "</span>个公有项目</p>",
+      "    <p>拥有<span class='emph'>" + data.public_gists + "</span>个公有 Gist</p>",
+      "    <p>现就职于<span class='emph'>" + data.company + "</span></p>",
+      "    <p>现居于<span class='emph'>" + data.location + "</span></p>",
+      "    <p>于<span class='emph'>" + date.getFullYear() + '年' + (date.getMonth() + 1) + '月' + "</span>加入 Github</p>",
       "  </div>",
       "</div>"
     ];
     $('.meta').html(html.join(''));
   })
+  p3.then(function (data) {
+    var users = [];
+    var links = data.xhr.getResponseHeader('Link');
+    if(links){
+      var urlPrefix = getWordsBetweenAnglebrackets(links)[0].split('page=')[0] + 'page=';
+      var length = getWordsBetweenAnglebrackets(links)[1].split('page=')[1];      
+      var p_pages = [];
+      for (var i = 1; i <= length; i++) {
+        var url = urlPrefix + i;
+        p_pages.push(load_res(url));
+      };
+      var p = Promise.all(p_pages).then(function (data) {
+        console.log(data)
+        for (var i = 0; i < data.length; i++) {
+          for (var j = 0; j < data[i].body.length; j++) {
+            users.push(data[i].body[j]);
+          };
+        };
+        renderUsers($('.followings-table tbody'), users);
+        fetchUsers($('.followings-table tbody'), users);
+      });
+    } else {
+      users = data.body;
+      renderUsers($('.followings-table tbody'), users);
+      fetchUsers($('.followings-table tbody'), users);
+    }
+  });
 });
-
-// var p1 = load_res('http://api.github.com/users/wendycan')
-    // var p2 = load_res('http://api.github.com/users/yandy')
-    // var p_users = [p1, p2];
-    // var p = Promise.all(p_users).then(function (data) {
-    //   console.log(data);
-    // }, function (reason) {
-    //   console.log(reason)
-    // });
