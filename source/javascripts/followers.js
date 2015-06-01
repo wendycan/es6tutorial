@@ -6,14 +6,20 @@ function getWordsBetweenAnglebrackets(str) {
   return results;
 }
 
-function renderUsers (parent, users, graph) {
-  var parentNode = graph.newNode({label: parent});
-
-  for (var i = 0; i < 30; i++) {
-    var node = graph.newNode({label: users[i].login});
-    graph.newEdge(node, parentNode, {color: '#EB6841'});
+function renderUsers (users) {
+  console.log(users)
+  for (var i = 0; i < users.length; i++) {
+    var html = [
+    "<tr>",
+    " <td><img src=" + users[i].avatar_url + "></img></td>",
+    " <td><a href=" + users[i].html_url + " target='_blank'>"+ users[i].login + "</a></td>",
+    " <td>" + 45 + "</td>",
+    " <td>" + 45 + "</td>",
+    " <td>" + 45 + "</td>",
+    "</tr>"
+    ];
+    $('tbody').append(html.join(''));
   };
-  return graph;
 }
 
 function load_res (url) {
@@ -42,8 +48,7 @@ function load_res (url) {
 
 $(document).ready(function () {
   var p1 = load_res('http://api.github.com/users/wendycan/followers');
-  var graph = new Springy.Graph();
-  $('#followers_graph').width($('#followers_graph').parent().width()*0.8);
+  var p2 = load_res('http://api.github.com/users/wendycan');
   p1.then(function (data) {
     var users = [];
     var links = data.xhr.getResponseHeader('Link');
@@ -60,15 +65,26 @@ $(document).ready(function () {
           users.push(data[i].body[j]);
         };
       };
-      graph = renderUsers('wendycan', users, graph);
-      var springy = $('#followers_graph').springy({
-        graph: graph,
-        // nodeSelected: function(node){
-        //   console.log('Node selected: ' + JSON.stringify(node.data));
-        // }
-      });
-   });
- });
+      renderUsers(users);
+    });
+  });
+  p2.then(function (data) {
+    data = data.body;
+    var html = [
+      "<div class='row'>",
+      "  <div class='columns large-2'>",
+      "    <img src=" + data.avatar_url + "></img>",
+      "  </div>",
+      "  <div class='columns large-10'>",
+      "    <p>Followers Count" + data.followers + "</p>",
+      "    <p>Location" + data.location + "</p>",
+      "    <p>Following Count" + data.following + "</p>",
+      "    <p>Public Repos" + data.public_repos + "</p>",
+      "  </div>",
+      "</div>"
+    ];
+    $('.meta').html(html.join(''));
+  })
 });
 
 // var p1 = load_res('http://api.github.com/users/wendycan')
