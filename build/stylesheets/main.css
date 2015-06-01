@@ -35,3 +35,64 @@ p {
   /* line 44, /Users/wendy/Workspace/Wendycan/es6tutorial/source/stylesheets/main.scss */
   .footer p > a {
     padding-left: 10px; }
+
+/* line 49, /Users/wendy/Workspace/Wendycan/es6tutorial/source/stylesheets/main.scss */
+.followers-table, .followings-table {
+  width: 100%; }
+  /* line 51, /Users/wendy/Workspace/Wendycan/es6tutorial/source/stylesheets/main.scss */
+  .followers-table img, .followings-table img {
+    width: 60px; }
+  /* line 54, /Users/wendy/Workspace/Wendycan/es6tutorial/source/stylesheets/main.scss */
+  .followers-table th, .followers-table td, .followings-table th, .followings-table td {
+    text-align: center; }
+  /* line 57, /Users/wendy/Workspace/Wendycan/es6tutorial/source/stylesheets/main.scss */
+  .followers-table th:first-child, .followings-table th:first-child {
+    width: 10%; }
+  /* line 60, /Users/wendy/Workspace/Wendycan/es6tutorial/source/stylesheets/main.scss */
+  .followers-table th:nth-child(2), .followings-table th:nth-child(2) {
+    width: 12%; }
+  /* line 63, /Users/wendy/Workspace/Wendycan/es6tutorial/source/stylesheets/main.scss */
+  .followers-table th:nth-child(3), .followings-table th:nth-child(3) {
+    width: 10%; }
+  /* line 66, /Users/wendy/Workspace/Wendycan/es6tutorial/source/stylesheets/main.scss */
+  .followers-table th:nth-child(4), .followings-table th:nth-child(4) {
+    width: 10%; }
+  /* line 69, /Users/wendy/Workspace/Wendycan/es6tutorial/source/stylesheets/main.scss */
+  .followers-table th:nth-child(5), .followings-table th:nth-child(5) {
+    width: 10%; }
+  /* line 72, /Users/wendy/Workspace/Wendycan/es6tutorial/source/stylesheets/main.scss */
+  .followers-table th:nth-child(6), .followings-table th:nth-child(6) {
+    width: 10%; }
+  /* line 75, /Users/wendy/Workspace/Wendycan/es6tutorial/source/stylesheets/main.scss */
+  .followers-table th:nth-child(7), .followings-table th:nth-child(7) {
+    width: 12%; }
+  /* line 78, /Users/wendy/Workspace/Wendycan/es6tutorial/source/stylesheets/main.scss */
+  .followers-table th:nth-child(8), .followings-table th:nth-child(8) {
+    width: 15%; }
+  /* line 81, /Users/wendy/Workspace/Wendycan/es6tutorial/source/stylesheets/main.scss */
+  .followers-table th:nth-child(9), .followings-table th:nth-child(9) {
+    width: 11%; }
+
+/* line 86, /Users/wendy/Workspace/Wendycan/es6tutorial/source/stylesheets/main.scss */
+.emph {
+  font-size: 19px;
+  padding-left: 6px;
+  padding-right: 6px;
+  color: #b07c00; }
+
+/* line 94, /Users/wendy/Workspace/Wendycan/es6tutorial/source/stylesheets/main.scss */
+.meta p {
+  font-size: 14px; }
+
+/* line 99, /Users/wendy/Workspace/Wendycan/es6tutorial/source/stylesheets/main.scss */
+.highlight {
+  border-color: #ffe8ad;
+  border-style: solid; }
+
+/* line 104, /Users/wendy/Workspace/Wendycan/es6tutorial/source/stylesheets/main.scss */
+.promise-example .meta img {
+  width: 200px; }
+/* line 107, /Users/wendy/Workspace/Wendycan/es6tutorial/source/stylesheets/main.scss */
+.promise-example h5 img {
+  width: 50px;
+  padding-left: 10px; }
