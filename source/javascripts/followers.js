@@ -48,6 +48,10 @@ function renderUserMeta (el, user) {
   if(user.company) user_ele.find('.company').text(user.company);
   if(user.location) user_ele.find('.location').text(user.location);
   user_ele.find('.created_at').text(date.getFullYear() + '年' + (date.getMonth() + 1) + '月');
+  if(user.followers > 200) {
+    user_ele.addClass('highlight');
+    user_ele.find('.followers').addClass('emph')
+  }
 }
 
 function load_res (url) {
