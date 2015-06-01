@@ -45,3 +45,67 @@ p {
     padding-left: 10px;
   }
 }
+
+.followers-table, .followings-table {
+  width: 100%;
+  img {
+    width: 60px;
+  }
+  th, td {
+    text-align: center;
+  }
+  th:first-child {
+    width: 10%;
+  }
+  th:nth-child(2) {
+    width: 12%;
+  }
+  th:nth-child(3) {
+    width: 10%;
+  }
+  th:nth-child(4) {
+    width: 10%;
+  }
+  th:nth-child(5) {
+    width: 10%;
+  }
+  th:nth-child(6) {
+    width: 10%;
+  }
+  th:nth-child(7) {
+    width: 12%;
+  }
+  th:nth-child(8) {
+    width: 15%;
+  }
+  th:nth-child(9) {
+    width: 11%;
+  }
+
+}
+.emph {
+  font-size: 19px;
+  padding-left: 6px;
+  padding-right: 6px;
+  color: #b07c00;
+}
+
+.meta {
+  p {
+    font-size: 14px;
+  }
+}
+
+.highlight {
+  border-color: #ffe8ad;
+  border-style: solid;
+}
+.promise-example {
+  .meta img {
+    width: 200px;
+  }
+  h5 img {
+    width: 50px;
+    padding-left: 10px;
+  }
+}
