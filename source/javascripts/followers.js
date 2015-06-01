@@ -7,19 +7,44 @@ function getWordsBetweenAnglebrackets(str) {
 }
 
 function renderUsers (users) {
-  console.log(users)
   for (var i = 0; i < users.length; i++) {
     var html = [
-    "<tr>",
+    "<tr id=" + users[i].login + ">",
     " <td><img src=" + users[i].avatar_url + "></img></td>",
     " <td><a href=" + users[i].html_url + " target='_blank'>"+ users[i].login + "</a></td>",
-    " <td>" + 45 + "</td>",
-    " <td>" + 45 + "</td>",
-    " <td>" + 45 + "</td>",
+    " <td class='followers'>" + "--" + "</td>",
+    " <td class='following'>" + "--" + "</td>",
+    " <td class='repos'>" + "--" + "</td>",
+    " <td class='gists'>" + "--" + "</td>",
+    " <td class='company'>" + "--" + "</td>",
+    " <td class='location'>" + "--" + "</td>",
+    " <td class='created_at'>" + "--" + "</td>",
     "</tr>"
     ];
     $('tbody').append(html.join(''));
   };
+}
+
+function fetchUsers (users) {
+  for (var i = 0; i < users.length; i++) {
+    var url = "https://api.github.com/users/" + users[i].login;
+    var p = load_res(url);
+    p.then(function (data) {
+      renderUserMeta(data.body);
+    })
+  };
+}
+
+function renderUserMeta (user) {
+  var user_ele = $('#' + user.login);
+  var date = new Date(user.created_at);
+  user_ele.find('.followers').text(user.followers);
+  user_ele.find('.following').text(user.following);
+  user_ele.find('.repos').text(user.public_repos);
+  user_ele.find('.gists').text(user.public_gists);
+  if(user.company) user_ele.find('.company').text(user.company);
+  if(user.location) user_ele.find('.location').text(user.location);
+  user_ele.find('.created_at').text(date.getFullYear() + '年' + date.getMonth() + '月');
 }
 
 function load_res (url) {
@@ -66,20 +91,25 @@ $(document).ready(function () {
         };
       };
       renderUsers(users);
+      fetchUsers(users);
     });
   });
   p2.then(function (data) {
     data = data.body;
+    var date = new Date(data.created_at);
     var html = [
       "<div class='row'>",
       "  <div class='columns large-2'>",
       "    <img src=" + data.avatar_url + "></img>",
       "  </div>",
       "  <div class='columns large-10'>",
-      "    <p>Followers Count" + data.followers + "</p>",
-      "    <p>Location" + data.location + "</p>",
-      "    <p>Following Count" + data.following + "</p>",
-      "    <p>Public Repos" + data.public_repos + "</p>",
+      "    <p>被关注" + data.followers + "</p>",
+      "    <p>关注中" + data.following + "</p>",
+      "    <p>公开项目" + data.public_repos + "</p>",
+      "    <p>公开 Gist" + data.public_gists + "</p>",
+      "    <p>公司" + data.company + "</p>",
+      "    <p>位置" + data.location + "</p>",
+      "    <p>加入时间" + date.getFullYear() + '年' + date.getMonth() + '月' + "</p>",
       "  </div>",
       "</div>"
     ];
