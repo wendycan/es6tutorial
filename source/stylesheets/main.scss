@@ -47,6 +47,7 @@ p {
 }
 
 .followers-table, .followings-table {
+  width: 100%;
   img {
     width: 60px;
   }
@@ -98,4 +99,13 @@ p {
 .highlight {
   border-color: #ffe8ad;
   border-style: solid;
+}
+.promise-example {
+  .meta img {
+    width: 200px;
+  }
+  h5 img {
+    width: 50px;
+    padding-left: 10px;
+  }
 }

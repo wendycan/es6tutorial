@@ -39,6 +39,7 @@ function fetchUsers (el, users) {
 }
 
 function renderUserMeta (el, user) {
+  $('.title img').remove();
   var user_ele = el.find('.' + user.login);
   var date = new Date(user.created_at);
   user_ele.find('.followers').text(user.followers);
