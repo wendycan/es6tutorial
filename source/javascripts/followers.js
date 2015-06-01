@@ -26,13 +26,16 @@ function renderUsers (el, users) {
 }
 
 function fetchUsers (el, users) {
+  var p_users = [];
   for (var i = 0; i < users.length; i++) {
     var url = "https://api.github.com/users/" + users[i].login;
-    var p = load_res(url);
-    p.then(function (data) {
-      renderUserMeta(el, data.body);
-    })
+    p_users.push(load_res(url));
   };
+  var p = Promise.all(p_users).then(function (data) {
+    for (var i = 0; i < data.length; i++) {
+      renderUserMeta(el, data[i].body);
+    };
+  });
 }
 
 function renderUserMeta (el, user) {
@@ -135,7 +138,6 @@ $(document).ready(function () {
         p_pages.push(load_res(url));
       };
       var p = Promise.all(p_pages).then(function (data) {
-        console.log(data)
         for (var i = 0; i < data.length; i++) {
           for (var j = 0; j < data[i].body.length; j++) {
             users.push(data[i].body[j]);
