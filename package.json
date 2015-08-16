@@ -1,0 +1,22 @@
+{
+  "name": "es6tutorial",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "middleman server",
+    "test": "npm run-script test-unit",
+    "test-unit": "./node_modules/.bin/karma start karma.conf.js",
+    "test-functional": "./node_modules/.bin/casperjs test test/functional/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/wendycan/es6tutorial.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/wendycan/es6tutorial/issues"
+  },
+  "homepage": "https://github.com/wendycan/es6tutorial#readme"
+}
