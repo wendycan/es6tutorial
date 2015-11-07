@@ -1,6 +1,6 @@
 # es6tutorial
 
-这里列出了 ES6 的所有特性，并附以实例。你可以直接访问 [es6turorial](http://es6.wendycan.org), 或者克隆这个项目，然后在本地运行。
+这里列出了 ES6 的所有特性，并附以实例。你可以直接访问 [es6turorial](http://es6.larklearning.com), 或者克隆这个项目，然后在本地运行。
 
 ## 依赖
 
