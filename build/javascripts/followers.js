@@ -89,7 +89,7 @@ $(document).ready(function () {
     var links = data.xhr.getResponseHeader('Link');
     if(links){
       var urlPrefix = getWordsBetweenAnglebrackets(links)[0].split('page=')[0] + 'page=';
-      var length = getWordsBetweenAnglebrackets(links)[1].split('page=')[1];      
+      var length = getWordsBetweenAnglebrackets(links)[1].split('page=')[1];
       var p_pages = [];
       for(var i = 1;i <= length;i++){
         var url = urlPrefix + i;
@@ -136,7 +136,7 @@ $(document).ready(function () {
     var links = data.xhr.getResponseHeader('Link');
     if(links){
       var urlPrefix = getWordsBetweenAnglebrackets(links)[0].split('page=')[0] + 'page=';
-      var length = getWordsBetweenAnglebrackets(links)[1].split('page=')[1];      
+      var length = getWordsBetweenAnglebrackets(links)[1].split('page=')[1];
       var p_pages = [];
       for (var i = 1; i <= length; i++) {
         var url = urlPrefix + i;
